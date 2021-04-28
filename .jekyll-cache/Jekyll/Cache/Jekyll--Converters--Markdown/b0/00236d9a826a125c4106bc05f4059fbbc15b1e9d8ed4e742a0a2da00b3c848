@@ -1,5 +1,31 @@
-I"
-<h2 id="2021" class="archive__subtitle">2021</h2>
+I"�<!--
+# Jekyll Group-By-Array 0.1.0
+# https://github.com/mushishi78/jekyll-group-by-array
+# © 2015 Max White <mushishi78@gmail.com>
+# MIT License
+-->
+
+<!-- Initialize -->
+
+<!-- Map -->
+
+<!-- Flatten -->
+
+<!-- Uniq -->
+
+<!-- If not equal to previous then it must be unique as sorted -->
+
+<!-- Push to group_names -->
+
+<!-- If not equal to previous then it must be unique as sorted -->
+
+<!-- group_items -->
+
+<!-- Collect if contains -->
+
+<!-- Push to group_items -->
+
+<h2 id="category" class="archive__subtitle">category</h2>
 
 <div class="list__item">
   <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
@@ -13,12 +39,10 @@
     
 
 
-    <p class="archive__item-excerpt" itemprop="description">Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해하는 것이 중요할 것 같습니다.
-Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cy...</p>
+    <p class="archive__item-excerpt" itemprop="description">Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.
+Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 ...</p>
   </article>
 </div>
-
-<h2 id="2015" class="archive__subtitle">2015</h2>
 
 <div class="list__item">
   <article class="archive__item" itemscope="" itemtype="https://schema.org/CreativeWork">
