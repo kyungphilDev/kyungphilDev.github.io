@@ -28,4 +28,57 @@ RAW Hazard 조건
 - I(young) => R/I, LD, SD, Bxx, JALR // Read Instruction
 - I(old) => R/I, LD, JAL, JALR // Write
 - dis(I OLD, I YOUNG) <= dis(ID, WB) = 3 // dist 가 3 이상인 경우는 hazard가 발생하지 않으므로
-  write(old instructiion) 보다 read(young instruction)이 먼저 수행될경우 hazard가 발생한다.
+write(old instructiion) 보다 read(young instruction)이 먼저 수행될경우 hazard가 발생한다.
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/116329894-40c7b780-a807-11eb-8e9e-7580d0685266.png" width="400"><br>Feature1. Forwarding diagram
+</p>
+
+### Data Forwarding Logic
+
+```c++
+if(rs1_EX != 0) && (rs1_EX == rd_MEM) && RegWrite_MEM then
+forward operand from MEM stage // dist=1
+else if(rs_EX != 0) && (rs_EX == rd_WB) && RegWrite_WB then
+forward operand from WB stage // dist=2
+else
+use the operand from register file //dist=3
+```
+
+(마찬가지로 rs2에도 위의 forwarding logic을 수행하면 된다.)
+
+다음의 두가지 세부 사항을 한번 살펴보자.
+
+---
+
+**1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.**  
+**2. use_rs1(IR_ID)는 왜 확인할 필요가 없을까?**
+
+---
+
+### 1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.
+
+다음의 예시의 경우를 한 번 살펴보자
+
+```c
+sub x2, x1, x3
+add x2, x2, x5 // 1, 2번째와 RAW(x2)
+add x4, x2, x7 // 2, 3번째와 RAW(x2)
+```
+
+위의 예시와 같은 경우에 만약 3번째 줄을 수행할 때,  
+**Data forwarding**을 **dist=1 보다 dist=2를** 먼저 수행한다고 가정하여 보자.  
+**올바른 계산은 3번째 줄에게 가장 최근인 add를 한 결과를 x2가 받아와야 할 것이다.**  
+하지만, add를 수행하기 전인 **sub의 결과로 부터 x2**를 읽어오는 forwarding을 수행하기 때문에 올바른 결과값을 갖지 못하게 된다!
+
+따라서
+위의 **Data Forwarding Logic**에서 확인할 수 있듯이, dist가 적은 1,2,3 즉 가장 가까운 값으로 부터 forwarding을 수행해주어야한다.
+
+### 2. use_rs1(IR_ID)는 왜 확인할 필요가 없을까?
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/116332847-77a0cc00-a80d-11eb-897e-b41e4905fd52.png" width="400"><br>Feature2. Stall Condition
+</p>
+ pipeline CPU를 수행하는데 있어서 Data Hazard 문제를 해결하기 위해 Stall 하는 방법이 있었다.
+Stall의 조건에는 **use_rs(IR_ID)** 를 통해 아직 Write 되지 않은 값을 ID에 넣어주는 지를 확인한다.
+
+하지만 Data Forwarding 에서는 **ID 단계를 Bypass** 하고 EX에 바로 값을 forwarding 해주기 때문에 use_rs(IR_ID)가 더이상 필요 없을 것이다.

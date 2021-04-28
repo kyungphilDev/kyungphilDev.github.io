@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-04-28T00:25:17+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">Pipeline CPU, 주요 3 가지</title><link href="https://kyungphildev.github.io/category/Piepeline-CPU/" rel="alternate" type="text/html" title="Pipeline CPU, 주요 3 가지" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/Piepeline%20CPU</id><content type="html" xml:base="https://kyungphildev.github.io/category/Piepeline-CPU/">&lt;h2 id=&quot;pipleline-cpu-개념-정리&quot;&gt;Pipleline CPU 개념 정리&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-04-28T10:50:54+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">Pipeline CPU, 주요 3 가지</title><link href="https://kyungphildev.github.io/category/Piepeline-CPU/" rel="alternate" type="text/html" title="Pipeline CPU, 주요 3 가지" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/Piepeline%20CPU</id><content type="html" xml:base="https://kyungphildev.github.io/category/Piepeline-CPU/">&lt;h2 id=&quot;pipleline-cpu-개념-정리&quot;&gt;Pipleline CPU 개념 정리&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -25,7 +25,58 @@ Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해
   &lt;li&gt;I(old) =&amp;gt; R/I, LD, JAL, JALR // Write&lt;/li&gt;
   &lt;li&gt;dis(I OLD, I YOUNG) &amp;lt;= dis(ID, WB) = 3 // dist 가 3 이상인 경우는 hazard가 발생하지 않으므로
 write(old instructiion) 보다 read(young instruction)이 먼저 수행될경우 hazard가 발생한다.&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipleline CPU 개념 정리</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="https://kyungphildev.github.io/category/welcome-to-jekyll/" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2015-04-19T04:25:52+09:00</published><updated>2015-04-19T04:25:52+09:00</updated><id>https://kyungphildev.github.io/category/welcome-to-jekyll</id><content type="html" xml:base="https://kyungphildev.github.io/category/welcome-to-jekyll/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+&lt;/ul&gt;
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116329894-40c7b780-a807-11eb-8e9e-7580d0685266.png&quot; width=&quot;400&quot; /&gt;&lt;br /&gt;Feature1. Forwarding diagram
+&lt;/p&gt;
+
+&lt;h3 id=&quot;data-forwarding-logic&quot;&gt;Data Forwarding Logic&lt;/h3&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RegWrite_MEM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist=1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_WB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RegWrite_WB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist=2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;register&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//dist=3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;(마찬가지로 rs2에도 위의 forwarding logic을 수행하면 된다.)&lt;/p&gt;
+
+&lt;p&gt;다음의 두가지 세부 사항을 한번 살펴보자.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;2. use_rs1(IR_ID)는 왜 확인할 필요가 없을까?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;1-가장-최근의-값을-먼저-forwarding-해주어야-한다&quot;&gt;1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.&lt;/h3&gt;
+
+&lt;p&gt;다음의 예시의 경우를 한 번 살펴보자&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;sub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x3&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 1, 2번째와 RAW(x2)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 2, 3번째와 RAW(x2)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 예시와 같은 경우에 만약 3번째 줄을 수행할 때,&lt;br /&gt;
+&lt;strong&gt;Data forwarding&lt;/strong&gt;을 &lt;strong&gt;dist=1 보다 dist=2를&lt;/strong&gt; 먼저 수행한다고 가정하여 보자.&lt;br /&gt;
+&lt;strong&gt;올바른 계산은 3번째 줄에게 가장 최근인 add를 한 결과를 x2가 받아와야 할 것이다.&lt;/strong&gt;&lt;br /&gt;
+하지만, add를 수행하기 전인 &lt;strong&gt;sub의 결과로 부터 x2&lt;/strong&gt;를 읽어오는 forwarding을 수행하기 때문에 올바른 결과값을 갖지 못하게 된다!&lt;/p&gt;
+
+&lt;p&gt;따라서
+위의 &lt;strong&gt;Data Forwarding Logic&lt;/strong&gt;에서 확인할 수 있듯이, dist가 적은 1,2,3 즉 가장 가까운 값으로 부터 forwarding을 수행해주어야한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-use_rs1ir_id는-왜-확인할-필요가-없을까&quot;&gt;2. use_rs1(IR_ID)는 왜 확인할 필요가 없을까?&lt;/h3&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116332847-77a0cc00-a80d-11eb-897e-b41e4905fd52.png&quot; width=&quot;400&quot; /&gt;&lt;br /&gt;Feature2. Stall Condition
+&lt;/p&gt;
+&lt;p&gt;pipeline CPU를 수행하는데 있어서 Data Hazard 문제를 해결하기 위해 Stall 하는 방법이 있었다.
+Stall의 조건에는 &lt;strong&gt;use_rs(IR_ID)&lt;/strong&gt; 를 통해 아직 Write 되지 않은 값을 ID에 넣어주는 지를 확인한다.&lt;/p&gt;
+
+&lt;p&gt;하지만 Data Forwarding 에서는 &lt;strong&gt;ID 단계를 Bypass&lt;/strong&gt; 하고 EX에 바로 값을 forwarding 해주기 때문에 use_rs(IR_ID)가 더이상 필요 없을 것이다.&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipleline CPU 개념 정리</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="https://kyungphildev.github.io/category/welcome-to-jekyll/" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2015-04-19T04:25:52+09:00</published><updated>2015-04-19T04:25:52+09:00</updated><id>https://kyungphildev.github.io/category/welcome-to-jekyll</id><content type="html" xml:base="https://kyungphildev.github.io/category/welcome-to-jekyll/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
 
 &lt;h2 id=&quot;adding-new-posts&quot;&gt;Adding New Posts&lt;/h2&gt;
 

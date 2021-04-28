@@ -1,0 +1,75 @@
+I"*<h2 id="pipleline-cpu-개념-정리">Pipleline CPU 개념 정리</h2>
+
+<hr />
+
+<p>Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 구조를 먼저 충분히 이해하는 것이 중요할 것 같습니다.<br />
+Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있 수 있습니다.</p>
+
+<p>어떠한 특성들 때문에 이러한 효율이 가능한 것일까요?<br />
+그리고 구현 상에 어떠한 점을 주의해야 할까요?</p>
+
+<h3 id="세가지-주요-사항">세가지 주요 사항</h3>
+
+<ol>
+  <li>Data Hazard</li>
+  <li>Control Hazard</li>
+  <li>Branch Prediction</li>
+</ol>
+
+<hr />
+
+<p>RAW Hazard 조건</p>
+
+<ul>
+  <li>I(young) =&gt; R/I, LD, SD, Bxx, JALR // Read Instruction</li>
+  <li>I(old) =&gt; R/I, LD, JAL, JALR // Write</li>
+  <li>dis(I OLD, I YOUNG) &lt;= dis(ID, WB) = 3 // dist 가 3 이상인 경우는 hazard가 발생하지 않으므로
+write(old instructiion) 보다 read(young instruction)이 먼저 수행될경우 hazard가 발생한다.</li>
+</ul>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/116329894-40c7b780-a807-11eb-8e9e-7580d0685266.png" width="400" /><br />Feature1. Forwarding diagram
+</p>
+
+<h3 id="data-forwarding-logic">data forwarding logic</h3>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">rs1_EX</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">rs1_EX</span> <span class="o">==</span> <span class="n">rd_MEM</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">RegWrite_MEM</span> <span class="n">then</span>
+<span class="n">forward</span> <span class="n">operand</span> <span class="n">from</span> <span class="n">MEM</span> <span class="n">stage</span> <span class="c1">// dist=1</span>
+<span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">rs_EX</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">rs_EX</span> <span class="o">==</span> <span class="n">rd_WB</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">RegWrite_WB</span> <span class="n">then</span>
+<span class="n">forward</span> <span class="n">operand</span> <span class="n">from</span> <span class="n">WB</span> <span class="n">stage</span> <span class="c1">// dist=2</span>
+<span class="k">else</span>
+<span class="n">use</span> <span class="n">the</span> <span class="n">operand</span> <span class="n">from</span> <span class="k">register</span> <span class="n">file</span> <span class="c1">//dist=3</span>
+</code></pre></div></div>
+
+<p>마찬가지로 rs2에도 forwarding logic을 수행하면 된다.<br />
+다음의 두가지 추가 조건을 이해하고 넘어가 보자.</p>
+
+<ol>
+  <li>가장 최근의 값을 먼저 Forwarding 해주어야 한다.</li>
+  <li>use_rs1(IR_ID)는 왜 확인할 필요가 없을까?</li>
+</ol>
+
+<h3 id="1-가장-최근의-값을-먼저-forwarding-해주어야-한다">1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.</h3>
+
+<p><strong>위의 조건문에서 확인할 수 있듯이 dist가 적은 1,2,3 즉 가장 가까운 값으로 부터 forwarding을 수행해주어야한다.</strong><br />
+<strong>다음의 예시의 경우를 한 번 살펴보자</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sub x2, x1, x3
+add x2, x2, x5 // 1, 2번째와 RAW(x2)
+add x4, x2, x7 // 2, 3번째와 RAW(x2)
+</code></pre></div></div>
+
+<p>위의 예시와 같은 경우에 만약 3번째 줄을 수행할 때,<br />
+<strong>Data forwarding</strong>을 <strong>dist 2, dist 1인 순서대로</strong> 먼저 수행하게 된다고 가정하여 보자.<br />
+<strong>올바른 계산은 3번째 줄에게 가장 최근인 add를 한 결과를 x2가 받아와야 할 것이다.</strong><br />
+하지만, add를 수행하기 전인 <strong>sub의 결과로 부터 x2</strong>를 읽어오는 forwarding을 수행하기 때문에 올바른 결과값을 갖지 못하게 된다!</p>
+
+<h3 id="2-use_rs1ir_id는-왜-확인할-필요가-없을까">2. use_rs1(IR_ID)는 왜 확인할 필요가 없을까?</h3>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/116332847-77a0cc00-a80d-11eb-897e-b41e4905fd52.png" width="400" /><br />Feature2. Stall Condition
+</p>
+<p>pipeline CPU를 수행하는데 있어서 Data Hazard 문제를 해결하기 위해 Stall 을 하는 방법이 있었다.
+Stall의 조건에는 <strong>use_rs(IR_ID)</strong> 를 통해 아직 Write 되지 않은 값을 ID에 넣어주는 지를 확인한다.</p>
+
+<p>하지만 Data Forwarding 에서는 <strong>ID 단계를 Bypass</strong> 하고 EX에 바로 값을 forwarding 해주기 때문에 use_rs(IR_ID)가 더이상 필요 없을 것이다.</p>
+:ET
