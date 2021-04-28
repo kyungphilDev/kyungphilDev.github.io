@@ -1,6 +1,7 @@
 ---
 layout: posts
-title: Pipeline CPU- Data Forwarding
+title: Pipeline CPU- Data Hazard
+comments: true
 category: category
 tags: [computer architecture, computer science, pipeline, cpu]
 ---
@@ -122,5 +123,5 @@ RAW Hazard를 고려한 Data Forwarding 구현은 다음과 같습니다.
 2. Hazard Detection(LD의 경우, STALL)
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png" width="400"><br>Feature3. Pipeline CPU design(Data Forwarding)
+  <img src="https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png" width="700"><br>Feature3. Pipeline CPU design(Data Forwarding)
 </p>

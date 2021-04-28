@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Pipeline CPU- Data Forwarding - KyungPhil Dev</title>
+<!-- begin _includes/seo.html --><title>Pipeline CPU- Data Hazard - KyungPhil Dev</title>
 <meta name="description" content="Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해하는 것이 중요할 것 같습니다. Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.">
 
 
@@ -22,7 +22,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="KyungPhil Dev">
-<meta property="og:title" content="Pipeline CPU- Data Forwarding">
+<meta property="og:title" content="Pipeline CPU- Data Hazard">
 <meta property="og:url" content="https://kyungphildev.github.io/category/Piepeline-CPU/">
 
 
@@ -278,7 +278,7 @@
 
   <div class="archive">
     
-      <h1 id="page-title" class="page__title">Pipeline CPU- Data Forwarding</h1>
+      <h1 id="page-title" class="page__title">Pipeline CPU- Data Hazard</h1>
     
     <p>Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해하는 것이 중요할 것 같습니다.<br />
 Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.</p>
@@ -396,7 +396,7 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 <strong>메모�
 </ol>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png" width="400" /><br />Feature3. Pipeline CPU design(Data Forwarding)
+  <img src="https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png" width="700" /><br />Feature3. Pipeline CPU design(Data Forwarding)
 </p>
 
 
@@ -433,7 +433,7 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 <strong>메모�
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/category/Piepeline-CPU/" rel="permalink">Pipeline CPU- Data Forwarding
+        <a href="/category/Piepeline-CPU/" rel="permalink">Pipeline CPU- Data Hazard
 </a>
       
     </h2>
@@ -467,7 +467,30 @@ Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해
     </div>
     <a href="#page-title" class="back-to-top">맨 위로 이동 &uarr;</a>
   </section>
-
+  
+  <div id="post-disqus" class="container">
+    <div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://kyungphildev.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+  <!-- 
   <section id="2015" class="taxonomy__section">
     <h2 class="archive__subtitle">2015</h2>
     <div class="entries-list">
@@ -514,7 +537,31 @@ Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해
     </div>
     <a href="#page-title" class="back-to-top">맨 위로 이동 &uarr;</a>
   </section>
-
+  
+  <div id="post-disqus" class="container">
+    <div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://kyungphildev.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+  <!--  -->
+  
 
   </div>
 </div>

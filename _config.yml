@@ -30,9 +30,9 @@ masthead_title           : "매일 꾸준하게"# overrides the website title di
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
-  provider               : # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
+  provider               : disqus # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
   disqus:
-    shortname            : # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
+    shortname            : kyungphildev # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
     server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
   facebook:
@@ -280,7 +280,7 @@ defaults:
       comments:
         provider: "disqus"
         disqus:
-          shortname: KyungPhilDev
+          shortname: kyungphildev
       share: true
       related: true
   # _pages
