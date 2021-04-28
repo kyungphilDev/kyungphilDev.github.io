@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-04-28T10:50:54+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">Pipeline CPU, 주요 3 가지</title><link href="https://kyungphildev.github.io/category/Piepeline-CPU/" rel="alternate" type="text/html" title="Pipeline CPU, 주요 3 가지" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/Piepeline%20CPU</id><content type="html" xml:base="https://kyungphildev.github.io/category/Piepeline-CPU/">&lt;h2 id=&quot;pipleline-cpu-개념-정리&quot;&gt;Pipleline CPU 개념 정리&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 구조를 먼저 충분히 이해하는 것이 중요할 것 같습니다.&lt;br /&gt;
-Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있 수 있습니다.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-04-28T15:40:20+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">Pipeline CPU- Data Forwarding</title><link href="https://kyungphildev.github.io/category/Piepeline-CPU/" rel="alternate" type="text/html" title="Pipeline CPU- Data Forwarding" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/Piepeline%20CPU</id><content type="html" xml:base="https://kyungphildev.github.io/category/Piepeline-CPU/">&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해하는 것이 중요할 것 같습니다.&lt;br /&gt;
+Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.&lt;/p&gt;
 
 &lt;p&gt;어떠한 특성들 때문에 이러한 효율이 가능한 것일까요?&lt;br /&gt;
 그리고 구현 상에 어떠한 점을 주의해야 할까요?&lt;/p&gt;
@@ -18,20 +14,28 @@ Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해
 
 &lt;hr /&gt;
 
-&lt;p&gt;RAW Hazard 조건&lt;/p&gt;
+&lt;p&gt;이번 Post에서는 위의 세가지 주요 특징들 중에서도&lt;br /&gt;
+&lt;strong&gt;1. Data Hazard&lt;/strong&gt;
+를 해결하는 방법에 대해 구체적으로 알아 봅니다.&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;I(young) =&amp;gt; R/I, LD, SD, Bxx, JALR // Read Instruction&lt;/li&gt;
-  &lt;li&gt;I(old) =&amp;gt; R/I, LD, JAL, JALR // Write&lt;/li&gt;
-  &lt;li&gt;dis(I OLD, I YOUNG) &amp;lt;= dis(ID, WB) = 3 // dist 가 3 이상인 경우는 hazard가 발생하지 않으므로
-write(old instructiion) 보다 read(young instruction)이 먼저 수행될경우 hazard가 발생한다.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p align=&quot;center&quot;&gt;
-  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116329894-40c7b780-a807-11eb-8e9e-7580d0685266.png&quot; width=&quot;400&quot; /&gt;&lt;br /&gt;Feature1. Forwarding diagram
-&lt;/p&gt;
+&lt;h3 id=&quot;raw-hazard-조건&quot;&gt;RAW Hazard 조건&lt;/h3&gt;
+
+&lt;p&gt;우선 WAR이나 WAW의 경우, Pipeline CPU에서 instruction의 실행 순서상 read 가 IF/ID에서 항상 먼저 실행된 다음에 Write가 되기 때문에 Instruction에 방해되는 요소가 아니므로 고려하지 않습니다.&lt;/p&gt;
+
+&lt;p&gt;하지만 &lt;strong&gt;RAW&lt;/strong&gt;의 경우는 &lt;strong&gt;Write를 먼저하고 Read를 꼭 해야하기 때문에&lt;/strong&gt;, write 가 되기도 전에 IF/ID에서 read를 할 경우 문제가 발생하므로 이 경우를 해결해 주어야 합니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//RAW Hazard 발생 조건&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//write(old instructiion) 보다 read(young instruction)가 먼저 수행될경우 hazard가 발생한다.&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;young&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bxx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JALR&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Read Instruction&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;old&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JALR&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Write&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I_OLD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_YOUNG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist 가 3 보다 큰 경우는 hazard가 발생하지 않으므로 3 이하인 경우만 고려&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;data-forwarding-logic&quot;&gt;Data Forwarding Logic&lt;/h3&gt;
 
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116329894-40c7b780-a807-11eb-8e9e-7580d0685266.png&quot; width=&quot;400&quot; /&gt;&lt;br /&gt;Feature1. Forwarding diagram
+&lt;/p&gt;
 &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RegWrite_MEM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist=1&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_WB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RegWrite_WB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
@@ -42,7 +46,7 @@ write(old instructiion) 보다 read(young instruction)이 먼저 수행될경우
 
 &lt;p&gt;(마찬가지로 rs2에도 위의 forwarding logic을 수행하면 된다.)&lt;/p&gt;
 
-&lt;p&gt;다음의 두가지 세부 사항을 한번 살펴보자.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Data Forwarding&lt;/strong&gt; 을 이해하는데 필요한 다음의 두가지 세부 사항을 한번 살펴보자.&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -76,7 +80,42 @@ write(old instructiion) 보다 read(young instruction)이 먼저 수행될경우
 &lt;p&gt;pipeline CPU를 수행하는데 있어서 Data Hazard 문제를 해결하기 위해 Stall 하는 방법이 있었다.
 Stall의 조건에는 &lt;strong&gt;use_rs(IR_ID)&lt;/strong&gt; 를 통해 아직 Write 되지 않은 값을 ID에 넣어주는 지를 확인한다.&lt;/p&gt;
 
-&lt;p&gt;하지만 Data Forwarding 에서는 &lt;strong&gt;ID 단계를 Bypass&lt;/strong&gt; 하고 EX에 바로 값을 forwarding 해주기 때문에 use_rs(IR_ID)가 더이상 필요 없을 것이다.&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipleline CPU 개념 정리</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="https://kyungphildev.github.io/category/welcome-to-jekyll/" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2015-04-19T04:25:52+09:00</published><updated>2015-04-19T04:25:52+09:00</updated><id>https://kyungphildev.github.io/category/welcome-to-jekyll</id><content type="html" xml:base="https://kyungphildev.github.io/category/welcome-to-jekyll/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+&lt;p&gt;하지만 Data Forwarding 에서는 &lt;strong&gt;ID 단계를 Bypass&lt;/strong&gt; 하고 EX에 바로 값을 forwarding 해주기 때문에 use_rs(IR_ID)가 더이상 필요없을 것이다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;data-forwarding으로-모든-instructionraw을-해결할-수-있을까&quot;&gt;Data forwarding으로 모든 instruction(RAW)을 해결할 수 있을까?&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;ld&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// RAW(x2)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 경우 add에서 dist=1 이므로 data forwarding을 해주면 되지만 &lt;strong&gt;LD instruction&lt;/strong&gt;이기 때문에 문제가 발생한다.&lt;br /&gt;
+LD instruction의 경우, ALU로 부터 계산된 값이 아닌 &lt;strong&gt;메모리를 Read 한 값을 Forwarding&lt;/strong&gt; 해주어야 하므로 &lt;strong&gt;dist=1&lt;/strong&gt;일때 한 번의 STALL을 필요로 한다.&lt;/p&gt;
+
+&lt;p&gt;따라서 DataForwarding Logic과 함께 다음의 stall 조건을 필요로 한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//Stall&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;use_rs1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IR_ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs2_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;use_rsw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IR_ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MemRead_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stall&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//MemRead_EX : op=LD/LW/...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;전체적인-구현-design&quot;&gt;전체적인 구현 Design&lt;/h2&gt;
+
+&lt;p&gt;RAW Hazard를 고려한 Data Forwarding 구현은 다음과 같습니다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Data forwarding&lt;/li&gt;
+  &lt;li&gt;Hazard Detection(LD의 경우, STALL)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png&quot; width=&quot;400&quot; /&gt;&lt;br /&gt;Feature3. Pipeline CPU design(Data Forwarding)
+&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해하는 것이 중요할 것 같습니다. Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="https://kyungphildev.github.io/category/welcome-to-jekyll/" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2015-04-19T04:25:52+09:00</published><updated>2015-04-19T04:25:52+09:00</updated><id>https://kyungphildev.github.io/category/welcome-to-jekyll</id><content type="html" xml:base="https://kyungphildev.github.io/category/welcome-to-jekyll/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
 
 &lt;h2 id=&quot;adding-new-posts&quot;&gt;Adding New Posts&lt;/h2&gt;
 
