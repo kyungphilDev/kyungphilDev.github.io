@@ -10,4 +10,10 @@ var store = [{
         "tags": ["computer architecture","computer science","pipeline","cpu"],
         "url": "/category/Piepeline-CPU/",
         "teaser": null
+      },{
+        "title": "Pipeline CPU- Data Hazard",
+        "excerpt":" ","categories": ["category"],
+        "tags": ["computer architecture","computer science","pipeline","cpu"],
+        "url": "/category/Pipelien/",
+        "teaser": null
       }]
