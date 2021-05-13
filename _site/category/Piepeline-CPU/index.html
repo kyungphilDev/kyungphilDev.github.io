@@ -302,12 +302,6 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 <strong>메모�
       </a>
     </li>
   
-    <li>
-      <a href="#2015">
-        <strong>2015</strong> <span class="taxonomy__count">1</span>
-      </a>
-    </li>
-  
 </ul> -->
 
 
@@ -408,68 +402,7 @@ Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해
   theme="github-light"
   crossorigin="anonymous"
   async>
-</script>
-</section>
-  
-  <!-- 
-  <section 
-    id="2015"
-    class="taxonomy__section"
-  >
-    <hr>
-    <hr>
-    <h2 class="archive__subtitle">2015 의 게시글</h2>
-    <div class="entries-list">
-      
-        
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/category/welcome-to-jekyll/" rel="permalink">Welcome to Jekyll!
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2015-04-19T04:25:52+09:00">April 19, 2015</time>
-      </span>
-    
-
-    
-
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
-  </article>
-</div>
-
-      
-    </div>
-    <a href="#page-title" class="back-to-top">맨 위로 이동 &uarr;</a>
-  </section>
-  
-  <!-- Utterances comment -->
-<section>
-  <script src="https://utteranc.es/client.js"
-  repo="kyungphildev/kyungphildev.github.io"
-  issue-term="pathname"
-  theme="github-light"
-  crossorigin="anonymous"
-  async>
-</script>
+  </script>
 </section>
   
   <!--  -->
@@ -533,6 +466,30 @@ Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해
 <script src="/assets/js/lunr/lunr-en.js"></script>
 
 
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'kyungphildev/kyungphildev.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
 
 
 

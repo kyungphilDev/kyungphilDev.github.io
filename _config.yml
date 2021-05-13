@@ -240,4 +240,5 @@ defaults:
       type: posts
     values:
       show_date: true
+      comemnts: true
 

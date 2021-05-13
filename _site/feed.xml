@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-05-13T13:37:41+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">React Study(1) 정리</title><link href="https://kyungphildev.github.io/category/React-Study/" rel="alternate" type="text/html" title="React Study(1) 정리" /><published>2021-05-12T00:00:00+09:00</published><updated>2021-05-12T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/React%20Study</id><content type="html" xml:base="https://kyungphildev.github.io/category/React-Study/">&lt;h3 id=&quot;component-driven-user-interfaces&quot;&gt;Component-Driven User Interfaces&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-05-13T13:45:04+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">React Study(1) 정리</title><link href="https://kyungphildev.github.io/category/React-Study/" rel="alternate" type="text/html" title="React Study(1) 정리" /><published>2021-05-12T00:00:00+09:00</published><updated>2021-05-12T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/React%20Study</id><content type="html" xml:base="https://kyungphildev.github.io/category/React-Study/">&lt;h3 id=&quot;component-driven-user-interfaces&quot;&gt;Component-Driven User Interfaces&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;A Client-side JavaScript library&lt;/li&gt;
@@ -145,56 +145,4 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 &lt;strong&gt;�
 
 &lt;p align=&quot;center&quot;&gt;
   &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature3. Pipeline CPU design(Data Forwarding)
-&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다. Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="https://kyungphildev.github.io/category/welcome-to-jekyll/" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2015-04-19T04:25:52+09:00</published><updated>2015-04-19T04:25:52+09:00</updated><id>https://kyungphildev.github.io/category/welcome-to-jekyll</id><content type="html" xml:base="https://kyungphildev.github.io/category/welcome-to-jekyll/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
-
-&lt;h2 id=&quot;adding-new-posts&quot;&gt;Adding New Posts&lt;/h2&gt;
-
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
-
-&lt;h3 id=&quot;tags-and-categories&quot;&gt;Tags and Categories&lt;/h3&gt;
-
-&lt;p&gt;If you list one or more categories or tags in the front matter of your post, they will be included with the post on the page as links. Clicking the link will bring you to an auto-generated archive page for the category or tag, created using the &lt;a href=&quot;https://github.com/jekyll/jekyll-archives&quot;&gt;jekyll-archive&lt;/a&gt; gem.&lt;/p&gt;
-
-&lt;h3 id=&quot;cover-images&quot;&gt;Cover Images&lt;/h3&gt;
-
-&lt;p&gt;To add a cover image to your post, set the “cover” property in the front matter with the relative URL of the image (i.e. &lt;code&gt;cover: &quot;/assets/cover_image.jpg&quot;&lt;/code&gt;).&lt;/p&gt;
-
-&lt;h3 id=&quot;code-snippets&quot;&gt;Code Snippets&lt;/h3&gt;
-
-&lt;p&gt;You can use &lt;a href=&quot;https://highlightjs.org/&quot;&gt;highlight.js&lt;/a&gt; to add syntax highlight code snippets:&lt;/p&gt;
-
-&lt;p&gt;Use the &lt;a href=&quot;https://github.com/Shopify/liquid/wiki/Liquid-for-Designers&quot;&gt;Liquid&lt;/a&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{% highlight &amp;lt;language&amp;gt; %}&lt;/code&gt; tag to add syntax highlighting to code snippets.&lt;/p&gt;
-
-&lt;p&gt;For instance, this template…&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;{% highlight javascript %}  
-function demo(string, times) {  
- for (var i = 0; i &lt;span class=&quot;nt&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;  
- &lt;span class=&quot;na&quot;&gt;console.log&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;);&lt;/span&gt;  
- &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;  
-&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;  
-&lt;span class=&quot;na&quot;&gt;demo&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;(&quot;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;world&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;!&quot;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;10);&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;endhighlight&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;%}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;…will come out looking like this:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;demo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;demo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;hello, world!&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Syntax highlighting is done using &lt;a href=&quot;https://highlightjs.org/&quot;&gt;highlight.js&lt;/a&gt;. You can change the active theme in &lt;a href=&quot;https://github.com/bencentra/centrarium/blob/2dcd73d09e104c3798202b0e14c1db9fa6e77bc7/_includes/head.html#L15&quot;&gt;head.html&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;images&quot;&gt;Images&lt;/h3&gt;
-
-&lt;p&gt;Lightbox has been enabled for images. To create the link that’ll launch the lightbox, add &lt;code&gt;data-lightbox&lt;/code&gt; and &lt;code&gt;data-title&lt;/code&gt; attributes to an &lt;code&gt;&amp;lt;a&amp;gt;&lt;/code&gt; tag around your &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt; tag. The result is:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;//bencentra.com/assets/images/falcon9_large.jpg&quot; data-lightbox=&quot;falcon9-large&quot; data-title=&quot;Check out the Falcon 9 from SpaceX&quot;&gt;
-  &lt;img src=&quot;//bencentra.com/assets/images/falcon9_small.jpg&quot; title=&quot;Check out the Falcon 9 from SpaceX&quot; /&gt;
-&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;For more information, check out the &lt;a href=&quot;http://lokeshdhakar.com/projects/lightbox2/&quot;&gt;Lightbox&lt;/a&gt; website.&lt;/p&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;</content><author><name>Ben Centra</name></author><category term="category" /><category term="jekyll" /><category term="welcome" /><summary type="html">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.</summary></entry></feed>
+&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다. Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.</summary></entry></feed>
