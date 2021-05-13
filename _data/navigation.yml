@@ -4,9 +4,16 @@ main:
     url: /categories/
   - title: "Tags"
     url: /tags/
-  # - title: "About"
-  #   url: /about/
-  - title: "연도별 포스트"
-    url: /year-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
+#side bar
+docs:
+  - title: "컴퓨터 구조 <br> (Computer Architecture)"
+    children:
+      - title: Pipeline CPU(1) <br> Single-Cycle vs Multi-Cycle CPU
+        url: /computer-architecture/pipeline1
+      - title: Pipeline CPU(2) - Data Hazard
+        url: /computer-architecture/datahazard
+    # url: /categories/
+  - title: "React Study"
+    children:
+      - title: React 주요개념
+        url: /react/ReactStudy1

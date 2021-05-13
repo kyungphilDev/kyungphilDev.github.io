@@ -1,4 +1,82 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-05-13T13:45:04+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">React Study(1) 정리</title><link href="https://kyungphildev.github.io/category/React-Study/" rel="alternate" type="text/html" title="React Study(1) 정리" /><published>2021-05-12T00:00:00+09:00</published><updated>2021-05-12T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/React%20Study</id><content type="html" xml:base="https://kyungphildev.github.io/category/React-Study/">&lt;h3 id=&quot;component-driven-user-interfaces&quot;&gt;Component-Driven User Interfaces&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-05-13T16:19:02+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">Pipeline CPU(1) Single_Cycle_CPU VS Multi_Cycle_CPU</title><link href="https://kyungphildev.github.io/computer-architecture/pipeline1/" rel="alternate" type="text/html" title="Pipeline CPU(1) Single_Cycle_CPU VS Multi_Cycle_CPU" /><published>2021-05-13T00:00:00+09:00</published><updated>2021-05-13T00:00:00+09:00</updated><id>https://kyungphildev.github.io/computer-architecture/pipeline1</id><content type="html" xml:base="https://kyungphildev.github.io/computer-architecture/pipeline1/">&lt;hr /&gt;
+
+&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 위해서는&lt;br /&gt;
+&lt;strong&gt;Single-Cycle과 Multi-Cycle CPU&lt;/strong&gt;의 특성들을 이해하는 것이 필요합니다.&lt;/p&gt;
+
+&lt;p&gt;어떠한 특성으로 인해 Pipeline-CPU가 가장 빠르게 작동할 수 있을까요?&lt;/p&gt;
+
+&lt;h1 id=&quot;single-cycle-cpu-의-비효율성&quot;&gt;Single-Cycle CPU 의 비효율성&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Instruction 마다의 특성을 고려하지 못한 Single-Cycle-CPU&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Single-Cycle CPU 의 경우에는 새로운 Instruction이 입력되고 다음 Instruction이 입력될 때까지 &lt;strong&gt;Single cycle time&lt;/strong&gt;이 소요됩니다.
+&lt;strong&gt;하지만 여기서 모든 Instruction들이 동일한 Single Cycle Time으로 작동하기 때문에 비효율성 문제가 발생합니다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;예를 들어 JAL과 LD, 이 두가지 Instruction을 자세히 비교하여 봅시다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//TSC Manual을 기준으로 설명을 하겠습니다.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;JAL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/*
+JAL의 경우는 현재 PC의 상위 4bit와 나머지
+unsigned target offset(Immediate value) 12bit를 붙여서 NextPC 가 됩니다.
+그 후에 $2 레지스터에 PC+1(기존의 다음 PC address)를 저장합니다.
+(일종의 return address 용도로 사용하기 위함입니다.)
+*/&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;LD&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/*
+LD의 경우는 $rs 레지스터의 value와 offset(Immediate value)를
+더한 값을 메모리의 주소로하여 해당 메모리 위치에 존재하는 값을
+$rt 레지스터에 저장합니다.
+*/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;JAL&lt;/strong&gt;는 &lt;strong&gt;IF, EX, WB 3가지 단계&lt;/strong&gt;만을 필요로 합니다.&lt;br /&gt;
+&lt;strong&gt;LD&lt;/strong&gt;는 &lt;strong&gt;IF, ID, EX, MEM, WB 모든 단계&lt;/strong&gt;를 필요로 합니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;JAL&lt;/strong&gt;은 IF 단계를 거쳐, 레지스터를 읽어오는 ID 단계가 필요 없이 EX 단계에서 target address를 계산하고 그 후에 WB 단계에서 $2 레지스터에 PC값을 저장합니다.&lt;/p&gt;
+
+&lt;p&gt;반면에 &lt;strong&gt;LD&lt;/strong&gt;는 IF, ID(레지스터로부터 read), EX(메모리 target address 계산), MEM(해당 위치의 메모리 read), WB(읽어온 값 저장)을 수행합니다.&lt;/p&gt;
+
+&lt;p&gt;JAL과 LD는 모두 하나의 instruction을 수행하며 &lt;strong&gt;Single Cycle Time&lt;/strong&gt;을 필요로 합니다.&lt;br /&gt;
+그러나, JAL은 LD보다 더 적은 단계들을 거쳐 더욱 빠르게 Instruction을 수행할 수가 있었습니다.
+하지만, Single-Cycle CPU는 &lt;strong&gt;가장 오랜 시간이 소요되는 Instruction을 기준&lt;/strong&gt;으로&lt;br /&gt;
+작동하여야 모든 Instruction을 Single-Cycle 동안 수행할 수가 있기 때문에 이러한 비효율성 문제가 발생합니다.&lt;/p&gt;
+
+&lt;h1 id=&quot;single-cycle-cpu를-개선한-multi-cycle-cpu&quot;&gt;Single-Cycle-CPU를 개선한 Multi-Cycle CPU&lt;/h1&gt;
+
+&lt;p&gt;위와 같은 Single-Cycle-CPU의 문제점을 개선하여 Design 한 것이 Multi-Cycle-CPU 입니다.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/118086618-3ad4f780-b3ff-11eb-803f-2a5c7db53828.png&quot; width=&quot;600&quot; /&gt;&lt;br /&gt;Feature1. Single Cycle vs Multi Cycle
+&lt;/p&gt;
+&lt;p&gt;두가지 모두 4개의 Instruction을 실행하였지만, Multi-Cycle CPU가 확연하게 더 빠르게 수행하였음을 확인할 수가 있습니다.
+그 이유는 Multi-Cycle-CPU는 cycle time을 아주 작게 설정하였기 때문입니다. 각 Instruction의 특성에 맞게
+필요한 만큼의 Cycle 동안 작동하기 때문에 Single-Cycle의 비효율성 문제를 개선할 수가 있습니다.&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/118087617-c56a2680-b400-11eb-8e40-228ecfcc457b.png&quot; width=&quot;600&quot; /&gt;&lt;br /&gt;Feature1. FSM Multi Cycle
+&lt;/p&gt;
+&lt;p&gt;Multi-Cycle CPU는 &lt;strong&gt;Mealy Finite State Machine&lt;/strong&gt;으로 구현할 수가 있습니다.
+각 State는 1 cycle time을 필요로 하고, FSM는 &lt;strong&gt;Instruction의 특성에 맞게 필요없는 Stage는 Skip&lt;/strong&gt;하며
+작동하기 때문에 더욱 효율적인 Instruction 수행이 가능합니다.&lt;/p&gt;
+
+&lt;h1 id=&quot;multi-cycle-cpu를-개선한-pipeline-cpu&quot;&gt;Multi-Cycle-CPU를 개선한 Pipeline-CPU&lt;/h1&gt;
+
+&lt;p&gt;Multi-Cycle-CPU를 더 개선할 수는 없을까요?&lt;/p&gt;
+
+&lt;p&gt;Multi-Cycle-CPU는 Instruction 들의 특성에 맞는 &lt;strong&gt;시간&lt;/strong&gt;의 효율성에 초점을 두었습니다.
+Pipeline-CPU는 &lt;strong&gt;시간&lt;/strong&gt;뿐만아니라 &lt;strong&gt;resource&lt;/strong&gt;의 효율성 또한 고려한 것 입니다.&lt;/p&gt;
+
+&lt;p&gt;Multi-Cycle-CPU에서 ADD Instruction이 EX단계에서 구현되고 있다고 생각해봅시다.
+EX를 제외한 IF, ID, MEM, WB에서 사용되는 레지스터와 메모리 등 여러 resource들은 모두 작동하지 않고 멈춰있는 상황입니다.&lt;/p&gt;
+
+&lt;p&gt;Pipeline-CPU는 &lt;strong&gt;resource들을 쉴틈없이 계속해서&lt;/strong&gt; 작동하도록 구현한 것 입니다.
+그렇기 때문에 같은 시간동안 모든 자원들을 최대한으로 사용하기 때문에 더 많은 Instruction들을 수행할 수가 있습니다.&lt;/p&gt;
+
+&lt;p&gt;하지만 여기서 Pipeline-CPU에서 가장 머리아픈 &lt;strong&gt;Hazard&lt;/strong&gt; 문제가 발생합니다.&lt;br /&gt;
+빠르기만 하고 Instruction의 결과가 모두 순엉터리라면 도움이 안되는 CPU이기 때문입니다.
+Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니다.&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="Computer-Architecture" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html"></summary></entry><entry><title type="html">React Study(1) 정리</title><link href="https://kyungphildev.github.io/react/ReactStudy1/" rel="alternate" type="text/html" title="React Study(1) 정리" /><published>2021-05-12T00:00:00+09:00</published><updated>2021-05-12T00:00:00+09:00</updated><id>https://kyungphildev.github.io/react/ReactStudy1</id><content type="html" xml:base="https://kyungphildev.github.io/react/ReactStudy1/">&lt;h3 id=&quot;component-driven-user-interfaces&quot;&gt;Component-Driven User Interfaces&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;A Client-side JavaScript library&lt;/li&gt;
@@ -28,11 +106,9 @@
   &lt;li&gt;reactive components consited of HTML and JavaScript (and CSS)&lt;/li&gt;
   &lt;li&gt;Define the desired target state&lt;/li&gt;
   &lt;li&gt;let React figure out the actual JAvaScript Dom instructions&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="React" /><category term="JS" /><category term="Web Framework" /><summary type="html">Component-Driven User Interfaces</summary></entry><entry><title type="html">Pipeline CPU- Data Hazard</title><link href="https://kyungphildev.github.io/category/Piepeline-CPU/" rel="alternate" type="text/html" title="Pipeline CPU- Data Hazard" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/Piepeline%20CPU</id><content type="html" xml:base="https://kyungphildev.github.io/category/Piepeline-CPU/">&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.&lt;br /&gt;
-Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.&lt;/p&gt;
+&lt;/ul&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="React" /><category term="React" /><category term="JS" /><category term="Web Framework" /><summary type="html">Component-Driven User Interfaces</summary></entry><entry><title type="html">Pipeline CPU(2)- Data Hazard</title><link href="https://kyungphildev.github.io/computer-architecture/DataHazard/" rel="alternate" type="text/html" title="Pipeline CPU(2)- Data Hazard" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/computer-architecture/DataHazard</id><content type="html" xml:base="https://kyungphildev.github.io/computer-architecture/DataHazard/">&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.&lt;/p&gt;
 
-&lt;p&gt;어떠한 특성들 때문에 이러한 효율이 가능한 것일까요?&lt;br /&gt;
-그리고 구현 상에 어떠한 점을 주의해야 할까요?&lt;/p&gt;
+&lt;p&gt;어떠한 특성들로 인해 Pipeline이 가장 빠르게 작동이 가능한 것일까요?&lt;/p&gt;
 
 &lt;h3 id=&quot;세가지-주요-사항&quot;&gt;세가지 주요 사항&lt;/h3&gt;
 
@@ -145,4 +221,4 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 &lt;strong&gt;�
 
 &lt;p align=&quot;center&quot;&gt;
   &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature3. Pipeline CPU design(Data Forwarding)
-&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다. Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.</summary></entry></feed>
+&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="Computer-Architecture" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.</summary></entry></feed>

@@ -1,0 +1,551 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Pipeline CPU(1)  Single_Cycle_CPU VS Multi_Cycle_CPU - KyungPhil Dev</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="KyungPhil Park">
+  
+  <meta property="article:author" content="KyungPhil Park">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="KyungPhil Dev">
+<meta property="og:title" content="Pipeline CPU(1)  Single_Cycle_CPU VS Multi_Cycle_CPU">
+<meta property="og:url" content="https://kyungphildev.github.io/computer-architecture/pipeline1/">
+
+
+  <meta property="og:description" content="">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-05-13T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://kyungphildev.github.io/computer-architecture/pipeline1/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "KyungPhil Park",
+      "url": "https://kyungphildev.github.io/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="KyungPhil Dev Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--posts">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          매일 꾸준하게
+          <span class="site-subtitle">Everything about Computer Science!</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">컴퓨터 구조 <br> (Computer Architecture)</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/computer-architecture/pipeline1">Pipeline CPU(1) <br> Single-Cycle vs Multi-Cycle CPU</a></li>
+          
+            <li><a href="/computer-architecture/datahazard">Pipeline CPU(2) - Data Hazard</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">React Study</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/react/ReactStudy1">React 주요개념</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+
+    
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Pipeline CPU(1) <br> Single_Cycle_CPU VS Multi_Cycle_CPU</h1>
+    
+    <hr />
+
+<p>Pipeline CPU를 design &amp; implement 하기 위해서는<br />
+<strong>Single-Cycle과 Multi-Cycle CPU</strong>의 특성들을 이해하는 것이 필요합니다.</p>
+
+<p>어떠한 특성으로 인해 Pipeline-CPU가 가장 빠르게 작동할 수 있을까요?</p>
+
+<h1 id="single-cycle-cpu-의-비효율성">Single-Cycle CPU 의 비효율성</h1>
+
+<ul>
+  <li>Instruction 마다의 특성을 고려하지 못한 Single-Cycle-CPU</li>
+</ul>
+
+<p>Single-Cycle CPU 의 경우에는 새로운 Instruction이 입력되고 다음 Instruction이 입력될 때까지 <strong>Single cycle time</strong>이 소요됩니다.
+<strong>하지만 여기서 모든 Instruction들이 동일한 Single Cycle Time으로 작동하기 때문에 비효율성 문제가 발생합니다.</strong></p>
+
+<p>예를 들어 JAL과 LD, 이 두가지 Instruction을 자세히 비교하여 봅시다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//TSC Manual을 기준으로 설명을 하겠습니다.</span>
+<span class="n">JAL</span> <span class="n">target</span>
+<span class="cm">/*
+JAL의 경우는 현재 PC의 상위 4bit와 나머지
+unsigned target offset(Immediate value) 12bit를 붙여서 NextPC 가 됩니다.
+그 후에 $2 레지스터에 PC+1(기존의 다음 PC address)를 저장합니다.
+(일종의 return address 용도로 사용하기 위함입니다.)
+*/</span>
+<span class="n">LD</span>  <span class="err">$</span><span class="n">rt</span><span class="p">,</span> <span class="err">$</span><span class="n">rs</span><span class="p">,</span> <span class="n">offset</span>
+<span class="cm">/*
+LD의 경우는 $rs 레지스터의 value와 offset(Immediate value)를
+더한 값을 메모리의 주소로하여 해당 메모리 위치에 존재하는 값을
+$rt 레지스터에 저장합니다.
+*/</span>
+</code></pre></div></div>
+
+<p><strong>JAL</strong>는 <strong>IF, EX, WB 3가지 단계</strong>만을 필요로 합니다.<br />
+<strong>LD</strong>는 <strong>IF, ID, EX, MEM, WB 모든 단계</strong>를 필요로 합니다.</p>
+
+<p><strong>JAL</strong>은 IF 단계를 거쳐, 레지스터를 읽어오는 ID 단계가 필요 없이 EX 단계에서 target address를 계산하고 그 후에 WB 단계에서 $2 레지스터에 PC값을 저장합니다.</p>
+
+<p>반면에 <strong>LD</strong>는 IF, ID(레지스터로부터 read), EX(메모리 target address 계산), MEM(해당 위치의 메모리 read), WB(읽어온 값 저장)을 수행합니다.</p>
+
+<p>JAL과 LD는 모두 하나의 instruction을 수행하며 <strong>Single Cycle Time</strong>을 필요로 합니다.<br />
+그러나, JAL은 LD보다 더 적은 단계들을 거쳐 더욱 빠르게 Instruction을 수행할 수가 있었습니다.
+하지만, Single-Cycle CPU는 <strong>가장 오랜 시간이 소요되는 Instruction을 기준</strong>으로<br />
+작동하여야 모든 Instruction을 Single-Cycle 동안 수행할 수가 있기 때문에 이러한 비효율성 문제가 발생합니다.</p>
+
+<h1 id="single-cycle-cpu를-개선한-multi-cycle-cpu">Single-Cycle-CPU를 개선한 Multi-Cycle CPU</h1>
+
+<p>위와 같은 Single-Cycle-CPU의 문제점을 개선하여 Design 한 것이 Multi-Cycle-CPU 입니다.</p>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/118086618-3ad4f780-b3ff-11eb-803f-2a5c7db53828.png" width="600" /><br />Feature1. Single Cycle vs Multi Cycle
+</p>
+<p>두가지 모두 4개의 Instruction을 실행하였지만, Multi-Cycle CPU가 확연하게 더 빠르게 수행하였음을 확인할 수가 있습니다.
+그 이유는 Multi-Cycle-CPU는 cycle time을 아주 작게 설정하였기 때문입니다. 각 Instruction의 특성에 맞게
+필요한 만큼의 Cycle 동안 작동하기 때문에 Single-Cycle의 비효율성 문제를 개선할 수가 있습니다.</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/118087617-c56a2680-b400-11eb-8e40-228ecfcc457b.png" width="600" /><br />Feature1. FSM Multi Cycle
+</p>
+<p>Multi-Cycle CPU는 <strong>Mealy Finite State Machine</strong>으로 구현할 수가 있습니다.
+각 State는 1 cycle time을 필요로 하고, FSM는 <strong>Instruction의 특성에 맞게 필요없는 Stage는 Skip</strong>하며
+작동하기 때문에 더욱 효율적인 Instruction 수행이 가능합니다.</p>
+
+<h1 id="multi-cycle-cpu를-개선한-pipeline-cpu">Multi-Cycle-CPU를 개선한 Pipeline-CPU</h1>
+
+<p>Multi-Cycle-CPU를 더 개선할 수는 없을까요?</p>
+
+<p>Multi-Cycle-CPU는 Instruction 들의 특성에 맞는 <strong>시간</strong>의 효율성에 초점을 두었습니다.
+Pipeline-CPU는 <strong>시간</strong>뿐만아니라 <strong>resource</strong>의 효율성 또한 고려한 것 입니다.</p>
+
+<p>Multi-Cycle-CPU에서 ADD Instruction이 EX단계에서 구현되고 있다고 생각해봅시다.
+EX를 제외한 IF, ID, MEM, WB에서 사용되는 레지스터와 메모리 등 여러 resource들은 모두 작동하지 않고 멈춰있는 상황입니다.</p>
+
+<p>Pipeline-CPU는 <strong>resource들을 쉴틈없이 계속해서</strong> 작동하도록 구현한 것 입니다.
+그렇기 때문에 같은 시간동안 모든 자원들을 최대한으로 사용하기 때문에 더 많은 Instruction들을 수행할 수가 있습니다.</p>
+
+<p>하지만 여기서 Pipeline-CPU에서 가장 머리아픈 <strong>Hazard</strong> 문제가 발생합니다.<br />
+빠르기만 하고 Instruction의 결과가 모두 순엉터리라면 도움이 안되는 CPU이기 때문입니다.
+Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니다.</p>
+
+
+<!-- <ul class="taxonomy__index">
+  
+  
+    <li>
+      <a href="#2021">
+        <strong>2021</strong> <span class="taxonomy__count">3</span>
+      </a>
+    </li>
+  
+</ul> -->
+
+
+
+
+  <section 
+    id="2021"
+    class="taxonomy__section"
+  >
+    <hr>
+    <hr>
+    <h2 class="archive__subtitle">2021 의 게시글</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/pipeline1/" rel="permalink">Pipeline CPU(1) <br /> Single_Cycle_CPU VS Multi_Cycle_CPU
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-05-13T00:00:00+09:00">May 13, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/react/ReactStudy1/" rel="permalink">React Study(1) 정리
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-05-12T00:00:00+09:00">May 12, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Component-Driven User Interfaces
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/DataHazard/" rel="permalink">Pipeline CPU(2)- Data Hazard
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-04-27T00:00:00+09:00">April 27, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">맨 위로 이동 &uarr;</a>
+  </section>
+  
+  <!-- Utterances comment -->
+<section>
+  <script src="https://utteranc.es/client.js"
+  repo="kyungphildev/kyungphildev.github.io"
+  issue-term="pathname"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+  </script>
+</section>
+  
+  <!--  -->
+  
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="검색어를 입력하세요..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/kyungphildev" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 KyungPhil Park. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'kyungphildev/kyungphildev.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -241,4 +241,5 @@ defaults:
     values:
       show_date: true
       comemnts: true
-
+      sidebar:
+        nav: "docs"
