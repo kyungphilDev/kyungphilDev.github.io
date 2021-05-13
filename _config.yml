@@ -240,5 +240,4 @@ defaults:
       type: posts
     values:
       show_date: true
-      comments: true
 
