@@ -1,0 +1,32 @@
+I"�<h3 id="component-driven-user-interfaces">Component-Driven User Interfaces</h3>
+
+<ul>
+  <li>A Client-side JavaScript library</li>
+  <li>
+    <p>All aobut building modern, reactive user interfaces for the web</p>
+  </li>
+  <li>Building Single-Page-Applications (SPAs)</li>
+</ul>
+
+<h3 id="배워야할-개념들">배워야할 개념들</h3>
+
+<ul>
+  <li>Components &amp; Building UIs</li>
+  <li>Working with Events &amp; Data: “props” and “state”</li>
+  <li>Styling React Apps &amp; Components</li>
+  <li>React Hooks</li>
+  <li>React Redux</li>
+  <li>Http Requests &amp; Custom Hooks</li>
+  <li>Routing, Deployment, NextJS &amp; etc</li>
+</ul>
+
+<h3 id="component">Component</h3>
+
+<ul>
+  <li>functional programming의 개념</li>
+  <li>Reusability</li>
+  <li>reactive components consited of HTML and JavaScript (and CSS)</li>
+  <li>Define the desired target state</li>
+  <li>let React figure out the actual JAvaScript Dom instructions</li>
+</ul>
+:ET

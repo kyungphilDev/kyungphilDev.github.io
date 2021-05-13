@@ -11,9 +11,9 @@ var store = [{
         "url": "/category/Piepeline-CPU/",
         "teaser": null
       },{
-        "title": "Pipeline CPU- Data Hazard",
-        "excerpt":" ","categories": ["category"],
-        "tags": ["computer architecture","computer science","pipeline","cpu"],
-        "url": "/category/Pipelien/",
+        "title": "React Study(1) 정리",
+        "excerpt":"Component-Driven User Interfaces A Client-side JavaScript library All aobut building modern, reactive user interfaces for the web Building Single-Page-Applications (SPAs) 배워야할 개념들 Components &amp; Building UIs Working with Events &amp; Data: “props” and “state” Styling React Apps &amp; Components React Hooks React Redux Http Requests &amp; Custom Hooks Routing, Deployment,...","categories": ["category"],
+        "tags": ["React","JS","Web Framework"],
+        "url": "/category/React-Study/",
         "teaser": null
       }]

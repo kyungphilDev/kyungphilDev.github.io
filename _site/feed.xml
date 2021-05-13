@@ -1,4 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-05-03T09:29:21+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">Pipeline CPU- Data Hazard</title><link href="https://kyungphildev.github.io/category/Pipelien/" rel="alternate" type="text/html" title="Pipeline CPU- Data Hazard" /><published>2021-04-29T00:00:00+09:00</published><updated>2021-04-29T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/Pipelien</id><content type="html" xml:base="https://kyungphildev.github.io/category/Pipelien/"></content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html"></summary></entry><entry><title type="html">Pipeline CPU- Data Hazard</title><link href="https://kyungphildev.github.io/category/Piepeline-CPU/" rel="alternate" type="text/html" title="Pipeline CPU- Data Hazard" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/Piepeline%20CPU</id><content type="html" xml:base="https://kyungphildev.github.io/category/Piepeline-CPU/">&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.&lt;br /&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-05-13T12:56:32+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">React Study(1) 정리</title><link href="https://kyungphildev.github.io/category/React-Study/" rel="alternate" type="text/html" title="React Study(1) 정리" /><published>2021-05-12T00:00:00+09:00</published><updated>2021-05-12T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/React%20Study</id><content type="html" xml:base="https://kyungphildev.github.io/category/React-Study/">&lt;h3 id=&quot;component-driven-user-interfaces&quot;&gt;Component-Driven User Interfaces&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A Client-side JavaScript library&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;All aobut building modern, reactive user interfaces for the web&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Building Single-Page-Applications (SPAs)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;배워야할-개념들&quot;&gt;배워야할 개념들&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Components &amp;amp; Building UIs&lt;/li&gt;
+  &lt;li&gt;Working with Events &amp;amp; Data: “props” and “state”&lt;/li&gt;
+  &lt;li&gt;Styling React Apps &amp;amp; Components&lt;/li&gt;
+  &lt;li&gt;React Hooks&lt;/li&gt;
+  &lt;li&gt;React Redux&lt;/li&gt;
+  &lt;li&gt;Http Requests &amp;amp; Custom Hooks&lt;/li&gt;
+  &lt;li&gt;Routing, Deployment, NextJS &amp;amp; etc&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;component&quot;&gt;Component&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;functional programming의 개념&lt;/li&gt;
+  &lt;li&gt;Reusability&lt;/li&gt;
+  &lt;li&gt;reactive components consited of HTML and JavaScript (and CSS)&lt;/li&gt;
+  &lt;li&gt;Define the desired target state&lt;/li&gt;
+  &lt;li&gt;let React figure out the actual JAvaScript Dom instructions&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="category" /><category term="React" /><category term="JS" /><category term="Web Framework" /><summary type="html">Component-Driven User Interfaces</summary></entry><entry><title type="html">Pipeline CPU- Data Hazard</title><link href="https://kyungphildev.github.io/category/Piepeline-CPU/" rel="alternate" type="text/html" title="Pipeline CPU- Data Hazard" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/category/Piepeline%20CPU</id><content type="html" xml:base="https://kyungphildev.github.io/category/Piepeline-CPU/">&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.&lt;br /&gt;
 Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해서 같은 cycle 시간 동안 더 많은 instruction을 수행할 수 있습니다.&lt;/p&gt;
 
 &lt;p&gt;어떠한 특성들 때문에 이러한 효율이 가능한 것일까요?&lt;br /&gt;

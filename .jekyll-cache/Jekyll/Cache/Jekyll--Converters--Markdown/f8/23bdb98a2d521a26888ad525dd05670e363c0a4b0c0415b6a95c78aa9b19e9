@@ -1,4 +1,4 @@
-I"�
+I"�	
 <h2 id="2021" class="archive__subtitle">2021</h2>
 
 <div class="list__item">
@@ -6,14 +6,29 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/category/Pipelien/" rel="permalink">Pipeline CPU- Data Hazard
+        <a href="/category/React-Study/" rel="permalink">React Study(1) 정리
 </a>
       
     </h2>
     
 
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-05-12T00:00:00+09:00">May 12, 2021</time>
+      </span>
+    
 
-    <p class="archive__item-excerpt" itemprop="description">
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Component-Driven User Interfaces
 </p>
   </article>
 </div>
@@ -28,6 +43,21 @@
       
     </h2>
     
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-04-27T00:00:00+09:00">April 27, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
 
 
     <p class="archive__item-excerpt" itemprop="description">Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.
@@ -47,6 +77,21 @@ Pipeline CPU는 이전에 배웠던 Single-cycle CPU, Multi-cycle CPU 에 비해
       
     </h2>
     
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2015-04-19T04:25:52+09:00">April 19, 2015</time>
+      </span>
+    
+
+    
+
+    
+  </p>
 
 
     <p class="archive__item-excerpt" itemprop="description">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...</p>
