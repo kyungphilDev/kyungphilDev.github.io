@@ -3,7 +3,16 @@ layout: posts
 title: Pipeline CPU(2)- Data Hazard
 comments: true
 category: Computer-Architecture
-tags: [computer architecture, computer science, pipeline, cpu]
+tags:
+  [
+    computer architecture,
+    computer science,
+    pipeline,
+    cpu,
+    RAW Hazrd,
+    Branch Prediction,
+    2-bit global,
+  ]
 ---
 
 Pipeline CPU를 design & implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.
