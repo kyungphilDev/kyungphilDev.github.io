@@ -5,8 +5,8 @@
     <description>Computer Science Dept</description>
     <link>https://kyungphildev.github.io/</link>
     <atom:link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 May 2021 11:34:54 +0900</pubDate>
-    <lastBuildDate>Thu, 27 May 2021 11:34:54 +0900</lastBuildDate>
+    <pubDate>Thu, 27 May 2021 11:45:39 +0900</pubDate>
+    <lastBuildDate>Thu, 27 May 2021 11:45:39 +0900</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -92,8 +92,8 @@ EX를 제외한 IF, ID, MEM, WB에서 사용되는 레지스터와 메모리 등
 Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니다.&lt;/p&gt;
 </description>
         <pubDate>Thu, 13 May 2021 00:00:00 +0900</pubDate>
-        <link>https://kyungphildev.github.io/computer-architecture/pipeline1/</link>
-        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/pipeline1/</guid>
+        <link>https://kyungphildev.github.io/computer-architecture/pipeline-1/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/pipeline-1/</guid>
         
         <category>computer architecture</category>
         
@@ -151,8 +151,8 @@ Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니�
 &lt;/ul&gt;
 </description>
         <pubDate>Wed, 12 May 2021 00:00:00 +0900</pubDate>
-        <link>https://kyungphildev.github.io/react/reactstudy1/</link>
-        <guid isPermaLink="true">https://kyungphildev.github.io/react/reactstudy1/</guid>
+        <link>https://kyungphildev.github.io/react/react-study-1/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/react/react-study-1/</guid>
         
         <category>React</category>
         
@@ -285,8 +285,8 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 &lt;strong&gt;�
 &lt;/p&gt;
 </description>
         <pubDate>Tue, 27 Apr 2021 00:00:00 +0900</pubDate>
-        <link>https://kyungphildev.github.io/computer-architecture/datahazard/</link>
-        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/datahazard/</guid>
+        <link>https://kyungphildev.github.io/computer-architecture/data-hazard/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/data-hazard/</guid>
         
         <category>computer architecture</category>
         
