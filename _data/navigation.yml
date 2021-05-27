@@ -12,8 +12,6 @@ docs:
         url: /computer-architecture/pipeline-1/
       - title: Pipeline CPU(2) - Data Hazard
         url: /computer-architecture/data-hazard/
-      - title: test
-        url: /tags/
     # url: /categories/
   - title: "React Study"
     children:
