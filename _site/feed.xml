@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kyungphildev.github.io/" rel="alternate" type="text/html" /><updated>2021-05-13T16:19:02+09:00</updated><id>https://kyungphildev.github.io/feed.xml</id><title type="html">KyungPhil Dev</title><subtitle>Computer Science Dept</subtitle><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><entry><title type="html">Pipeline CPU(1) Single_Cycle_CPU VS Multi_Cycle_CPU</title><link href="https://kyungphildev.github.io/computer-architecture/pipeline1/" rel="alternate" type="text/html" title="Pipeline CPU(1) Single_Cycle_CPU VS Multi_Cycle_CPU" /><published>2021-05-13T00:00:00+09:00</published><updated>2021-05-13T00:00:00+09:00</updated><id>https://kyungphildev.github.io/computer-architecture/pipeline1</id><content type="html" xml:base="https://kyungphildev.github.io/computer-architecture/pipeline1/">&lt;hr /&gt;
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>KyungPhil Dev</title>
+    <description>Computer Science Dept</description>
+    <link>https://kyungphildev.github.io/</link>
+    <atom:link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 27 May 2021 11:13:03 +0900</pubDate>
+    <lastBuildDate>Thu, 27 May 2021 11:13:03 +0900</lastBuildDate>
+    <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Pipeline CPU(1) &lt;br&gt; Single_Cycle_CPU VS Multi_Cycle_CPU</title>
+        <description>&lt;hr /&gt;
 
 &lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 위해서는&lt;br /&gt;
 &lt;strong&gt;Single-Cycle과 Multi-Cycle CPU&lt;/strong&gt;의 특성들을 이해하는 것이 필요합니다.&lt;/p&gt;
@@ -76,7 +89,36 @@ EX를 제외한 IF, ID, MEM, WB에서 사용되는 레지스터와 메모리 등
 
 &lt;p&gt;하지만 여기서 Pipeline-CPU에서 가장 머리아픈 &lt;strong&gt;Hazard&lt;/strong&gt; 문제가 발생합니다.&lt;br /&gt;
 빠르기만 하고 Instruction의 결과가 모두 순엉터리라면 도움이 안되는 CPU이기 때문입니다.
-Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니다.&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="Computer-Architecture" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html"></summary></entry><entry><title type="html">React Study(1) 정리</title><link href="https://kyungphildev.github.io/react/ReactStudy1/" rel="alternate" type="text/html" title="React Study(1) 정리" /><published>2021-05-12T00:00:00+09:00</published><updated>2021-05-12T00:00:00+09:00</updated><id>https://kyungphildev.github.io/react/ReactStudy1</id><content type="html" xml:base="https://kyungphildev.github.io/react/ReactStudy1/">&lt;h3 id=&quot;component-driven-user-interfaces&quot;&gt;Component-Driven User Interfaces&lt;/h3&gt;
+Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니다.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 13 May 2021 00:00:00 +0900</pubDate>
+        <link>https://kyungphildev.github.io/computer-architecture/pipeline1/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/pipeline1/</guid>
+        
+        <category>computer architecture</category>
+        
+        <category>computer science</category>
+        
+        <category>single cycle</category>
+        
+        <category>single cycle cpu</category>
+        
+        <category>multi cycle</category>
+        
+        <category>multi cycle cpu</category>
+        
+        <category>pipeline</category>
+        
+        <category>cpu</category>
+        
+        
+        <category>Computer-Architecture</category>
+        
+      </item>
+    
+      <item>
+        <title>React Study(1) 정리</title>
+        <description>&lt;h3 id=&quot;component-driven-user-interfaces&quot;&gt;Component-Driven User Interfaces&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;A Client-side JavaScript library&lt;/li&gt;
@@ -106,7 +148,26 @@ Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니�
   &lt;li&gt;reactive components consited of HTML and JavaScript (and CSS)&lt;/li&gt;
   &lt;li&gt;Define the desired target state&lt;/li&gt;
   &lt;li&gt;let React figure out the actual JAvaScript Dom instructions&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="React" /><category term="React" /><category term="JS" /><category term="Web Framework" /><summary type="html">Component-Driven User Interfaces</summary></entry><entry><title type="html">Pipeline CPU(2)- Data Hazard</title><link href="https://kyungphildev.github.io/computer-architecture/DataHazard/" rel="alternate" type="text/html" title="Pipeline CPU(2)- Data Hazard" /><published>2021-04-27T00:00:00+09:00</published><updated>2021-04-27T00:00:00+09:00</updated><id>https://kyungphildev.github.io/computer-architecture/DataHazard</id><content type="html" xml:base="https://kyungphildev.github.io/computer-architecture/DataHazard/">&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.&lt;/p&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 12 May 2021 00:00:00 +0900</pubDate>
+        <link>https://kyungphildev.github.io/react/ReactStudy1/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/react/ReactStudy1/</guid>
+        
+        <category>React</category>
+        
+        <category>JS</category>
+        
+        <category>Web Framework</category>
+        
+        
+        <category>React</category>
+        
+      </item>
+    
+      <item>
+        <title>Pipeline CPU(2)- Data Hazard</title>
+        <description>&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.&lt;/p&gt;
 
 &lt;p&gt;어떠한 특성들로 인해 Pipeline이 가장 빠르게 작동이 가능한 것일까요?&lt;/p&gt;
 
@@ -221,4 +282,30 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 &lt;strong&gt;�
 
 &lt;p align=&quot;center&quot;&gt;
   &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature3. Pipeline CPU design(Data Forwarding)
-&lt;/p&gt;</content><author><name>KyungPhil Park</name><email>phill0114@postech.ac.kr</email></author><category term="Computer-Architecture" /><category term="computer architecture" /><category term="computer science" /><category term="pipeline" /><category term="cpu" /><summary type="html">Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.</summary></entry></feed>
+&lt;/p&gt;
+</description>
+        <pubDate>Tue, 27 Apr 2021 00:00:00 +0900</pubDate>
+        <link>https://kyungphildev.github.io/computer-architecture/DataHazard/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/DataHazard/</guid>
+        
+        <category>computer architecture</category>
+        
+        <category>computer science</category>
+        
+        <category>pipeline</category>
+        
+        <category>cpu</category>
+        
+        <category>RAW Hazrd</category>
+        
+        <category>Branch Prediction</category>
+        
+        <category>2-bit global</category>
+        
+        
+        <category>Computer-Architecture</category>
+        
+      </item>
+    
+  </channel>
+</rss>
