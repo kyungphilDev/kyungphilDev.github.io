@@ -2,13 +2,13 @@ var store = [{
         "title": "Pipeline CPU(2)- Data Hazard",
         "excerpt":"Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다. 어떠한 특성들로 인해 Pipeline이 가장 빠르게 작동이 가능한 것일까요? 세가지 주요 사항 Data Hazard Control Hazard Branch Prediction 이번 Post에서는 위의 세가지 주요 특징들 중에서도 1. Data Hazard 를 해결하는 방법에 대해 구체적으로 알아 봅니다. RAW Hazard...","categories": ["Computer-Architecture"],
         "tags": ["computer architecture","computer science","pipeline","cpu","RAW Hazrd","Branch Prediction","2-bit global"],
-        "url": "/computer-architecture/dataHazard/",
+        "url": "/computer-architecture/datahazard/",
         "teaser": null
       },{
         "title": "React Study(1) 정리",
         "excerpt":"Component-Driven User Interfaces A Client-side JavaScript library All aobut building modern, reactive user interfaces for the web Building Single-Page-Applications (SPAs) 배워야할 개념들 Components &amp; Building UIs Working with Events &amp; Data: “props” and “state” Styling React Apps &amp; Components React Hooks React Redux Http Requests &amp; Custom Hooks Routing, Deployment,...","categories": ["React"],
         "tags": ["React","JS","Web Framework"],
-        "url": "/react/ReactStudy1/",
+        "url": "/react/reactstudy1/",
         "teaser": null
       },{
         "title": "Pipeline CPU(1) <br> Single_Cycle_CPU VS Multi_Cycle_CPU",
