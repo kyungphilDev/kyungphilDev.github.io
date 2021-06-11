@@ -1,6 +1,6 @@
 ---
 layout: posts
-title: Pipeline CPU(2)- Data Hazard
+title: Pipeline CPU(3)- Data Hazard
 comments: true
 category: Computer-Architecture
 tags:
@@ -14,10 +14,6 @@ tags:
     2-bit global,
   ]
 ---
-
-Pipeline CPU를 design & implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.
-
-어떠한 특성들로 인해 Pipeline이 가장 빠르게 작동이 가능한 것일까요?
 
 ### 세가지 주요 사항
 
@@ -132,3 +128,12 @@ RAW Hazard를 고려한 Data Forwarding 구현은 다음과 같습니다.
 <p align="center">
   <img src="https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png" width="700"><br>Feature3. Pipeline CPU design(Data Forwarding)
 </p>
+
+---
+
+**Post의 참고자료와 이미지의 출처는 아래와 같습니다.**
+
+> Computer Organization and Design RISC-V edition  
+> Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.
+
+---

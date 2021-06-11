@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Pipeline CPU(2)- Data Hazard - KyungPhil Dev</title>
-<meta name="description" content="Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.">
+<!-- begin _includes/seo.html --><title>Pipeline CPU(3)- Data Hazard - KyungPhil Dev</title>
+<meta name="description" content="세가지 주요 사항">
 
 
   <meta name="author" content="KyungPhil Park">
@@ -22,11 +22,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="KyungPhil Dev">
-<meta property="og:title" content="Pipeline CPU(2)- Data Hazard">
+<meta property="og:title" content="Pipeline CPU(3)- Data Hazard">
 <meta property="og:url" content="https://kyungphildev.github.io/computer-architecture/data-hazard/">
 
 
-  <meta property="og:description" content="Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.">
+  <meta property="og:description" content="세가지 주요 사항">
 
 
 
@@ -224,13 +224,9 @@
 
   <div class="archive">
     
-      <h1 id="page-title" class="page__title">Pipeline CPU(2)- Data Hazard</h1>
+      <h1 id="page-title" class="page__title">Pipeline CPU(3)- Data Hazard</h1>
     
-    <p>Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.</p>
-
-<p>어떠한 특성들로 인해 Pipeline이 가장 빠르게 작동이 가능한 것일까요?</p>
-
-<h3 id="세가지-주요-사항">세가지 주요 사항</h3>
+    <h3 id="세가지-주요-사항">세가지 주요 사항</h3>
 
 <ol>
   <li>Data Hazard</li>
@@ -343,13 +339,24 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 <strong>메모�
   <img src="https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png" width="700" /><br />Feature3. Pipeline CPU design(Data Forwarding)
 </p>
 
+<hr />
+
+<p><strong>Post의 참고자료와 이미지의 출처는 아래와 같습니다.</strong></p>
+
+<blockquote>
+  <p>Computer Organization and Design RISC-V edition<br />
+Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.</p>
+</blockquote>
+
+<hr />
+
 
 <!-- <ul class="taxonomy__index">
   
   
     <li>
       <a href="#2021">
-        <strong>2021</strong> <span class="taxonomy__count">3</span>
+        <strong>2021</strong> <span class="taxonomy__count">4</span>
       </a>
     </li>
   
@@ -366,6 +373,44 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 <strong>메모�
     <hr>
     <h2 class="archive__subtitle">2021 의 게시글</h2>
     <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/pipeline-2/" rel="permalink">Pipeline CPU(2) Pipeline-CPU의 간략한 이해
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-06-11T00:00:00+09:00">June 11, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">앞서 Pipeline CPU를 design 해보기 위한 준비과정으로
+Single-Cycle CPU와 Multi-Cycle CPU의 특성들을 먼저 살펴보았습니다.
+</p>
+  </article>
+</div>
+
       
         
 
@@ -398,8 +443,8 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 <strong>메모�
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
-
+    <p class="archive__item-excerpt" itemprop="description">Pipeline CPU를 design &amp; implement 하기 위해서는
+Single-Cycle과 Multi-Cycle CPU의 특성들을 이해하는 것이 필요합니다.
 </p>
   </article>
 </div>
@@ -451,7 +496,7 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 <strong>메모�
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/computer-architecture/data-hazard/" rel="permalink">Pipeline CPU(2)- Data Hazard
+        <a href="/computer-architecture/data-hazard/" rel="permalink">Pipeline CPU(3)- Data Hazard
 </a>
       
     </h2>
@@ -473,7 +518,7 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 <strong>메모�
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Pipeline CPU를 design &amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.
+    <p class="archive__item-excerpt" itemprop="description">세가지 주요 사항
 </p>
   </article>
 </div>

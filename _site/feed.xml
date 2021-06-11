@@ -5,15 +5,116 @@
     <description>Computer Science Dept</description>
     <link>https://kyungphildev.github.io/</link>
     <atom:link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 May 2021 11:58:32 +0900</pubDate>
-    <lastBuildDate>Thu, 27 May 2021 11:58:32 +0900</lastBuildDate>
+    <pubDate>Fri, 11 Jun 2021 10:01:15 +0900</pubDate>
+    <lastBuildDate>Fri, 11 Jun 2021 10:01:15 +0900</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
-        <title>Pipeline CPU(1) &lt;br&gt; Single_Cycle_CPU VS Multi_Cycle_CPU</title>
-        <description>&lt;hr /&gt;
+        <title>Pipeline CPU(2) Pipeline-CPU의 간략한 이해</title>
+        <description>&lt;p&gt;앞서 Pipeline CPU를 design 해보기 위한 준비과정으로
+&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Single-Cycle CPU와 Multi-Cycle CPU의 특성&lt;/a&gt;들을 먼저 살펴보았습니다.&lt;/p&gt;
 
-&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 위해서는&lt;br /&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;pipeline-cpu의-전체적-그림&quot;&gt;Pipeline CPU의 전체적 그림&lt;/h3&gt;
+
+&lt;p&gt;Pipeline-CPU은 사실 Multi-Cycle-CPU에서 부터 출발합니다.
+하지만, 어떤 면에서 더 우월한 점이 있을까요?&lt;/p&gt;
+
+&lt;h3 id=&quot;한-번에-한-가지-일만을-수행하는-multi-cycle-cpu&quot;&gt;한 번에 한 가지 일만을 수행하는 Multi-Cycle-CPU&lt;/h3&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/121612871-47984a00-ca96-11eb-987a-bab3fc7f6bd2.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature1. Multi-Cycle-CPU overview 비유
+&lt;/p&gt;
+&lt;p&gt;옷을 빨래하는 과정을 떠올려봅시다.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;세탁기를 돌린다.&lt;/li&gt;
+  &lt;li&gt;건조기를 돌린다.&lt;/li&gt;
+  &lt;li&gt;옷을 잘 정리한다.&lt;/li&gt;
+  &lt;li&gt;옷을 옷장에 잘 정리한다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;빨래&lt;/strong&gt;라는 일을 수행하기 위해 우리는 4가지 작업을 수행해야합니다. 하지만 내가 옷을 잘 정리할 동안, 멈춰있는 세탁기와 건조기를 사용할 수 있다면 어떨까요?&lt;br /&gt;
+즉, 다시말해 한 번에 여러가지의 작업을 동시에 수행한다면 &lt;strong&gt;빨래&lt;/strong&gt;라는 일을 더 빠르게 많이 수행할수 있을 것입니다.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/121613409-592e2180-ca97-11eb-8aea-34b283cb6565.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature2. Pipelined Laundry
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Feature2&lt;/strong&gt;에서 확인할 수 있듯이, pipelining을 통해 한 번에 여러가지의 작업을 동시에
+수행할 수 있게 되었습니다. 그 결과 &lt;strong&gt;빨래&lt;/strong&gt;를 4번 수행하려면 8시간 걸리던 일이, Pipelining을 통한 구현으로 3시간 30분만에 수행할 수 있게되었습니다.&lt;/p&gt;
+
+&lt;p&gt;따라서 Pipeline을 통해서 &lt;strong&gt;Throughput&lt;/strong&gt;을 증가시키고 &lt;strong&gt;HW를 더욱 효율적&lt;/strong&gt;으로 사용이 가능합니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;overview-of-pipeline-cpu&quot;&gt;Overview of Pipeline-CPU&lt;/h3&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/121613807-4d8f2a80-ca98-11eb-9061-42b97cab8dbe.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature3. Graphical View
+&lt;/p&gt;
+&lt;p&gt;위의 &lt;strong&gt;Feature3&lt;/strong&gt;을 한 번 살펴봅시다. &lt;strong&gt;LD, SUB, ADD&lt;/strong&gt; 등의 새로운 &lt;strong&gt;Instruction이&lt;/strong&gt; &lt;strong&gt;CC시간&lt;/strong&gt; 마다 계속에서 CPU에 입력하고 있습니다. 이전의 &lt;strong&gt;Single-Cycle-CPU&lt;/strong&gt;와 &lt;strong&gt;Multi-Cycle-CPU&lt;/strong&gt; 였다면 LD Instr이 끝날때까지 다음의 SUB Instr은 대기하고 있어야만 하였습니다. 하지만 &lt;strong&gt;Pipelining을&lt;/strong&gt; 통해서 일정 간격으로 새로운 Instr을 잘 수행할 수 가 있게 되었습니다. CC5가 되는 순간에는 &lt;strong&gt;WB, MEM, EX, ID, IF&lt;/strong&gt; 의 모든 Stage가 동시에 수행되는 것을 확인할 수가 있는데요. 이처럼 이제는 CPU에 주어진 HW resource들도 모두 최대한으로 활용하는 것을 확인할 수가 있습니다.
+—&lt;/p&gt;
+
+&lt;h3 id=&quot;문제는-지금부터&quot;&gt;문제는 지금부터…&lt;/h3&gt;
+
+&lt;p&gt;그러나 매번 새롭게 들어오는 Instr을 CPU는 어떻게 각 입력의 특성에 맞게 잘 수행할 수 있을까요?
+위의 CC5 시점의 경우 동시간에 5개의 Instr이 수행되고 있습니다. 이때, EX stage는 5개의 Instr 중에 어느 것을 수행하여 ALU 계산을 해야할까요?&lt;/p&gt;
+
+&lt;p&gt;또한 만약, 앞에서 수행한 Instr의 결과를 그대로 받아와서 다음 Instr에 수행하는 경우가 있을 때,
+계산 결과가 레지스터에 저장되지 않았는데도 불구하고 계산을 하라는 명령을 CPU가 받게 되면 어떻게 될까요?&lt;/p&gt;
+
+&lt;p&gt;그렇습니다. 여기서 부터 Pipeline-CPU를 정상적으로 잘 작동시키기 위해서 무엇보다 중요한 다음의 세가지 주요 사항을 짚어 넘어가야 합니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;세가지-주요-사항&quot;&gt;세가지 주요 사항&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Data Hazard&lt;/li&gt;
+  &lt;li&gt;Control Hazard&lt;/li&gt;
+  &lt;li&gt;Branch Prediction&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;각 중요 사항들에 대해서 다음 Post에서 계속해서 알아봅시다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Post의 참고자료와 이미지의 출처는 아래와 같습니다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Computer Organization and Design RISC-V edition&lt;br /&gt;
+Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+</description>
+        <pubDate>Fri, 11 Jun 2021 00:00:00 +0900</pubDate>
+        <link>https://kyungphildev.github.io/computer-architecture/pipeline-2/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/pipeline-2/</guid>
+        
+        <category>computer architecture</category>
+        
+        <category>computer science</category>
+        
+        <category>single cycle</category>
+        
+        <category>single cycle cpu</category>
+        
+        <category>multi cycle</category>
+        
+        <category>multi cycle cpu</category>
+        
+        <category>pipeline</category>
+        
+        <category>cpu</category>
+        
+        
+        <category>Computer-Architecture</category>
+        
+      </item>
+    
+      <item>
+        <title>Pipeline CPU(1) &lt;br&gt; Single_Cycle_CPU VS Multi_Cycle_CPU</title>
+        <description>&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 위해서는&lt;br /&gt;
 &lt;strong&gt;Single-Cycle과 Multi-Cycle CPU&lt;/strong&gt;의 특성들을 이해하는 것이 필요합니다.&lt;/p&gt;
 
 &lt;p&gt;어떠한 특성으로 인해 Pipeline-CPU가 가장 빠르게 작동할 수 있을까요?&lt;/p&gt;
@@ -68,7 +169,7 @@ $rt 레지스터에 저장합니다.
 그 이유는 Multi-Cycle-CPU는 cycle time을 아주 작게 설정하였기 때문입니다. 각 Instruction의 특성에 맞게
 필요한 만큼의 Cycle 동안 작동하기 때문에 Single-Cycle의 비효율성 문제를 개선할 수가 있습니다.&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;
-  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/118087617-c56a2680-b400-11eb-8e40-228ecfcc457b.png&quot; width=&quot;600&quot; /&gt;&lt;br /&gt;Feature1. FSM Multi Cycle
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/118087617-c56a2680-b400-11eb-8e40-228ecfcc457b.png&quot; width=&quot;600&quot; /&gt;&lt;br /&gt;Feature2. FSM Multi Cycle
 &lt;/p&gt;
 &lt;p&gt;Multi-Cycle CPU는 &lt;strong&gt;Mealy Finite State Machine&lt;/strong&gt;으로 구현할 수가 있습니다.
 각 State는 1 cycle time을 필요로 하고, FSM는 &lt;strong&gt;Instruction의 특성에 맞게 필요없는 Stage는 Skip&lt;/strong&gt;하며
@@ -90,6 +191,17 @@ EX를 제외한 IF, ID, MEM, WB에서 사용되는 레지스터와 메모리 등
 &lt;p&gt;하지만 여기서 Pipeline-CPU에서 가장 머리아픈 &lt;strong&gt;Hazard&lt;/strong&gt; 문제가 발생합니다.&lt;br /&gt;
 빠르기만 하고 Instruction의 결과가 모두 순엉터리라면 도움이 안되는 CPU이기 때문입니다.
 Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Post의 참고자료와 이미지의 출처는 아래와 같습니다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Computer Organization and Design RISC-V edition&lt;br /&gt;
+Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
 </description>
         <pubDate>Thu, 13 May 2021 00:00:00 +0900</pubDate>
         <link>https://kyungphildev.github.io/computer-architecture/pipeline-1/</link>
@@ -166,12 +278,8 @@ Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니�
       </item>
     
       <item>
-        <title>Pipeline CPU(2)- Data Hazard</title>
-        <description>&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 전에, Pipeline CPU의 특성들을 먼저 충분히 이해해봅시다.&lt;/p&gt;
-
-&lt;p&gt;어떠한 특성들로 인해 Pipeline이 가장 빠르게 작동이 가능한 것일까요?&lt;/p&gt;
-
-&lt;h3 id=&quot;세가지-주요-사항&quot;&gt;세가지 주요 사항&lt;/h3&gt;
+        <title>Pipeline CPU(3)- Data Hazard</title>
+        <description>&lt;h3 id=&quot;세가지-주요-사항&quot;&gt;세가지 주요 사항&lt;/h3&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Data Hazard&lt;/li&gt;
@@ -283,6 +391,17 @@ LD instruction의 경우, ALU로 부터 계산된 값이 아닌 &lt;strong&gt;�
 &lt;p align=&quot;center&quot;&gt;
   &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature3. Pipeline CPU design(Data Forwarding)
 &lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Post의 참고자료와 이미지의 출처는 아래와 같습니다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Computer Organization and Design RISC-V edition&lt;br /&gt;
+Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
 </description>
         <pubDate>Tue, 27 Apr 2021 00:00:00 +0900</pubDate>
         <link>https://kyungphildev.github.io/computer-architecture/data-hazard/</link>

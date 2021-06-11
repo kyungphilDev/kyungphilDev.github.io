@@ -1,0 +1,89 @@
+I"�<p>Pipeline CPU를 design &amp; implement 하기 위해서는<br />
+<strong>Single-Cycle과 Multi-Cycle CPU</strong>의 특성들을 이해하는 것이 필요합니다.</p>
+
+<p>어떠한 특성으로 인해 Pipeline-CPU가 가장 빠르게 작동할 수 있을까요?</p>
+
+<h1 id="single-cycle-cpu-의-비효율성">Single-Cycle CPU 의 비효율성</h1>
+
+<ul>
+  <li>Instruction 마다의 특성을 고려하지 못한 Single-Cycle-CPU</li>
+</ul>
+
+<p>Single-Cycle CPU 의 경우에는 새로운 Instruction이 입력되고 다음 Instruction이 입력될 때까지 <strong>Single cycle time</strong>이 소요됩니다.
+<strong>하지만 여기서 모든 Instruction들이 동일한 Single Cycle Time으로 작동하기 때문에 비효율성 문제가 발생합니다.</strong></p>
+
+<p>예를 들어 JAL과 LD, 이 두가지 Instruction을 자세히 비교하여 봅시다.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//TSC Manual을 기준으로 설명을 하겠습니다.</span>
+<span class="n">JAL</span> <span class="n">target</span>
+<span class="cm">/*
+JAL의 경우는 현재 PC의 상위 4bit와 나머지
+unsigned target offset(Immediate value) 12bit를 붙여서 NextPC 가 됩니다.
+그 후에 $2 레지스터에 PC+1(기존의 다음 PC address)를 저장합니다.
+(일종의 return address 용도로 사용하기 위함입니다.)
+*/</span>
+<span class="n">LD</span>  <span class="err">$</span><span class="n">rt</span><span class="p">,</span> <span class="err">$</span><span class="n">rs</span><span class="p">,</span> <span class="n">offset</span>
+<span class="cm">/*
+LD의 경우는 $rs 레지스터의 value와 offset(Immediate value)를
+더한 값을 메모리의 주소로하여 해당 메모리 위치에 존재하는 값을
+$rt 레지스터에 저장합니다.
+*/</span>
+</code></pre></div></div>
+
+<p><strong>JAL</strong>는 <strong>IF, EX, WB 3가지 단계</strong>만을 필요로 합니다.<br />
+<strong>LD</strong>는 <strong>IF, ID, EX, MEM, WB 모든 단계</strong>를 필요로 합니다.</p>
+
+<p><strong>JAL</strong>은 IF 단계를 거쳐, 레지스터를 읽어오는 ID 단계가 필요 없이 EX 단계에서 target address를 계산하고 그 후에 WB 단계에서 $2 레지스터에 PC값을 저장합니다.</p>
+
+<p>반면에 <strong>LD</strong>는 IF, ID(레지스터로부터 read), EX(메모리 target address 계산), MEM(해당 위치의 메모리 read), WB(읽어온 값 저장)을 수행합니다.</p>
+
+<p>JAL과 LD는 모두 하나의 instruction을 수행하며 <strong>Single Cycle Time</strong>을 필요로 합니다.<br />
+그러나, JAL은 LD보다 더 적은 단계들을 거쳐 더욱 빠르게 Instruction을 수행할 수가 있었습니다.
+하지만, Single-Cycle CPU는 <strong>가장 오랜 시간이 소요되는 Instruction을 기준</strong>으로<br />
+작동하여야 모든 Instruction을 Single-Cycle 동안 수행할 수가 있기 때문에 이러한 비효율성 문제가 발생합니다.</p>
+
+<h1 id="single-cycle-cpu를-개선한-multi-cycle-cpu">Single-Cycle-CPU를 개선한 Multi-Cycle CPU</h1>
+
+<p>위와 같은 Single-Cycle-CPU의 문제점을 개선하여 Design 한 것이 Multi-Cycle-CPU 입니다.</p>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/118086618-3ad4f780-b3ff-11eb-803f-2a5c7db53828.png" width="600" /><br />Feature1. Single Cycle vs Multi Cycle
+</p>
+<p>두가지 모두 4개의 Instruction을 실행하였지만, Multi-Cycle CPU가 확연하게 더 빠르게 수행하였음을 확인할 수가 있습니다.
+그 이유는 Multi-Cycle-CPU는 cycle time을 아주 작게 설정하였기 때문입니다. 각 Instruction의 특성에 맞게
+필요한 만큼의 Cycle 동안 작동하기 때문에 Single-Cycle의 비효율성 문제를 개선할 수가 있습니다.</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/118087617-c56a2680-b400-11eb-8e40-228ecfcc457b.png" width="600" /><br />Feature2. FSM Multi Cycle
+</p>
+<p>Multi-Cycle CPU는 <strong>Mealy Finite State Machine</strong>으로 구현할 수가 있습니다.
+각 State는 1 cycle time을 필요로 하고, FSM는 <strong>Instruction의 특성에 맞게 필요없는 Stage는 Skip</strong>하며
+작동하기 때문에 더욱 효율적인 Instruction 수행이 가능합니다.</p>
+
+<h1 id="multi-cycle-cpu를-개선한-pipeline-cpu">Multi-Cycle-CPU를 개선한 Pipeline-CPU</h1>
+
+<p>Multi-Cycle-CPU를 더 개선할 수는 없을까요?</p>
+
+<p>Multi-Cycle-CPU는 Instruction 들의 특성에 맞는 <strong>시간</strong>의 효율성에 초점을 두었습니다.
+Pipeline-CPU는 <strong>시간</strong>뿐만아니라 <strong>resource</strong>의 효율성 또한 고려한 것 입니다.</p>
+
+<p>Multi-Cycle-CPU에서 ADD Instruction이 EX단계에서 구현되고 있다고 생각해봅시다.
+EX를 제외한 IF, ID, MEM, WB에서 사용되는 레지스터와 메모리 등 여러 resource들은 모두 작동하지 않고 멈춰있는 상황입니다.</p>
+
+<p>Pipeline-CPU는 <strong>resource들을 쉴틈없이 계속해서</strong> 작동하도록 구현한 것 입니다.
+그렇기 때문에 같은 시간동안 모든 자원들을 최대한으로 사용하기 때문에 더 많은 Instruction들을 수행할 수가 있습니다.</p>
+
+<p>하지만 여기서 Pipeline-CPU에서 가장 머리아픈 <strong>Hazard</strong> 문제가 발생합니다.<br />
+빠르기만 하고 Instruction의 결과가 모두 순엉터리라면 도움이 안되는 CPU이기 때문입니다.
+Pipeline-CPU의 Hazard에 대해서는 새로운 Post에서 정리하겠습니다.</p>
+
+<hr />
+
+<p><strong>Post의 참고자료와 이미지의 출처는 아래와 같습니다.</strong></p>
+
+<blockquote>
+  <p>Computer Organization and Design RISC-V edition<br />
+Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.</p>
+</blockquote>
+
+<hr />
+:ET
