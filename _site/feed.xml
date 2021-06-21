@@ -5,13 +5,23 @@
     <description>Computer Science Dept</description>
     <link>https://kyungphildev.github.io/</link>
     <atom:link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Jun 2021 10:23:53 +0900</pubDate>
-    <lastBuildDate>Fri, 11 Jun 2021 10:23:53 +0900</lastBuildDate>
+    <pubDate>Tue, 22 Jun 2021 00:27:19 +0900</pubDate>
+    <lastBuildDate>Tue, 22 Jun 2021 00:27:19 +0900</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>Pipeline CPU(2) Pipeline-CPU의 간략한 이해</title>
-        <description>&lt;p&gt;앞서 Pipeline CPU를 design 해보기 위한 준비과정으로
+        <description>&lt;blockquote&gt;
+  &lt;h3 id=&quot;pipeline-cpu-목차&quot;&gt;Pipeline-CPU 목차&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-2/&quot;&gt;Pipeline CPU(2) : Pipeline-CPU의 간략한 이해&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/data-hazard/&quot;&gt;Pipeline CPU(3) : Data Hazard&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;앞서 Pipeline CPU를 design 해보기 위한 준비과정으로
 &lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Single-Cycle CPU와 Multi-Cycle CPU의 특성&lt;/a&gt;들을 먼저 살펴보았습니다.&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -37,7 +47,7 @@
 &lt;/blockquote&gt;
 
 &lt;p&gt;&lt;strong&gt;빨래&lt;/strong&gt;라는 일을 수행하기 위해 우리는 4가지 작업을 수행해야합니다. 하지만 내가 옷을 잘 정리할 동안, 멈춰있는 세탁기와 건조기를 사용할 수 있다면 어떨까요?&lt;br /&gt;
-즉, 다시말해 한 번에 여러가지의 작업을 동시에 수행한다면 &lt;strong&gt;빨래&lt;/strong&gt;라는 일을 더 빠르게 많이 수행할수 있을 것입니다.&lt;/p&gt;
+즉, 다시 말해 한 번에 여러가지의 작업을 동시에 수행한다면 &lt;strong&gt;빨래&lt;/strong&gt;라는 일을 더 빠르게 수행할 수 있을 것입니다.&lt;/p&gt;
 
 &lt;p align=&quot;center&quot;&gt;
   &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/121613409-592e2180-ca97-11eb-8aea-34b283cb6565.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature2. Pipelined Laundry
@@ -46,19 +56,20 @@
 &lt;p&gt;&lt;strong&gt;Feature2&lt;/strong&gt;에서 확인할 수 있듯이, pipelining을 통해 한 번에 여러가지의 작업을 동시에
 수행할 수 있게 되었습니다. 그 결과 &lt;strong&gt;빨래&lt;/strong&gt;를 4번 수행하려면 8시간 걸리던 일이, Pipelining을 통한 구현으로 3시간 30분만에 수행할 수 있게되었습니다.&lt;/p&gt;
 
-&lt;p&gt;따라서 Pipeline을 통해서 &lt;strong&gt;Throughput&lt;/strong&gt;을 증가시키고 &lt;strong&gt;HW를 더욱 효율적&lt;/strong&gt;으로 사용이 가능합니다.&lt;/p&gt;
+&lt;p&gt;따라서, Pipelining을 통해서 CPU의 &lt;strong&gt;Throughput&lt;/strong&gt;을 증가시키고 &lt;strong&gt;하드에웨어 자원들을 더욱 효율적&lt;/strong&gt;으로 사용이 가능합니다.&lt;/p&gt;
 
 &lt;h3 id=&quot;overview-of-pipeline-cpu&quot;&gt;Overview of Pipeline-CPU&lt;/h3&gt;
 
 &lt;p align=&quot;center&quot;&gt;
   &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/121613807-4d8f2a80-ca98-11eb-9061-42b97cab8dbe.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature3. Graphical View
 &lt;/p&gt;
-&lt;p&gt;위의 &lt;strong&gt;Feature3&lt;/strong&gt;을 한 번 살펴봅시다. &lt;strong&gt;LD, SUB, ADD&lt;/strong&gt; 등의 새로운 &lt;strong&gt;Instruction이&lt;/strong&gt; &lt;strong&gt;CC시간&lt;/strong&gt; 마다 계속에서 CPU에 입력하고 있습니다. 이전의 &lt;strong&gt;Single-Cycle-CPU&lt;/strong&gt;와 &lt;strong&gt;Multi-Cycle-CPU&lt;/strong&gt; 였다면 LD Instr이 끝날때까지 다음의 SUB Instr은 대기하고 있어야만 하였습니다. 하지만 &lt;strong&gt;Pipelining을&lt;/strong&gt; 통해서 일정 간격으로 새로운 Instr을 잘 수행할 수 가 있게 되었습니다. CC5가 되는 순간에는 &lt;strong&gt;WB, MEM, EX, ID, IF&lt;/strong&gt; 의 모든 Stage가 동시에 수행되는 것을 확인할 수가 있는데요. 이처럼 이제는 CPU에 주어진 HW resource들도 모두 최대한으로 활용하는 것을 확인할 수가 있습니다.
-—&lt;/p&gt;
+&lt;p&gt;위의 &lt;strong&gt;Feature3&lt;/strong&gt;을 한 번 살펴봅시다. &lt;strong&gt;LD, SUB, ADD&lt;/strong&gt; 등의 새로운 &lt;strong&gt;Instruction이&lt;/strong&gt; &lt;strong&gt;CC시간&lt;/strong&gt; 마다 계속해서 CPU에 입력되고 있습니다. 이전의 &lt;strong&gt;Single-Cycle-CPU&lt;/strong&gt;와 &lt;strong&gt;Multi-Cycle-CPU&lt;/strong&gt; 였다면 &lt;strong&gt;LD Instr&lt;/strong&gt;이 끝날때까지 다음의 &lt;strong&gt;SUB Instr&lt;/strong&gt;은 대기하고 있어야만 하였습니다.&lt;/p&gt;
+
+&lt;p&gt;이제는 &lt;strong&gt;Pipelining을&lt;/strong&gt; 통해서 일정 간격으로 새로운 Instr을 연속적으로 수행할 수 있게 되었습니다. CC5가 되는 순간에는 &lt;strong&gt;WB, MEM, EX, ID, IF&lt;/strong&gt; 의 모든 Stage가 동시에 수행되는 것을 확인할 수가 있는데요. 이처럼 CPU에 주어진 HW resource를 모두 최대한으로 활용하는 것을 확인할 수가 있습니다.&lt;/p&gt;
 
 &lt;h3 id=&quot;문제는-지금부터&quot;&gt;문제는 지금부터…&lt;/h3&gt;
 
-&lt;p&gt;그러나 매번 새롭게 들어오는 Instr을 CPU는 어떻게 각 입력의 특성에 맞게 잘 수행할 수 있을까요?
+&lt;p&gt;그러나 매번 새롭게 들어오는 Instruction을 CPU는 어떻게 잘 수행할 수 있을까요?
 위의 CC5 시점의 경우 동시간에 5개의 Instr이 수행되고 있습니다. 이때, EX stage는 5개의 Instr 중에 어느 것을 수행하여 ALU 계산을 해야할까요?&lt;/p&gt;
 
 &lt;p&gt;또한 만약, 앞에서 수행한 Instr의 결과를 그대로 받아와서 다음 Instr에 수행하는 경우가 있을 때,
@@ -106,10 +117,19 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
     
       <item>
         <title>Pipeline CPU(1) &lt;br&gt; Single_Cycle_CPU VS Multi_Cycle_CPU</title>
-        <description>&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 위해서는&lt;br /&gt;
-&lt;strong&gt;Single-Cycle과 Multi-Cycle CPU&lt;/strong&gt;의 특성들을 이해하는 것이 필요합니다.&lt;/p&gt;
+        <description>&lt;blockquote&gt;
+  &lt;h3 id=&quot;pipeline-cpu-목차&quot;&gt;Pipeline-CPU 목차&lt;/h3&gt;
 
-&lt;p&gt;어떠한 특성으로 인해 Pipeline-CPU가 가장 빠르게 작동할 수 있을까요?&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-2/&quot;&gt;Pipeline CPU(2) : Pipeline-CPU의 간략한 이해&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/data-hazard/&quot;&gt;Pipeline CPU(3) : Data Hazard&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Pipeline CPU를 design &amp;amp; implement 하기 위해서는&lt;br /&gt;
+&lt;strong&gt;Single-Cycle과 Multi-Cycle CPU&lt;/strong&gt;의 특성들을 이해하는 것이 필요합니다.
+어떠한 특성으로 인해 Pipeline-CPU가 가장 빠르게 작동할 수 있을까요?&lt;/p&gt;
 
 &lt;h1 id=&quot;single-cycle-cpu-의-비효율성&quot;&gt;Single-Cycle CPU 의 비효율성&lt;/h1&gt;
 
@@ -253,6 +273,72 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
   &lt;li&gt;Define the desired target state&lt;/li&gt;
   &lt;li&gt;let React figure out the actual JAvaScript Dom instructions&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h3 id=&quot;6월-13일&quot;&gt;6월 13일&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;29번. JSX javascript XML
+developer friendly code를 가능하게 해주는 것.
+Component in React is just a JavaScript function.
+사용자 정의된 Component는 Upper case로 시작해야한다.
+Lower case로 시작한 것은 div 이런 기본 element들로 인식.
+하나의 컴포넌트는 하나의 root element를 소유해야만 한다.
+React로 render 한 이후에 element view된 값들을 수정하려면 일반적인 함수를 통한 방법으로는 다시 re-render(reevaluation) 되지 않는다. 왜냐하면 element가 event가 발생한 사실을 알 수가 없기 때문이다. 따라서 State가 필요하다.
+state를 update할 때 previous state를 즉 가장 최근의 data를 update하도록 잘 설정해주어야 한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;styledComponents
+cssModule&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;React.Fragments : wrapper for preventing from nested div problems(unnecessary many div_s).
+React Portal: ex) Modal hierarchy
+Controlled vs UnControlled Component&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;useEffect Hook 잘 이해하기 !!&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;useEffect() Hook!! : To re-run logic when some specific data has been changed(change is detected)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;debouncing: to check whether user is done keystroking
+useEffect() 함수 내에서 return () =&amp;gt; {} 의 함수는 다시한번 useEffect가 호출되기 직전에 return안의 함수가 실행된다. 처음에은 실행X. 따라서 return 안에는 cleanUp해주는 함수들을 정의해서 넣어주면 된다.(ex clearTimeout…)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;useReducer Hook!&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;useState에서 만약 다른 state 값을 접근하여 state값을 변경하도록 하는 로직이라면 잘 못 작성한 useState사용 방식이다(룰에 어긋남, 다른 state가 도중에 변경되는 sync가 안 맞을 수도 있는 그런 경우 때문인듯), 그래서 이 경우에 useReducer를 사용할 수 있다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;React Context!&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;data forwarding을 위해서 아무 의미없이 컴포넌트가 dat의 forward역할 (거쳐가는 통로)로만 사용되면 big project(huge project)일 때 너무 번거롭고 오류가 생길 수 있기에 React Context를 사용하면 유용하다.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;long-prop-chain 문제를 해결가능&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;React Hook Rules&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;React Hook은 React 컴포넌트 내에서만 사용가능하다.
+React Hook은 컴포넌트의 Top level에서 call해야한다.(nested hooks are not allowed)&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
         <pubDate>Wed, 12 May 2021 00:00:00 +0900</pubDate>
         <link>https://kyungphildev.github.io/react/react-study-1/</link>
@@ -271,7 +357,17 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
     
       <item>
         <title>Pipeline CPU(3)- Data Hazard</title>
-        <description>&lt;h3 id=&quot;세가지-주요-사항&quot;&gt;세가지 주요 사항&lt;/h3&gt;
+        <description>&lt;blockquote&gt;
+  &lt;h3 id=&quot;pipeline-cpu-목차&quot;&gt;Pipeline-CPU 목차&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-2/&quot;&gt;Pipeline CPU(2) : Pipeline-CPU의 간략한 이해&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/data-hazard/&quot;&gt;Pipeline CPU(3) : Data Hazard&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;세가지-주요-사항&quot;&gt;세가지 주요 사항&lt;/h3&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Data Hazard&lt;/li&gt;
@@ -281,21 +377,68 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
 
 &lt;hr /&gt;
 
-&lt;p&gt;이번 Post에서는 위의 세가지 주요 특징들 중에서도&lt;br /&gt;
-&lt;strong&gt;1. Data Hazard&lt;/strong&gt;
-를 해결하는 방법에 대해 구체적으로 알아 봅니다.&lt;/p&gt;
+&lt;p&gt;이번 Post에서는 위의 세가지 주요 특징들 중에서도 &lt;strong&gt;1. Data Hazard&lt;/strong&gt;
+를 해결하는 방법에 대해 구체적으로 알아 봅시다.&lt;/p&gt;
 
-&lt;h3 id=&quot;raw-hazard-조건&quot;&gt;RAW Hazard 조건&lt;/h3&gt;
+&lt;h3 id=&quot;data-dependence&quot;&gt;Data Dependence&lt;/h3&gt;
 
-&lt;p&gt;우선 WAR이나 WAW의 경우, Pipeline CPU에서 instruction의 실행 순서상 read 가 IF/ID에서 항상 먼저 실행된 다음에 Write가 되기 때문에 Instruction에 방해되는 요소가 아니므로 고려하지 않습니다.&lt;/p&gt;
+&lt;p&gt;Data Dependence의 종류에는 다음의 세가지 경우가 존재합니다.&lt;/p&gt;
 
-&lt;p&gt;하지만 &lt;strong&gt;RAW&lt;/strong&gt;의 경우는 &lt;strong&gt;Write를 먼저하고 Read를 꼭 해야하기 때문에&lt;/strong&gt;, write 가 되기도 전에 IF/ID에서 read를 할 경우 문제가 발생하므로 이 경우를 해결해 주어야 합니다.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;RAW(Read-After-Write, True-Dependence)&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//RAW Hazard 발생 조건&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//write(old instructiion) 보다 read(young instruction)가 먼저 수행될경우 hazard가 발생한다.&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;young&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Bxx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JALR&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Read Instruction&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;old&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;R&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JAL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JALR&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Write&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I_OLD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_YOUNG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist 가 3 보다 큰 경우는 hazard가 발생하지 않으므로 3 이하인 경우만 고려&lt;/span&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Pipeline-CPU&lt;/strong&gt;는 Multi-Cycle-CPU와 마찬가지로 &lt;strong&gt;IF, ID, EX, MEM, WB&lt;/strong&gt;의 단계들을 거칩니다. 그러나 연속적으로 매 싸이클마다 새로운 Instruction이 들어오는 Pipeline-CPU의 특성상 RAW와 같은 경우가 발생하였을 때, &lt;strong&gt;Write($x2)를 먼저 수행하여야 함에도 불구하고, Write가 되어지지 않은 $x2 레지스터 값을 먼저 읽어오는 매우 심각한 Hazard&lt;/strong&gt;가 발생합니다.&lt;/p&gt;
+
+&lt;p&gt;따라서 연속적인 Instruction들이 쏟아지는 Pipeline-CPU를 완벽하게 작동시키기 위해서는 &lt;strong&gt;RAW Hazard&lt;/strong&gt;를 어떻게 처리하여야 할지 고민해야 합니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;WAR(Write-After-Read, Anti-Dependence)&lt;/li&gt;
+    &lt;li&gt;WAW(Write-After-Write, Output-Dependence)&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/* WAR */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/* WAW */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;WAR와 WAW&lt;/strong&gt;는 함께 묶어서 &lt;strong&gt;False dependency&lt;/strong&gt;라고 합니다. Pipeline CPU에서 instruction의 실행 순서상 &lt;strong&gt;read 가 IF/ID에서 항상 먼저&lt;/strong&gt; 실행된 다음에 &lt;strong&gt;WB단계에서 Write가&lt;/strong&gt; 됩니다. 이러한 Pipeline-CPU의 특성상 이 두가지 dependence의 경우는 True data hazard에 해당되지 않습니다.&lt;/p&gt;
+
+&lt;p&gt;따라서 레지스터에 저장된 data로 인해 발생되는 문제가 아닌 레지스터의 name과 관계된 문제라고 이해를 하면 됩니다. &lt;strong&gt;False dependence(WAR, WAW)&lt;/strong&gt;의 경우, 만약 무한히 많은 레지스터가 있다면 레지스터를 다음과 같이 &lt;strong&gt;Renaming&lt;/strong&gt;함으로 써 문제를 완벽하게 해결이 가능합니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/* Renaming 전 */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/* Renaming 후 */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2--&amp;gt;$x8(Write)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;raw-hazard&quot;&gt;RAW Hazard&lt;/h3&gt;
+
+&lt;p&gt;앞서 살펴본 세가지 &lt;strong&gt;Data dependence&lt;/strong&gt;의 경우 중 하나인 &lt;strong&gt;RAW Hazard&lt;/strong&gt;에 대해 자세히 살펴봅시다. &lt;strong&gt;RAW&lt;/strong&gt;의 경우는 &lt;strong&gt;Write를 먼저하고 Read를 꼭 해야하기 때문에&lt;/strong&gt;, write 가 되기도 전에 &lt;strong&gt;IF/ID에서 read를 할 경우&lt;/strong&gt; Data Hazard가 발생하므로 이를 처리해 주어야 합니다.&lt;/p&gt;
+
+&lt;p&gt;그렇다면 우선, CPU는 RAW Hazard가 발생하였다는 사실을 어떻게 알 수 있을까요?&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/*RAW Hazard 발생 조건 */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I_OLD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_YOUNG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;ex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RAW&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;발생&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// I(young) ex) R/I, LD, SD, Bxx, JALR // Read Instruction Operator&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// I(old)  ex) R/I, LD, JAL, JALR // Write Instruction Operator&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/* write(old instructiion) 보다 read(young instruction)가 먼저 수행될경우 hazard가 발생한다.
+dist 가 3 보다 큰 경우는 hazard가 발생하지 않으므로 3 이하인 경우만 고려 */&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;data-forwarding-logic&quot;&gt;Data Forwarding Logic&lt;/h3&gt;

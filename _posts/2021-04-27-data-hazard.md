@@ -15,6 +15,12 @@ tags:
   ]
 ---
 
+> ### Pipeline-CPU 목차
+>
+> - <a  href='/computer-architecture/pipeline-1/'>Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU</a>
+> - <a  href='/computer-architecture/pipeline-2/'>Pipeline CPU(2) : Pipeline-CPU의 간략한 이해</a>
+> - <a  href='/computer-architecture/data-hazard/'>Pipeline CPU(3) : Data Hazard</a>
+
 ### 세가지 주요 사항
 
 1. Data Hazard
@@ -23,22 +29,64 @@ tags:
 
 ---
 
-이번 Post에서는 위의 세가지 주요 특징들 중에서도  
-**1. Data Hazard**
-를 해결하는 방법에 대해 구체적으로 알아 봅니다.
+이번 Post에서는 위의 세가지 주요 특징들 중에서도 **1. Data Hazard**
+를 해결하는 방법에 대해 구체적으로 알아 봅시다.
 
-### RAW Hazard 조건
+### Data Dependence
 
-우선 WAR이나 WAW의 경우, Pipeline CPU에서 instruction의 실행 순서상 read 가 IF/ID에서 항상 먼저 실행된 다음에 Write가 되기 때문에 Instruction에 방해되는 요소가 아니므로 고려하지 않습니다.
+Data Dependence의 종류에는 다음의 세가지 경우가 존재합니다.
 
-하지만 **RAW**의 경우는 **Write를 먼저하고 Read를 꼭 해야하기 때문에**, write 가 되기도 전에 IF/ID에서 read를 할 경우 문제가 발생하므로 이 경우를 해결해 주어야 합니다.
+> - RAW(Read-After-Write, True-Dependence)
 
 ```c
-//RAW Hazard 발생 조건
-//write(old instructiion) 보다 read(young instruction)가 먼저 수행될경우 hazard가 발생한다.
-- I(young) => R/I, LD, SD, Bxx, JALR // Read Instruction
-- I(old) => R/I, LD, JAL, JALR // Write
-- dis(I_OLD, I_YOUNG) <= dis(ID, WB) = 3 // dist 가 3 보다 큰 경우는 hazard가 발생하지 않으므로 3 이하인 경우만 고려
+add x2, x1, x5 // $x2(Write)
+add x4, x2, x7 // $x2(Read)
+```
+
+**Pipeline-CPU**는 Multi-Cycle-CPU와 마찬가지로 **IF, ID, EX, MEM, WB**의 단계들을 거칩니다. 그러나 연속적으로 매 싸이클마다 새로운 Instruction이 들어오는 Pipeline-CPU의 특성상 RAW와 같은 경우가 발생하였을 때, **Write($x2)를 먼저 수행하여야 함에도 불구하고, Write가 되어지지 않은 $x2 레지스터 값을 먼저 읽어오는 매우 심각한 Hazard**가 발생합니다.
+
+따라서 연속적인 Instruction들이 쏟아지는 Pipeline-CPU를 완벽하게 작동시키기 위해서는 **RAW Hazard**를 어떻게 처리하여야 할지 고민해야 합니다.
+
+> - WAR(Write-After-Read, Anti-Dependence)
+> - WAW(Write-After-Write, Output-Dependence)
+
+```c
+/* WAR */
+add x1, x2, x5 // $x2(Read)
+add x2, x4, x7 // $x2(Write)
+/* WAW */
+add x2, x1, x5 // $x2(Write)
+add x2, x4, x7 // $x2(Write)
+```
+
+**WAR와 WAW**는 함께 묶어서 **False dependency**라고 합니다. Pipeline CPU에서 instruction의 실행 순서상 **read 가 IF/ID에서 항상 먼저** 실행된 다음에 **WB단계에서 Write가** 됩니다. 이러한 Pipeline-CPU의 특성상 이 두가지 dependence의 경우는 True data hazard에 해당되지 않습니다.
+
+따라서 레지스터에 저장된 data로 인해 발생되는 문제가 아닌 레지스터의 name과 관계된 문제라고 이해를 하면 됩니다. **False dependence(WAR, WAW)**의 경우, 만약 무한히 많은 레지스터가 있다면 레지스터를 다음과 같이 **Renaming**함으로 써 문제를 완벽하게 해결이 가능합니다.
+
+```c
+/* Renaming 전 */
+add x1, x2, x5 // $x2(Read)
+add x2, x4, x7 // $x2(Write)
+/* Renaming 후 */
+add x1, x2, x5 // $x2(Read)
+add x8, x4, x7 // $x2-->$x8(Write)
+```
+
+### RAW Hazard
+
+앞서 살펴본 세가지 **Data dependence**의 경우 중 하나인 **RAW Hazard**에 대해 자세히 살펴봅시다. **RAW**의 경우는 **Write를 먼저하고 Read를 꼭 해야하기 때문에**, write 가 되기도 전에 **IF/ID에서 read를 할 경우** Data Hazard가 발생하므로 이를 처리해 주어야 합니다.
+
+그렇다면 우선, CPU는 RAW Hazard가 발생하였다는 사실을 어떻게 알 수 있을까요?
+
+```c
+/*RAW Hazard 발생 조건 */
+dis(I_OLD, I_YOUNG) <= 3
+
+ex. RAW 발생! dis(ID, WB) = 3
+// I(young) ex) R/I, LD, SD, Bxx, JALR // Read Instruction Operator
+// I(old)  ex) R/I, LD, JAL, JALR // Write Instruction Operator
+/* write(old instructiion) 보다 read(young instruction)가 먼저 수행될경우 hazard가 발생한다.
+dist 가 3 보다 큰 경우는 hazard가 발생하지 않으므로 3 이하인 경우만 고려 */
 ```
 
 ### Data Forwarding Logic
