@@ -5,9 +5,286 @@
     <description>Computer Science Dept</description>
     <link>https://kyungphildev.github.io/</link>
     <atom:link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Jun 2021 00:27:19 +0900</pubDate>
-    <lastBuildDate>Tue, 22 Jun 2021 00:27:19 +0900</lastBuildDate>
+    <pubDate>Wed, 23 Jun 2021 22:23:03 +0900</pubDate>
+    <lastBuildDate>Wed, 23 Jun 2021 22:23:03 +0900</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Pipeline CPU(4)- Data Forwarding</title>
+        <description>&lt;blockquote&gt;
+  &lt;h3 id=&quot;pipeline-cpu-목차&quot;&gt;Pipeline-CPU 목차&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-2/&quot;&gt;Pipeline CPU(2) : Pipeline-CPU의 간략한 이해&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-3/&quot;&gt;Pipeline CPU(3) : Data Hazard(RAW)&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-4/&quot;&gt;Pipeline CPU(4) : Data Forwarding&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;stall을-통한-data-hazard-해결&quot;&gt;STALL을 통한 Data Hazard 해결&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;RAW Hazard&lt;/strong&gt;를 해결하는 가장 간단한 방법은 RAW가 발생한 두 Instruction간의 거리를 3보다 멀어지도록 두 Instruction 사이에 STALL을 추가해주는 방법이 있습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;STALL을 함으로써&lt;/strong&gt; I_OLD가 &lt;strong&gt;WB단계&lt;/strong&gt;를 거쳐서 레지스터에 값을 저장할 때까지 충분히 기다려준 이후에, &lt;strong&gt;i.e dis(I_OLD,I_YOUNG) &amp;gt; 3&lt;/strong&gt;이 되도록, I_YOUNG의 Read가 순차적으로 실행되도록 하는 것 입니다.&lt;/p&gt;
+
+&lt;p&gt;하지만 STALL을 사용하는 것의 단점은 매번 RAW Hazard가 발생될 때마다, &lt;strong&gt;STALL이 생겨남으로 인해서 CPU의 성능이 저하가 된다는 단점이 있습니다.&lt;/strong&gt; 성능의 저하없이 더욱 효율적인 해결방안은 없을까요?&lt;/p&gt;
+
+&lt;h2 id=&quot;data-forwarding-logic&quot;&gt;Data Forwarding Logic&lt;/h2&gt;
+
+&lt;p&gt;STALL을 사용하는 방법보다 더욱 효과적인 방법이 &lt;strong&gt;Data Forwarding&lt;/strong&gt;을 사용하는 방법입니다. 결론부터 말하자면, &lt;strong&gt;Data Forwarding&lt;/strong&gt;을 통해서 &lt;strong&gt;dist(i,j)=1 인 LD(i.e. Load Instruction)&lt;/strong&gt;을 제외한 모든 RAW Hazard를 해결할 수가 있습니다.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/123098344-03c91b80-d46c-11eb-8d0c-ec72d23617f7.png&quot; width=&quot;800&quot; /&gt;&lt;br /&gt;Feature3. Pipeline diagram
+&lt;/p&gt;
+
+&lt;p&gt;매번 새로운 Instruction이 Pipeline을 통과하는 구조를 잘 살펴봅시다. 위의 &lt;strong&gt;Feature3&lt;/strong&gt;을 보면 순서대로 Instruction이 들어오는 것에 따라 각 시간 별로, 어떤 Instruction이 어느 State에서 수행되고 있는지를 확인할 수가 있습니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sub x2, x1, x3&lt;br /&gt;
+and x12, x2, x5&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;위의 두 Instruction을 예시로 살펴봅시다. &lt;strong&gt;x2&lt;/strong&gt;에서 dist=1 인&lt;strong&gt;(i.e. 거리가 1)인 RAW Hazard&lt;/strong&gt;가 발생하였다는 사실을 알 수 있습니다. 이전에 &lt;strong&gt;STALL을 이용한 해결방법&lt;/strong&gt;을 생각한다면, EX단계에서 ALU를 수행한 값을 &lt;strong&gt;MEM단계에서 x2에 저장할 때까지&lt;/strong&gt; &lt;strong&gt;두 번째 Instruction의 ID&lt;/strong&gt;단계는 STALL을 통해 멈춰있어야만 합니다.&lt;/p&gt;
+
+&lt;p&gt;하지만 만약, &lt;strong&gt;EX단계의 ALU에서 계산된 값&lt;/strong&gt;을 곧바로 &lt;strong&gt;두 번째 Instruction에서의 ALU의 Input&lt;/strong&gt;으로 꽂아 줄 수 있다면 굳이 두 번째 Instruction이 ID단계에서 레지스터로 부터 x2를 읽지 않아도 잘 계산된 값을 받아올 수 있지 않을까요? 이러한 생각이 바로 Data Forwarding Logic 입니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Feature3&lt;/strong&gt;에서 확인할 수 있듯이, 첫 번째 Instruction에서 EX단계에서 계산된 값을 곧바로 STALL없이 두 번째 Instruction의 ALU의 Input으로 Forwarding 해주는 것을 확인할 수가 있습니다. 마찬가지로 &lt;strong&gt;dist=2(i.e. 거리가 2)&lt;/strong&gt;인 경우에도 비슷한 방법으로, MEM에서 가진 x2의 값을 세 번째 Instruction의 ID단계에 곧바로 읽도록 Forwarding 해주었습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;dist=3(i.e. 거리가 3)&lt;/strong&gt;인 경우는 아래의 &lt;strong&gt;Feature4&lt;/strong&gt;를 통해 쉽게 이해하여 봅시다.&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116329894-40c7b780-a807-11eb-8e9e-7580d0685266.png&quot; width=&quot;600&quot; /&gt;&lt;br /&gt;Feature4. Forwarding diagram
+&lt;/p&gt;
+
+&lt;p&gt;거리가 3인 경우에는 &lt;strong&gt;첫 번째 Instruction이 WB단계에서 x2 레지스터에 값을 Write하는 동시에 네 번째 Instruction이 같은 위치의 x2 레지스터의 값을 Read&lt;/strong&gt; 하면서 발생하는 RAW Hazard 입니다. 하지만 이때, &lt;strong&gt;WB(Write Back)하려고 들어오는 값을 그대로 받아서 ID단계에서 사용하도록 Forwarding&lt;/strong&gt; 함으로써 Hazard를 해결할 수가 있습니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RegWrite_MEM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist=1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_WB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RegWrite_WB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist=2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;register&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//dist=3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;대략적인 코드 구조는 위와 같습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Data Forwarding&lt;/strong&gt; 을 이해하는데 필요한 다음의 두가지 세부 사항을 한번 살펴보자.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;2. Data forwarding으로 모든 instruction(RAW)을 해결할 수 있을까?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;1-가장-최근의-값을-먼저-forwarding-해주어야-한다&quot;&gt;1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.&lt;/h3&gt;
+
+&lt;p&gt;다음의 예시의 경우를 한 번 살펴봅시다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;sub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x3&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist(1,2)=1 (x2)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist(1,3)=2 (x2), dist(2,3)=1(x2)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 예시와 같은 경우에 만약 3 번째 줄을 수행할 때, &lt;strong&gt;Data forwarding&lt;/strong&gt;을 &lt;strong&gt;dist=1 보다 dist=2를&lt;/strong&gt; 먼저 수행한다고 가정하여 봅시다. &lt;strong&gt;올바른 계산은 3 번째 줄에게 가장 최근인 add를 한 결과를 x2가 받아와야 할 것입니다.&lt;/strong&gt; 하지만, add를 수행하기 전인 &lt;strong&gt;sub의 결과로 부터 x2&lt;/strong&gt;를 읽어오는 &lt;strong&gt;forwarding&lt;/strong&gt;을 수행하기 때문에 올바른 결과값을 갖지 못하게되는 오류가 발생합니다.&lt;/p&gt;
+
+&lt;p&gt;따라서 위의 &lt;strong&gt;Data Forwarding Logic&lt;/strong&gt;에서 확인할 수 있듯이, dist를 1,2,3 순서대로 즉 &lt;strong&gt;가장 가까운 값&lt;/strong&gt;으로 부터 forwarding을 먼저 수행해 주어야 합니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-data-forwarding으로-모든-instructionraw을-해결할-수-있을까&quot;&gt;2. Data forwarding으로 모든 instruction(RAW)을 해결할 수 있을까?&lt;/h3&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;ld&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//dist(1,2)=1 RAW(x2)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 경우 add에서 dist=1 이므로 &lt;strong&gt;data forwarding&lt;/strong&gt;을 해주면 되지만 &lt;strong&gt;LD instruction&lt;/strong&gt;이기 때문에 문제가 발생합니다. LD instruction의 경우, ALU로 부터 계산된 값이 아닌 &lt;strong&gt;메모리를 Read 한 값을 Forwarding&lt;/strong&gt; 해주어야 하므로 &lt;strong&gt;dist=1&lt;/strong&gt;일때 한 번의 STALL을 꼭 예외적으로 필요로 합니다.&lt;/p&gt;
+
+&lt;p&gt;따라서 위의 &lt;strong&gt;DataForwarding Logic&lt;/strong&gt;과 함께 다음의 &lt;strong&gt;STALL 조건&lt;/strong&gt;을 추가해 주어야 합니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//Stall 조건&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;use_rs1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IR_ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs2_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;use_rsw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IR_ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MemRead_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stall&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//MemRead_EX : op=LD/LW/...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;전체적인-구현-design&quot;&gt;전체적인 구현 Design&lt;/h2&gt;
+
+&lt;p&gt;RAW Hazard를 고려한 Data Forwarding 구현은 다음과 같습니다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Data forwarding&lt;/li&gt;
+  &lt;li&gt;Hazard Detection(LD의 경우, STALL)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature3. Pipeline CPU design(Data Forwarding)
+&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Post의 참고자료와 이미지의 출처는 아래와 같습니다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Computer Organization and Design RISC-V edition&lt;br /&gt;
+Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+</description>
+        <pubDate>Wed, 23 Jun 2021 00:00:00 +0900</pubDate>
+        <link>https://kyungphildev.github.io/computer-architecture/pipeline-4/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/pipeline-4/</guid>
+        
+        <category>data hazard</category>
+        
+        <category>RAW</category>
+        
+        <category>pipeline</category>
+        
+        <category>cpu</category>
+        
+        <category>RAW Hazrd</category>
+        
+        <category>Branch Prediction</category>
+        
+        <category>2-bit global</category>
+        
+        
+        <category>Computer-Architecture</category>
+        
+      </item>
+    
+      <item>
+        <title>Pipeline CPU(3)- Data Hazard</title>
+        <description>&lt;blockquote&gt;
+  &lt;h3 id=&quot;pipeline-cpu-목차&quot;&gt;Pipeline-CPU 목차&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-2/&quot;&gt;Pipeline CPU(2) : Pipeline-CPU의 간략한 이해&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-3/&quot;&gt;Pipeline CPU(3) : Data Hazard(RAW)&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-4/&quot;&gt;Pipeline CPU(4) : Data Forwarding&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;세가지-주요-사항&quot;&gt;세가지 주요 사항&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Data Hazard&lt;/li&gt;
+  &lt;li&gt;Control Hazard&lt;/li&gt;
+  &lt;li&gt;Branch Prediction&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;이번 Post에서는 Pipeline-CPU를 구현하기 위해 꼭 알아야할 위의 세가지 주요 사항들 중에서도 &lt;strong&gt;1. Data Hazard&lt;/strong&gt;
+를 해결하는 방법에 대해 구체적으로 알아봅시다.&lt;/p&gt;
+
+&lt;h3 id=&quot;data-dependence&quot;&gt;Data Dependence&lt;/h3&gt;
+
+&lt;p&gt;Data Dependence는 크게 &lt;strong&gt;RAW, WAR, WAW&lt;/strong&gt; 이 세가지로 종류를 나눌 수가 있습니다. 각각의 특징들에 대해서 자세히 살펴봅시다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;RAW(Read-After-Write, True-Dependence)&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Pipeline-CPU&lt;/strong&gt;는 Multi-Cycle-CPU와 마찬가지로 &lt;strong&gt;IF, ID, EX, MEM, WB&lt;/strong&gt;의 단계들을 거칩니다. 그러나 연속적으로 매 싸이클마다 새로운 Instruction이 들어오는 Pipeline-CPU의 특성상 RAW와 같은 경우가 발생하였을 때, &lt;strong&gt;Write($x2)를 먼저 수행하여야 함에도 불구하고, Write가 되어지지 않은 $x2 레지스터 값을 먼저 읽어오는 매우 심각한 Hazard&lt;/strong&gt;가 발생합니다.&lt;/p&gt;
+
+&lt;p&gt;따라서 연속적인 Instruction들이 쏟아지는 Pipeline-CPU를 완벽하게 작동시키기 위해서는 &lt;strong&gt;RAW Hazard&lt;/strong&gt;를 어떻게 처리하여야 할지 고민해야 합니다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;WAR(Write-After-Read, Anti-Dependence)&lt;/li&gt;
+    &lt;li&gt;WAW(Write-After-Write, Output-Dependence)&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/* WAR */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/* WAW */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;WAR와 WAW&lt;/strong&gt;는 함께 묶어서 &lt;strong&gt;False dependency&lt;/strong&gt;라고 합니다. Pipeline CPU에서 instruction의 실행 순서상 &lt;strong&gt;read 가 IF/ID에서 항상 먼저&lt;/strong&gt; 실행된 다음에 &lt;strong&gt;WB단계에서 Write가&lt;/strong&gt; 됩니다. 이러한 Pipeline-CPU의 특성상 False dependency의 경우는 &lt;strong&gt;RAW에 해당하는 True data hazard&lt;/strong&gt;에 해당되지 않습니다.&lt;/p&gt;
+
+&lt;p&gt;따라서 &lt;strong&gt;False dependency(WAW, WAR)&lt;/strong&gt;은 레지스터에 저장된 &lt;strong&gt;data&lt;/strong&gt;로 인해 발생되는 문제가 아닌 &lt;strong&gt;레지스터의 name&lt;/strong&gt;과 관계된 문제라고 이해를 하면 됩니다. &lt;strong&gt;False dependence(WAR, WAW)&lt;/strong&gt;의 경우, 만약 무한히 많은 레지스터가 있다면 레지스터를 다음과 같이 &lt;strong&gt;Renaming&lt;/strong&gt;함으로 써 문제를 &lt;strong&gt;concurrent-processing&lt;/strong&gt;에서 발생할 수 있는 문제들을 해결할 수 있게 됩니다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/* Renaming 전 */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/* Renaming 후 */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2--&amp;gt;$x8(Write)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;raw-hazard&quot;&gt;RAW Hazard&lt;/h2&gt;
+
+&lt;p&gt;앞서 살펴본 세가지 &lt;strong&gt;Data dependence&lt;/strong&gt;의 경우 중 하나인 &lt;strong&gt;RAW Hazard&lt;/strong&gt;에 대해 자세히 살펴봅시다. &lt;strong&gt;RAW&lt;/strong&gt;의 경우는 &lt;strong&gt;Write를 먼저하고 Read를 꼭 해야하기 때문에&lt;/strong&gt;, write 가 되기도 전에 다음 Instruction이 &lt;strong&gt;IF/ID에서 read를 할 경우&lt;/strong&gt; Data Hazard가 발생하므로 이러한 Hazard가 생기는 것을 미리 방지해 주어야 합니다.&lt;/p&gt;
+
+&lt;p&gt;그렇다면 우선, CPU는 RAW Hazard가 발생하였다는 사실을 어떻게 알 수 있을까요?&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/*RAW Hazard 발생 조건 */&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I_OLD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_YOUNG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// I(young) ex) R/I, LD, SD, Bxx, JALR // Read Instruction Operator&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// I(old)  ex) R/I, LD, JAL, JALR // Write Instruction Operator&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/* write(old instructiion) 보다 read(young instruction)가 먼저 수행될경우 hazard가 발생한다.
+dist 가 3 보다 큰 경우는 hazard가 발생하지 않으므로 3 이하인 경우만 고려 */&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/122864196-2588ac80-d35f-11eb-99ed-f855f6466f5e.png&quot; width=&quot;800&quot; /&gt;&lt;br /&gt;Feature2. RAW detection Logic
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;RAW(Read after Write)&lt;/strong&gt; dependency인 경우에, Data Hazard가 발생하지 않기 위해서는 Write를 먼저 한 이후에 Read Instruction이 수행되어야 합니다. 하지만 &lt;strong&gt;Pipeline-CPU는 RAW가 발생한 두 instruction 간의 거리가 3이하일 경우에는 항상 I_YOUNG의 Read가 Write 되기도 전에 먼저 실행이 되는 Hazard가 발생하게 됩니다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;따라서 &lt;strong&gt;Feature2&lt;/strong&gt;에서 확인할 수 있듯이, Write Operator에 해당하는 Instruction과 Read Operator에 해당하는 Instruction 간의 &lt;strong&gt;거리&lt;/strong&gt;를 확인 함으로써 RAW Hazard가 발생할거라는 사실을 확인할 수가 있습니다.&lt;/p&gt;
+
+&lt;p&gt;CPU가 RAW Hazard가 발생하였다는 사실을 알아챘다면, 어떻게 Data Hazard 문제를 해결할 수가 있을까요?&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Post의 참고자료와 이미지의 출처는 아래와 같습니다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Computer Organization and Design RISC-V edition&lt;br /&gt;
+Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+</description>
+        <pubDate>Wed, 23 Jun 2021 00:00:00 +0900</pubDate>
+        <link>https://kyungphildev.github.io/computer-architecture/pipeline-3/</link>
+        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/pipeline-3/</guid>
+        
+        <category>data hazard</category>
+        
+        <category>RAW</category>
+        
+        <category>pipeline</category>
+        
+        <category>cpu</category>
+        
+        <category>RAW Hazrd</category>
+        
+        <category>Branch Prediction</category>
+        
+        <category>2-bit global</category>
+        
+        
+        <category>Computer-Architecture</category>
+        
+      </item>
     
       <item>
         <title>Pipeline CPU(2) Pipeline-CPU의 간략한 이해</title>
@@ -17,7 +294,7 @@
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-2/&quot;&gt;Pipeline CPU(2) : Pipeline-CPU의 간략한 이해&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;/computer-architecture/data-hazard/&quot;&gt;Pipeline CPU(3) : Data Hazard&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-3/&quot;&gt;Pipeline CPU(3) : Data Hazard&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/blockquote&gt;
 
@@ -123,7 +400,7 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
   &lt;ul&gt;
     &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-2/&quot;&gt;Pipeline CPU(2) : Pipeline-CPU의 간략한 이해&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;/computer-architecture/data-hazard/&quot;&gt;Pipeline CPU(3) : Data Hazard&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-3/&quot;&gt;Pipeline CPU(3) : Data Hazard&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/blockquote&gt;
 
@@ -352,212 +629,6 @@ React Hook은 컴포넌트의 Top level에서 call해야한다.(nested hooks are
         
         
         <category>React</category>
-        
-      </item>
-    
-      <item>
-        <title>Pipeline CPU(3)- Data Hazard</title>
-        <description>&lt;blockquote&gt;
-  &lt;h3 id=&quot;pipeline-cpu-목차&quot;&gt;Pipeline-CPU 목차&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-1/&quot;&gt;Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;/computer-architecture/pipeline-2/&quot;&gt;Pipeline CPU(2) : Pipeline-CPU의 간략한 이해&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;/computer-architecture/data-hazard/&quot;&gt;Pipeline CPU(3) : Data Hazard&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;세가지-주요-사항&quot;&gt;세가지 주요 사항&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Data Hazard&lt;/li&gt;
-  &lt;li&gt;Control Hazard&lt;/li&gt;
-  &lt;li&gt;Branch Prediction&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;이번 Post에서는 위의 세가지 주요 특징들 중에서도 &lt;strong&gt;1. Data Hazard&lt;/strong&gt;
-를 해결하는 방법에 대해 구체적으로 알아 봅시다.&lt;/p&gt;
-
-&lt;h3 id=&quot;data-dependence&quot;&gt;Data Dependence&lt;/h3&gt;
-
-&lt;p&gt;Data Dependence의 종류에는 다음의 세가지 경우가 존재합니다.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;RAW(Read-After-Write, True-Dependence)&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;Pipeline-CPU&lt;/strong&gt;는 Multi-Cycle-CPU와 마찬가지로 &lt;strong&gt;IF, ID, EX, MEM, WB&lt;/strong&gt;의 단계들을 거칩니다. 그러나 연속적으로 매 싸이클마다 새로운 Instruction이 들어오는 Pipeline-CPU의 특성상 RAW와 같은 경우가 발생하였을 때, &lt;strong&gt;Write($x2)를 먼저 수행하여야 함에도 불구하고, Write가 되어지지 않은 $x2 레지스터 값을 먼저 읽어오는 매우 심각한 Hazard&lt;/strong&gt;가 발생합니다.&lt;/p&gt;
-
-&lt;p&gt;따라서 연속적인 Instruction들이 쏟아지는 Pipeline-CPU를 완벽하게 작동시키기 위해서는 &lt;strong&gt;RAW Hazard&lt;/strong&gt;를 어떻게 처리하여야 할지 고민해야 합니다.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;WAR(Write-After-Read, Anti-Dependence)&lt;/li&gt;
-    &lt;li&gt;WAW(Write-After-Write, Output-Dependence)&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/* WAR */&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
-&lt;span class=&quot;cm&quot;&gt;/* WAW */&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;WAR와 WAW&lt;/strong&gt;는 함께 묶어서 &lt;strong&gt;False dependency&lt;/strong&gt;라고 합니다. Pipeline CPU에서 instruction의 실행 순서상 &lt;strong&gt;read 가 IF/ID에서 항상 먼저&lt;/strong&gt; 실행된 다음에 &lt;strong&gt;WB단계에서 Write가&lt;/strong&gt; 됩니다. 이러한 Pipeline-CPU의 특성상 이 두가지 dependence의 경우는 True data hazard에 해당되지 않습니다.&lt;/p&gt;
-
-&lt;p&gt;따라서 레지스터에 저장된 data로 인해 발생되는 문제가 아닌 레지스터의 name과 관계된 문제라고 이해를 하면 됩니다. &lt;strong&gt;False dependence(WAR, WAW)&lt;/strong&gt;의 경우, 만약 무한히 많은 레지스터가 있다면 레지스터를 다음과 같이 &lt;strong&gt;Renaming&lt;/strong&gt;함으로 써 문제를 완벽하게 해결이 가능합니다.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/* Renaming 전 */&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Write)&lt;/span&gt;
-&lt;span class=&quot;cm&quot;&gt;/* Renaming 후 */&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2(Read)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// $x2--&amp;gt;$x8(Write)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;raw-hazard&quot;&gt;RAW Hazard&lt;/h3&gt;
-
-&lt;p&gt;앞서 살펴본 세가지 &lt;strong&gt;Data dependence&lt;/strong&gt;의 경우 중 하나인 &lt;strong&gt;RAW Hazard&lt;/strong&gt;에 대해 자세히 살펴봅시다. &lt;strong&gt;RAW&lt;/strong&gt;의 경우는 &lt;strong&gt;Write를 먼저하고 Read를 꼭 해야하기 때문에&lt;/strong&gt;, write 가 되기도 전에 &lt;strong&gt;IF/ID에서 read를 할 경우&lt;/strong&gt; Data Hazard가 발생하므로 이를 처리해 주어야 합니다.&lt;/p&gt;
-
-&lt;p&gt;그렇다면 우선, CPU는 RAW Hazard가 발생하였다는 사실을 어떻게 알 수 있을까요?&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/*RAW Hazard 발생 조건 */&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;I_OLD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;I_YOUNG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;ex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RAW&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;발생&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// I(young) ex) R/I, LD, SD, Bxx, JALR // Read Instruction Operator&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// I(old)  ex) R/I, LD, JAL, JALR // Write Instruction Operator&lt;/span&gt;
-&lt;span class=&quot;cm&quot;&gt;/* write(old instructiion) 보다 read(young instruction)가 먼저 수행될경우 hazard가 발생한다.
-dist 가 3 보다 큰 경우는 hazard가 발생하지 않으므로 3 이하인 경우만 고려 */&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;data-forwarding-logic&quot;&gt;Data Forwarding Logic&lt;/h3&gt;
-
-&lt;p align=&quot;center&quot;&gt;
-  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116329894-40c7b780-a807-11eb-8e9e-7580d0685266.png&quot; width=&quot;400&quot; /&gt;&lt;br /&gt;Feature1. Forwarding diagram
-&lt;/p&gt;
-&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_MEM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RegWrite_MEM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist=1&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs_EX&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_WB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RegWrite_WB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;forward&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;WB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dist=2&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;operand&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;register&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//dist=3&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;(마찬가지로 rs2에도 위의 forwarding logic을 수행하면 된다.)&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Data Forwarding&lt;/strong&gt; 을 이해하는데 필요한 다음의 두가지 세부 사항을 한번 살펴보자.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.&lt;/strong&gt;&lt;br /&gt;
-&lt;strong&gt;2. use_rs1(IR_ID)는 왜 확인할 필요가 없을까?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;1-가장-최근의-값을-먼저-forwarding-해주어야-한다&quot;&gt;1. 가장 최근의 값을 먼저 Forwarding 해주어야 한다.&lt;/h3&gt;
-
-&lt;p&gt;다음의 예시의 경우를 한 번 살펴보자&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;sub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x3&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x5&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 1, 2번째와 RAW(x2)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 2, 3번째와 RAW(x2)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;위의 예시와 같은 경우에 만약 3번째 줄을 수행할 때,&lt;br /&gt;
-&lt;strong&gt;Data forwarding&lt;/strong&gt;을 &lt;strong&gt;dist=1 보다 dist=2를&lt;/strong&gt; 먼저 수행한다고 가정하여 보자.&lt;br /&gt;
-&lt;strong&gt;올바른 계산은 3번째 줄에게 가장 최근인 add를 한 결과를 x2가 받아와야 할 것이다.&lt;/strong&gt;&lt;br /&gt;
-하지만, add를 수행하기 전인 &lt;strong&gt;sub의 결과로 부터 x2&lt;/strong&gt;를 읽어오는 forwarding을 수행하기 때문에 올바른 결과값을 갖지 못하게 된다!&lt;/p&gt;
-
-&lt;p&gt;따라서
-위의 &lt;strong&gt;Data Forwarding Logic&lt;/strong&gt;에서 확인할 수 있듯이, dist가 적은 1,2,3 즉 가장 가까운 값으로 부터 forwarding을 수행해주어야한다.&lt;/p&gt;
-
-&lt;h3 id=&quot;2-use_rs1ir_id는-왜-확인할-필요가-없을까&quot;&gt;2. use_rs1(IR_ID)는 왜 확인할 필요가 없을까?&lt;/h3&gt;
-
-&lt;p align=&quot;center&quot;&gt;
-  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116332847-77a0cc00-a80d-11eb-897e-b41e4905fd52.png&quot; width=&quot;400&quot; /&gt;&lt;br /&gt;Feature2. Stall Condition
-&lt;/p&gt;
-&lt;p&gt;pipeline CPU를 수행하는데 있어서 Data Hazard 문제를 해결하기 위해 Stall 하는 방법이 있었다.
-Stall의 조건에는 &lt;strong&gt;use_rs(IR_ID)&lt;/strong&gt; 를 통해 아직 Write 되지 않은 값을 ID에 넣어주는 지를 확인한다.&lt;/p&gt;
-
-&lt;p&gt;하지만 Data Forwarding 에서는 &lt;strong&gt;ID 단계를 Bypass&lt;/strong&gt; 하고 EX에 바로 값을 forwarding 해주기 때문에 use_rs(IR_ID)가 더이상 필요없을 것이다.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;data-forwarding으로-모든-instructionraw을-해결할-수-있을까&quot;&gt;Data forwarding으로 모든 instruction(RAW)을 해결할 수 있을까?&lt;/h3&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;ld&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x7&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// RAW(x2)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;sub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x10&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;위의 경우 add에서 dist=1 이므로 data forwarding을 해주면 되지만 &lt;strong&gt;LD instruction&lt;/strong&gt;이기 때문에 문제가 발생한다.&lt;br /&gt;
-LD instruction의 경우, ALU로 부터 계산된 값이 아닌 &lt;strong&gt;메모리를 Read 한 값을 Forwarding&lt;/strong&gt; 해주어야 하므로 &lt;strong&gt;dist=1&lt;/strong&gt;일때 한 번의 STALL을 필요로 한다.&lt;/p&gt;
-
-&lt;p&gt;따라서 DataForwarding Logic과 함께 다음의 stall 조건을 필요로 한다.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//Stall&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs1_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;use_rs1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IR_ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rs2_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rd_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;use_rsw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IR_ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MemRead_EX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stall&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//MemRead_EX : op=LD/LW/...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;전체적인-구현-design&quot;&gt;전체적인 구현 Design&lt;/h2&gt;
-
-&lt;p&gt;RAW Hazard를 고려한 Data Forwarding 구현은 다음과 같습니다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Data forwarding&lt;/li&gt;
-  &lt;li&gt;Hazard Detection(LD의 경우, STALL)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p align=&quot;center&quot;&gt;
-  &lt;img src=&quot;https://user-images.githubusercontent.com/80669616/116356232-f90c5480-a835-11eb-8979-b49dd1ad6250.png&quot; width=&quot;700&quot; /&gt;&lt;br /&gt;Feature3. Pipeline CPU design(Data Forwarding)
-&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;Post의 참고자료와 이미지의 출처는 아래와 같습니다.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Computer Organization and Design RISC-V edition&lt;br /&gt;
-Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr /&gt;
-</description>
-        <pubDate>Tue, 27 Apr 2021 00:00:00 +0900</pubDate>
-        <link>https://kyungphildev.github.io/computer-architecture/data-hazard/</link>
-        <guid isPermaLink="true">https://kyungphildev.github.io/computer-architecture/data-hazard/</guid>
-        
-        <category>computer architecture</category>
-        
-        <category>computer science</category>
-        
-        <category>pipeline</category>
-        
-        <category>cpu</category>
-        
-        <category>RAW Hazrd</category>
-        
-        <category>Branch Prediction</category>
-        
-        <category>2-bit global</category>
-        
-        
-        <category>Computer-Architecture</category>
         
       </item>
     
