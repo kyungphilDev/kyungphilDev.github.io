@@ -1,0 +1,682 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="ko" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Pipeline CPU(5)- Control Hazard - KyungPhil Dev</title>
+<meta name="description" content="Pipeline-CPU 목차         Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU     Pipeline CPU(2) : Pipeline-CPU의 간략한 이해     Pipeline CPU(3) : Data Hazard(RAW)     Pipeline CPU(4) : Data Forwarding     Pipeline CPU(5) : Control Hazard">
+
+
+  <meta name="author" content="KyungPhil Park">
+  
+  <meta property="article:author" content="KyungPhil Park">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="KyungPhil Dev">
+<meta property="og:title" content="Pipeline CPU(5)- Control Hazard">
+<meta property="og:url" content="https://kyungphildev.github.io/computer-architecture/pipeline-5/">
+
+
+  <meta property="og:description" content="Pipeline-CPU 목차         Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU     Pipeline CPU(2) : Pipeline-CPU의 간략한 이해     Pipeline CPU(3) : Data Hazard(RAW)     Pipeline CPU(4) : Data Forwarding     Pipeline CPU(5) : Control Hazard">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-06-24T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://kyungphildev.github.io/computer-architecture/pipeline-5/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "KyungPhil Park",
+      "url": "https://kyungphildev.github.io/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="KyungPhil Dev Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--posts">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          매일 꾸준하게
+          <span class="site-subtitle">Everything about Computer Science!</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">토글 메뉴</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">토글 메뉴</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">컴퓨터 구조 <br> (Computer Architecture)</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/computer-architecture/pipeline-1/">Pipeline CPU(1) <br> Single-Cycle vs Multi-Cycle CPU</a></li>
+          
+            <li><a href="/computer-architecture/pipeline-2/">Pipeline CPU(2) - Pipeline-CPU의 간략한 이해</a></li>
+          
+            <li><a href="/computer-architecture/data-hazard/">Pipeline CPU(3) - Data Hazard</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">React Study</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/react/react-study-1/">React 주요개념</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+
+    
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Pipeline CPU(5)- Control Hazard</h1>
+    
+    <blockquote>
+  <h3 id="pipeline-cpu-목차">Pipeline-CPU 목차</h3>
+
+  <ul>
+    <li><a href="/computer-architecture/pipeline-1/">Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU</a></li>
+    <li><a href="/computer-architecture/pipeline-2/">Pipeline CPU(2) : Pipeline-CPU의 간략한 이해</a></li>
+    <li><a href="/computer-architecture/pipeline-3/">Pipeline CPU(3) : Data Hazard(RAW)</a></li>
+    <li><a href="/computer-architecture/pipeline-4/">Pipeline CPU(4) : Data Forwarding</a></li>
+    <li><a href="/computer-architecture/pipeline-5/">Pipeline CPU(5) : Control Hazard</a></li>
+  </ul>
+</blockquote>
+
+<h3 id="세가지-주요-사항">세가지 주요 사항</h3>
+
+<ol>
+  <li>Data Hazard</li>
+  <li>Control Hazard</li>
+  <li>Branch Prediction</li>
+</ol>
+
+<hr />
+
+<h2 id="control-hazard">Control Hazard</h2>
+
+<p>앞서 <strong>Pipeline-CPU</strong>를 이해하는데 중요한 세가지 주요 사항들 중에서 <strong>Data Hazard와 그 해결 방법(Data Forwarding)</strong>에 대해 알아보았습니다. 이번 Post에서는 <strong>Control Hazard</strong>가 무엇인지에 대해서 알아봅시다.</p>
+
+<p><strong>Control Hazard</strong>는 <strong>Control Flow</strong>와 관련된 문제입니다. <strong>Data Hazard</strong>가 <strong>레지스터들간의 Data Depedence</strong>와 관련된 문제였다면, <strong>Control Hazard</strong>는 어떤 PC 값을 읽어와서 Instruction을 수행할지에 대한 <strong>PC에 관한 Data dependence</strong>라고 이해할 수가 있습니다.</p>
+
+<p>Pipeline-CPU가 실행되는 과정을 한 번 살펴봅시다. PC의 값으로 부터 해당 주소의 메모리에 든 Instruction 읽어 오고 그 읽어온 Instruction을 바탕으로 IF(Instruction Fetch) 단계를 거쳐서 <strong>ID(Instruction Decode) 단계</strong>에서 해당 Instruction이 <strong>JAL, JALR, Bxx와 같은 Control Flow Instruction</strong>인지 혹은 R/I-Type, LD, SD와 같은 다른 Instruction인지 구분을 해야합니다.</p>
+
+<p>일반적인 R/I-Type의 Instruction의 예시로, <strong>ADD operator</strong>가 ID단계에서 확인이 되었다면 <strong>Next PC</strong>는 순차적으로 현재의 PC 바로 다음인 <strong>PC+4</strong>(word 가 4-Byte인 경우)가 될 것입니다.</p>
+
+<p>하지만 <strong>JAL, Bxx</strong>와 같은 <strong>Control Flow Instruction</strong>인 경우는 어떨까요? 이 경우에는 <strong>ID 단계에서 바로 Next PC 값을 알 수가 없습니다</strong>. 이해를 돕기 위해 다음 예시를 살펴봅시다.</p>
+
+<blockquote>
+  <p>beq x1, x0, 16<br />
+// TSC_MANUAL 기준<br />
+if ($x1 == $x0) then $pc = $pc + (16+1)</p>
+</blockquote>
+
+<p>위의 BEQ Instruction이 들어왔다고 가정하여 봅시다. 두 레지스터에 든 값이 같은지 여부를 확인해야 하므로 EX 단계에서 ALU를 거쳐 <strong>MEM단계가 되어서야 Next PC 값이 확정되게 됩니다</strong>.</p>
+
+<hr />
+
+<blockquote>
+  <p>지금까지 살펴보았던 <strong>Pipeline-CPU는 매 싸이클마다 연속적으로 새로운 Instruction이 알맞게</strong> 들어온다고 생각하였습니다.<br />
+하지만 위의 내용을 종합하여 볼 때 <strong>최소 ID 단계</strong>가 되어야만 <strong>Next PC</strong>를 결정지을 수 있으므로 <strong>PC Hazard</strong>가 발생하는 것입니다.<br />
+<strong>즉 PC Hazard distance는 최소 1(R/I-Type, LD, SD 인 경우)거나 3(Bxx, JAL, JALR 인 경우)이 발생하게 됩니다.</strong></p>
+</blockquote>
+
+<h2 id="control-hazard를-피하기-위한-방법-stalling">Control Hazard를 피하기 위한 방법: Stalling</h2>
+
+<p>따라서 <strong>Control Hazard</strong>를 피하기 위해서는 <strong>최소한 ID 단계</strong>는 되어야 Next PC 값을 결정지을 수 있으므로 <strong>매번 1 STALL을 필요로 하게 됩니다.</strong></p>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/123131717-efdfe280-d488-11eb-9ed5-9c8dbee64475.png" width="800" /><br />Feature1. Control Hazard Resolved by Stalling
+</p>
+
+<p>하지만 <strong>Feature1</strong>에서 확인할 수 있듯이, 매번 1 STALL이 추가가 되게 된다면, CPU의 퍼포먼스는 반(i.e. IPC이 반으로 줄게됨)으로 줄어들게 됩니다.</p>
+
+<p>그렇다면 Control Hazard를 해결하면서도 CPU의 성능 저하를 최소화 할 수 있는 방법은 없을까요?
+그 해결방법이 다음 Post에서 중요하게 다뤄볼 <strong>Branch Prediction</strong> 입니다.</p>
+
+<hr />
+
+<p><strong>Post의 참고자료와 이미지의 출처는 아래와 같습니다.</strong></p>
+
+<blockquote>
+  <p>Computer Organization and Design RISC-V edition<br />
+Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, Michigan, Purdue University, University of Pennsylvania, University of Wisconsin and POSTECH.</p>
+</blockquote>
+
+<hr />
+
+
+<!-- <ul class="taxonomy__index">
+  
+  
+    <li>
+      <a href="#2021">
+        <strong>2021</strong> <span class="taxonomy__count">6</span>
+      </a>
+    </li>
+  
+</ul> -->
+
+
+
+
+  <section 
+    id="2021"
+    class="taxonomy__section"
+  >
+    <hr>
+    <hr>
+    <h2 class="archive__subtitle">2021 의 게시글</h2>
+    <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/pipeline-5/" rel="permalink">Pipeline CPU(5)- Control Hazard
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-06-24T00:00:00+09:00">June 24, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  Pipeline-CPU 목차
+
+  
+    Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU
+    Pipeline CPU(2) : Pipeline-CPU의 간략한 이해
+    Pipeline CPU(3) : Data Hazard(RAW...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/pipeline-4/" rel="permalink">Pipeline CPU(4)- Data Forwarding
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-06-23T00:00:00+09:00">June 23, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  Pipeline-CPU 목차
+
+  
+    Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU
+    Pipeline CPU(2) : Pipeline-CPU의 간략한 이해
+    Pipeline CPU(3) : Data Hazard(RAW...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/pipeline-3/" rel="permalink">Pipeline CPU(3)- Data Hazard
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-06-23T00:00:00+09:00">June 23, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  Pipeline-CPU 목차
+
+  
+    Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU
+    Pipeline CPU(2) : Pipeline-CPU의 간략한 이해
+    Pipeline CPU(3) : Data Hazard(RAW...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/pipeline-2/" rel="permalink">Pipeline CPU(2) Pipeline-CPU의 간략한 이해
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-06-11T00:00:00+09:00">June 11, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  Pipeline-CPU 목차
+
+  
+    Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU
+    Pipeline CPU(2) : Pipeline-CPU의 간략한 이해
+    Pipeline CPU(3) : Data Hazard(RAW...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/pipeline-1/" rel="permalink">Pipeline CPU(1) <br /> Single_Cycle_CPU VS Multi_Cycle_CPU
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-05-13T00:00:00+09:00">May 13, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  Pipeline-CPU 목차
+
+  
+    Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU
+    Pipeline CPU(2) : Pipeline-CPU의 간략한 이해
+    Pipeline CPU(3) : Data Hazard(RAW...</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/react/react-study-1/" rel="permalink">React Study(1) 정리
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-05-12T00:00:00+09:00">May 12, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Component-Driven User Interfaces
+</p>
+  </article>
+</div>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">맨 위로 이동 &uarr;</a>
+  </section>
+  
+  <!-- Utterances comment -->
+<section>
+  <script src="https://utteranc.es/client.js"
+  repo="kyungphildev/kyungphildev.github.io"
+  issue-term="pathname"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+  </script>
+</section>
+  
+  <!--  -->
+  
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="검색어를 입력하세요..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>팔로우:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/kyungphildev" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> 피드</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 KyungPhil Park. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'kyungphildev/kyungphildev.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

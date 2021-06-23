@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>Pipeline CPU(4)- Data Forwarding - KyungPhil Dev</title>
-<meta name="description" content="Pipeline-CPU 목차         Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU     Pipeline CPU(2) : Pipeline-CPU의 간략한 이해     Pipeline CPU(3) : Data Hazard(RAW)     Pipeline CPU(4) : Data Forwarding">
+<meta name="description" content="Pipeline-CPU 목차         Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU     Pipeline CPU(2) : Pipeline-CPU의 간략한 이해     Pipeline CPU(3) : Data Hazard(RAW)     Pipeline CPU(4) : Data Forwarding     Pipeline CPU(5) : Control Hazard">
 
 
   <meta name="author" content="KyungPhil Park">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://kyungphildev.github.io/computer-architecture/pipeline-4/">
 
 
-  <meta property="og:description" content="Pipeline-CPU 목차         Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU     Pipeline CPU(2) : Pipeline-CPU의 간략한 이해     Pipeline CPU(3) : Data Hazard(RAW)     Pipeline CPU(4) : Data Forwarding">
+  <meta property="og:description" content="Pipeline-CPU 목차         Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU     Pipeline CPU(2) : Pipeline-CPU의 간략한 이해     Pipeline CPU(3) : Data Hazard(RAW)     Pipeline CPU(4) : Data Forwarding     Pipeline CPU(5) : Control Hazard">
 
 
 
@@ -236,6 +236,7 @@
     <li><a href="/computer-architecture/pipeline-2/">Pipeline CPU(2) : Pipeline-CPU의 간략한 이해</a></li>
     <li><a href="/computer-architecture/pipeline-3/">Pipeline CPU(3) : Data Hazard(RAW)</a></li>
     <li><a href="/computer-architecture/pipeline-4/">Pipeline CPU(4) : Data Forwarding</a></li>
+    <li><a href="/computer-architecture/pipeline-5/">Pipeline CPU(5) : Control Hazard</a></li>
   </ul>
 </blockquote>
 
@@ -247,7 +248,7 @@
 
 <p>하지만 STALL을 사용하는 것의 단점은 매번 RAW Hazard가 발생될 때마다, <strong>STALL이 생겨남으로 인해서 CPU의 성능이 저하가 된다는 단점이 있습니다.</strong> 성능의 저하없이 더욱 효율적인 해결방안은 없을까요?</p>
 
-<h2 id="data-forwarding-logic">Data Forwarding Logic</h2>
+<h2 id="data-forwarding-logicregister-bypassing">Data Forwarding Logic(=Register Bypassing)</h2>
 
 <p>STALL을 사용하는 방법보다 더욱 효과적인 방법이 <strong>Data Forwarding</strong>을 사용하는 방법입니다. 결론부터 말하자면, <strong>Data Forwarding</strong>을 통해서 <strong>dist(i,j)=1 인 LD(i.e. Load Instruction)</strong>을 제외한 모든 RAW Hazard를 해결할 수가 있습니다.</p>
 
@@ -357,7 +358,7 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
   
     <li>
       <a href="#2021">
-        <strong>2021</strong> <span class="taxonomy__count">5</span>
+        <strong>2021</strong> <span class="taxonomy__count">6</span>
       </a>
     </li>
   
@@ -374,6 +375,48 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
     <hr>
     <h2 class="archive__subtitle">2021 의 게시글</h2>
     <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/computer-architecture/pipeline-5/" rel="permalink">Pipeline CPU(5)- Control Hazard
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-06-24T00:00:00+09:00">June 24, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+  Pipeline-CPU 목차
+
+  
+    Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU
+    Pipeline CPU(2) : Pipeline-CPU의 간략한 이해
+    Pipeline CPU(3) : Data Hazard(RAW...</p>
+  </article>
+</div>
+
       
         
 
@@ -496,10 +539,7 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
   
     Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU
     Pipeline CPU(2) : Pipeline-CPU의 간략한 이해
-    Pipeline CPU(3) : Data Hazard
-  
-
-</p>
+    Pipeline CPU(3) : Data Hazard(RAW...</p>
   </article>
 </div>
 
@@ -541,10 +581,7 @@ Computer Architecrue Lecture Note @ Carnegie Mellon University, University of, M
   
     Pipeline CPU(1) : Single-Cycle vs Multi-Cycle CPU
     Pipeline CPU(2) : Pipeline-CPU의 간략한 이해
-    Pipeline CPU(3) : Data Hazard
-  
-
-</p>
+    Pipeline CPU(3) : Data Hazard(RAW...</p>
   </article>
 </div>
 
