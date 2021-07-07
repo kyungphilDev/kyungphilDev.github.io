@@ -5,8 +5,8 @@
     <description>Computer Science Dept</description>
     <link>https://kyungphildev.github.io/</link>
     <atom:link href="https://kyungphildev.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 07 Jul 2021 14:58:42 +0900</pubDate>
-    <lastBuildDate>Wed, 07 Jul 2021 14:58:42 +0900</lastBuildDate>
+    <pubDate>Wed, 07 Jul 2021 15:03:30 +0900</pubDate>
+    <lastBuildDate>Wed, 07 Jul 2021 15:03:30 +0900</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -90,6 +90,10 @@ sorted()는 리스트의 정렬된 새로운 &lt;strong&gt;복사본&lt;/strong&
 &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;ll&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
         <pubDate>Tue, 06 Jul 2021 00:00:00 +0900</pubDate>
         <link>https://kyungphildev.github.io/python/python/</link>
