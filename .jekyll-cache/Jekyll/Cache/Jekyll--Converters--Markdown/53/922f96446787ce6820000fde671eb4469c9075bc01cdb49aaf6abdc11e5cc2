@@ -1,0 +1,299 @@
+I"�<h3 id="component-driven-user-interfaces">Component-Driven User Interfaces</h3>
+
+<ul>
+  <li>A Client-side JavaScript library</li>
+  <li>
+    <p>All aobut building modern, reactive user interfaces for the web</p>
+  </li>
+  <li>Building Single-Page-Applications (SPAs)</li>
+</ul>
+
+<h3 id="배워야할-개념들">배워야할 개념들</h3>
+
+<ul>
+  <li>Components &amp; Building UIs</li>
+  <li>Working with Events &amp; Data: “props” and “state”</li>
+  <li>Styling React Apps &amp; Components</li>
+  <li>React Hooks</li>
+  <li>React Redux</li>
+  <li>Http Requests &amp; Custom Hooks</li>
+  <li>Routing, Deployment, NextJS &amp; etc</li>
+</ul>
+
+<h3 id="component">Component</h3>
+
+<ul>
+  <li>functional programming의 개념</li>
+  <li>Reusability</li>
+  <li>reactive components consited of HTML and JavaScript (and CSS)</li>
+  <li>Define the desired target state</li>
+  <li>let React figure out the actual JAvaScript Dom instructions</li>
+</ul>
+
+<h3 id="6월-13일">6월 13일</h3>
+
+<blockquote>
+  <p>29번. JSX javascript XML
+developer friendly code를 가능하게 해주는 것.
+Component in React is just a JavaScript function.
+사용자 정의된 Component는 Upper case로 시작해야한다.
+Lower case로 시작한 것은 div 이런 기본 element들로 인식.
+하나의 컴포넌트는 하나의 root element를 소유해야만 한다.
+React로 render 한 이후에 element view된 값들을 수정하려면 일반적인 함수를 통한 방법으로는 다시 re-render(reevaluation) 되지 않는다. 왜냐하면 element가 event가 발생한 사실을 알 수가 없기 때문이다. 따라서 State가 필요하다.
+state를 update할 때 previous state를 즉 가장 최근의 data를 update하도록 잘 설정해주어야 한다.</p>
+</blockquote>
+
+<blockquote>
+  <p>styledComponents
+cssModule</p>
+</blockquote>
+
+<blockquote>
+  <p>React.Fragments : wrapper for preventing from nested div problems(unnecessary many div_s).
+React Portal: ex) Modal hierarchy
+Controlled vs UnControlled Component</p>
+</blockquote>
+
+<hr />
+
+<p>**
+useEffect Hook 잘 이해하기 !!</p>
+
+<blockquote>
+  <p>useEffect() Hook!! : To re-run logic when some specific data has been changed(change is detected)</p>
+</blockquote>
+
+<blockquote>
+  <p>debouncing: to check whether user is done keystroking
+useEffect() 함수 내에서 return () =&gt; {} 의 함수는 다시한번 useEffect가 호출되기 직전에 return안의 함수가 실행된다. 처음에은 실행X. 따라서 return 안에는 cleanUp해주는 함수들을 정의해서 넣어주면 된다.(ex clearTimeout…)</p>
+</blockquote>
+
+<hr />
+
+<p>**
+useReducer Hook!</p>
+
+<blockquote>
+  <p>useState에서 만약 다른 state 값을 접근하여 state값을 변경하도록 하는 로직이라면 잘 못 작성한 useState사용 방식이다(룰에 어긋남, 다른 state가 도중에 변경되는 sync가 안 맞을 수도 있는 그런 경우 때문인듯), 그래서 이 경우에 useReducer를 사용할 수 있다.</p>
+</blockquote>
+
+<hr />
+
+<p>React Context!</p>
+
+<blockquote>
+  <p>data forwarding을 위해서 아무 의미없이 컴포넌트가 dat의 forward역할 (거쳐가는 통로)로만 사용되면 big project(huge project)일 때 너무 번거롭고 오류가 생길 수 있기에 React Context를 사용하면 유용하다.</p>
+</blockquote>
+
+<blockquote>
+  <p>long-prop-chain 문제를 해결가능</p>
+</blockquote>
+
+<hr />
+
+<p>React Hook Rules</p>
+
+<blockquote>
+  <p>React Hook은 React 컴포넌트 내에서만 사용가능하다.
+React Hook은 컴포넌트의 Top level에서 call해야한다.(nested hooks are not allowed)</p>
+</blockquote>
+
+<hr />
+
+<p>Look behind the scenes of react</p>
+
+<blockquote>
+  <p>Virtual DOM diffing
+React.memo()
+javascript는</p>
+</blockquote>
+
+<ul>
+  <li>false === false =&gt; true;</li>
+  <li>‘hi’ === ‘hi’ =&gt; true;</li>
+  <li>[1,2,3] === [1,2,3] =&gt; false; !! 위와 같은 primitive variable은 구분하지만 function이나 Object는 비교를 하지 않는다 따라서 JS는 이걸 주의해야한다.(항상 새로운 값으로 바뀐것으로 인식하여 re-render 되기 때문)</li>
+</ul>
+
+<blockquote>
+  <p>useMemo(()=&gt; {
+return …;
+}, [items]);</p>
+</blockquote>
+
+<hr />
+
+<p>Class-based Components(Not a Components as Functions)</p>
+
+<blockquote>
+  <p>Class-based Components can’t use React Hooks!
+옛날 버전의 React</p>
+</blockquote>
+
+<blockquote>
+  <p>Error Boundaries 는 Class-based Component 에서만 ComponentDidCatch(error) 이런 방식으로 사용가능하다.</p>
+</blockquote>
+
+<hr />
+
+<p>**중요
+Custom Hooks</p>
+
+<blockquote>
+  <p>Why?
+duplication of same logic 일때 유용 (customized reusing logic)
+useOOOO 로 함수 이름을 정해야 한다.
+Generic한 Rule을 따라야한다.</p>
+</blockquote>
+
+<hr />
+
+<p>**
+Redux</p>
+
+<blockquote>
+  <p>state management system for cross-component or app-wide state
+Redux vs React Context</p>
+</blockquote>
+
+<blockquote>
+  <p>React Context 단점
+-Complex Setup/Management
+-high-frequency changes makes low Performance</p>
+</blockquote>
+
+<blockquote>
+  <p>Redux
+-Central Data(State) store
+-Subscription
+-Reducer Function mutates store data
+-Components Dispatch Action, Actions are Forwarded to Reducer fuction -항상 override state 방식으로 mutate해야만한다 주의 !!(state immutability)
+npm i redux react-redux
+npm i @reduxjs/toolkit</p>
+</blockquote>
+
+<hr />
+
+<p>중요**
+Advanced Redux</p>
+
+<ul>
+  <li>Handling Async Tasks with Redux</li>
+</ul>
+
+<hr />
+
+<p>Routing</p>
+
+<blockquote>
+  <p>npm i react-router-dom
+Router
+NavLink
+Switch : 원하는 하나의 page link만 load 하도록
+예시 : &lt;Route path={<code class="language-plaintext highlighter-rouge">/quotes/${params.quoteId}/comments</code>}&gt;
+Prompt
+Query URL
+useParams
+useRouterMatch
+Redirect</p>
+</blockquote>
+
+<hr />
+
+<p>Deployment</p>
+
+<p>-Test Code
+-Optimize Code</p>
+
+<blockquote>
+  <p>ex) React.memo 불필요한 re-render 요소 줄이기
+Lazy Loading</p>
+</blockquote>
+
+<p>-Build App for Production
+-Upload Production Code to Server
+-Configure Server</p>
+
+<blockquote>
+  <p>Server-side Routing vs Client-side Routing</p>
+</blockquote>
+
+<hr />
+
+<p>Authentification</p>
+
+<ol>
+  <li>Get access / permission</li>
+  <li>Send request to protected resource</li>
+</ol>
+
+<p>Authentification Tokens</p>
+
+<ul>
+  <li>Server creates permission token on server, send token to client</li>
+  <li>Clients sends token along with requests to profected resources
+    <blockquote>
+      <p>because server only know the private key of the token</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>In this project, I’m gonna use firebase auth rest api</p>
+
+<ul>
+  <li>Protecting Fronted Pages</li>
+</ul>
+
+<hr />
+
+<p>NextJS</p>
+
+<ul>
+  <li>The React Framework for production</li>
+  <li>lots of built-in features(e.g. routing) that help you solve common problems &amp; clear guidance on how to use those features</li>
+  <li>A fullstack framework for ReactJS</li>
+</ul>
+
+<ol>
+  <li>server-side rendering(but React is client-side rendering) 따라서, search-engine으로 검색이 가능하게 된다.</li>
+</ol>
+
+<ul>
+  <li>Automatic page pre-rendering: Great for SEO and initial load</li>
+  <li>Blending client-side and server-side: Fetch data on the server and render finished pages</li>
+</ul>
+
+<ol>
+  <li>File-based Routing</li>
+</ol>
+
+<ul>
+  <li>Define pages and routes with files and folders instead of code</li>
+  <li>Less code, less work, highly understandable</li>
+</ul>
+
+<ol>
+  <li>Fullstack Capabilities</li>
+</ol>
+
+<ul>
+  <li>Easily add backend(server-side) code to your Next / React apps</li>
+  <li>Storing data, getting data, authentication etc. can be added to your React projects</li>
+</ul>
+
+<hr />
+
+<p>NextJS</p>
+
+<ol>
+  <li>npm run dev</li>
+</ol>
+
+<ul>
+  <li>Two form of Pre-Rendering</li>
+</ul>
+
+<ol>
+  <li>Static Generation</li>
+  <li>Server-side Rendering</li>
+</ol>
+:ET

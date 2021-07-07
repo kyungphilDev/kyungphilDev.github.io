@@ -286,7 +286,8 @@ Controlled vs UnControlled Component</p>
 
 <hr />
 
-<p>useEffect Hook 잘 이해하기 !!</p>
+<p>**
+useEffect Hook 잘 이해하기 !!</p>
 
 <blockquote>
   <p>useEffect() Hook!! : To re-run logic when some specific data has been changed(change is detected)</p>
@@ -299,7 +300,8 @@ useEffect() 함수 내에서 return () =&gt; {} 의 함수는 다시한번 useEf
 
 <hr />
 
-<p>useReducer Hook!</p>
+<p>**
+useReducer Hook!</p>
 
 <blockquote>
   <p>useState에서 만약 다른 state 값을 접근하여 state값을 변경하도록 하는 로직이라면 잘 못 작성한 useState사용 방식이다(룰에 어긋남, 다른 state가 도중에 변경되는 sync가 안 맞을 수도 있는 그런 경우 때문인듯), 그래서 이 경우에 useReducer를 사용할 수 있다.</p>
@@ -326,13 +328,212 @@ useEffect() 함수 내에서 return () =&gt; {} 의 함수는 다시한번 useEf
 React Hook은 컴포넌트의 Top level에서 call해야한다.(nested hooks are not allowed)</p>
 </blockquote>
 
+<hr />
+
+<p>Look behind the scenes of react</p>
+
+<blockquote>
+  <p>Virtual DOM diffing
+React.memo()
+javascript는</p>
+</blockquote>
+
+<ul>
+  <li>false === false =&gt; true;</li>
+  <li>‘hi’ === ‘hi’ =&gt; true;</li>
+  <li>[1,2,3] === [1,2,3] =&gt; false; !! 위와 같은 primitive variable은 구분하지만 function이나 Object는 비교를 하지 않는다 따라서 JS는 이걸 주의해야한다.(항상 새로운 값으로 바뀐것으로 인식하여 re-render 되기 때문)</li>
+</ul>
+
+<blockquote>
+  <p>useMemo(()=&gt; {
+return …;
+}, [items]);</p>
+</blockquote>
+
+<hr />
+
+<p>Class-based Components(Not a Components as Functions)</p>
+
+<blockquote>
+  <p>Class-based Components can’t use React Hooks!
+옛날 버전의 React</p>
+</blockquote>
+
+<blockquote>
+  <p>Error Boundaries 는 Class-based Component 에서만 ComponentDidCatch(error) 이런 방식으로 사용가능하다.</p>
+</blockquote>
+
+<hr />
+
+<p>**중요
+Custom Hooks</p>
+
+<blockquote>
+  <p>Why?
+duplication of same logic 일때 유용 (customized reusing logic)
+useOOOO 로 함수 이름을 정해야 한다.
+Generic한 Rule을 따라야한다.</p>
+</blockquote>
+
+<hr />
+
+<p>**
+Redux</p>
+
+<blockquote>
+  <p>state management system for cross-component or app-wide state
+Redux vs React Context</p>
+</blockquote>
+
+<blockquote>
+  <p>React Context 단점
+-Complex Setup/Management
+-high-frequency changes makes low Performance</p>
+</blockquote>
+
+<blockquote>
+  <p>Redux
+-Central Data(State) store
+-Subscription
+-Reducer Function mutates store data
+-Components Dispatch Action, Actions are Forwarded to Reducer fuction -항상 override state 방식으로 mutate해야만한다 주의 !!(state immutability)
+npm i redux react-redux
+npm i @reduxjs/toolkit</p>
+</blockquote>
+
+<hr />
+
+<p>중요**
+Advanced Redux</p>
+
+<ul>
+  <li>Handling Async Tasks with Redux</li>
+</ul>
+
+<hr />
+
+<p>Routing</p>
+
+<blockquote>
+  <p>npm i react-router-dom
+Router
+NavLink
+Switch : 원하는 하나의 page link만 load 하도록
+예시 : &lt;Route path={<code class="language-plaintext highlighter-rouge">/quotes/${params.quoteId}/comments</code>}&gt;
+Prompt
+Query URL
+useParams
+useRouterMatch
+Redirect</p>
+</blockquote>
+
+<hr />
+
+<p>Deployment</p>
+
+<p>-Test Code
+-Optimize Code</p>
+
+<blockquote>
+  <p>ex) React.memo 불필요한 re-render 요소 줄이기
+Lazy Loading</p>
+</blockquote>
+
+<p>-Build App for Production
+-Upload Production Code to Server
+-Configure Server</p>
+
+<blockquote>
+  <p>Server-side Routing vs Client-side Routing</p>
+</blockquote>
+
+<hr />
+
+<p>Authentification</p>
+
+<ol>
+  <li>Get access / permission</li>
+  <li>Send request to protected resource</li>
+</ol>
+
+<p>Authentification Tokens</p>
+
+<ul>
+  <li>Server creates permission token on server, send token to client</li>
+  <li>Clients sends token along with requests to profected resources
+    <blockquote>
+      <p>because server only know the private key of the token</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>In this project, I’m gonna use firebase auth rest api</p>
+
+<ul>
+  <li>Protecting Fronted Pages</li>
+</ul>
+
+<hr />
+
+<p>NextJS</p>
+
+<ul>
+  <li>The React Framework for production</li>
+  <li>lots of built-in features(e.g. routing) that help you solve common problems &amp; clear guidance on how to use those features</li>
+  <li>A fullstack framework for ReactJS</li>
+</ul>
+
+<ol>
+  <li>server-side rendering(but React is client-side rendering) 따라서, search-engine으로 검색이 가능하게 된다.</li>
+</ol>
+
+<ul>
+  <li>Automatic page pre-rendering: Great for SEO and initial load</li>
+  <li>Blending client-side and server-side: Fetch data on the server and render finished pages</li>
+</ul>
+
+<ol>
+  <li>File-based Routing</li>
+</ol>
+
+<ul>
+  <li>Define pages and routes with files and folders instead of code</li>
+  <li>Less code, less work, highly understandable</li>
+</ul>
+
+<ol>
+  <li>Fullstack Capabilities</li>
+</ol>
+
+<ul>
+  <li>Easily add backend(server-side) code to your Next / React apps</li>
+  <li>Storing data, getting data, authentication etc. can be added to your React projects</li>
+</ul>
+
+<hr />
+
+<p>NextJS</p>
+
+<ol>
+  <li>npm run dev</li>
+</ol>
+
+<ul>
+  <li>Two form of Pre-Rendering</li>
+</ul>
+
+<ol>
+  <li>Static Generation</li>
+  <li>Server-side Rendering</li>
+</ol>
+
 
 <!-- <ul class="taxonomy__index">
   
   
     <li>
       <a href="#2021">
-        <strong>2021</strong> <span class="taxonomy__count">6</span>
+        <strong>2021</strong> <span class="taxonomy__count">7</span>
       </a>
     </li>
   
@@ -349,6 +550,44 @@ React Hook은 컴포넌트의 Top level에서 call해야한다.(nested hooks are
     <hr>
     <h2 class="archive__subtitle">2021 의 게시글</h2>
     <div class="entries-list">
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/python/python/" rel="permalink">파이썬 정리 노트(1)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-07-06T00:00:00+09:00">July 6, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">몇 가지 헷갈리거나 새롭게 알게된 문법이나 함수, 메소드들을 정리하려고 합니다.
+제 기준으로 작성한 것이므로 참고만 해주세요.
+</p>
+  </article>
+</div>
+
       
         
 

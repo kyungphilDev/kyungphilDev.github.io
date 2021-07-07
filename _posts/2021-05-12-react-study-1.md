@@ -173,3 +173,54 @@ Deployment
 -Configure Server
 
 > Server-side Routing vs Client-side Routing
+
+---
+
+Authentification
+
+1. Get access / permission
+2. Send request to protected resource
+
+Authentification Tokens
+
+- Server creates permission token on server, send token to client
+- Clients sends token along with requests to profected resources
+  > because server only know the private key of the token
+
+In this project, I'm gonna use firebase auth rest api
+
+- Protecting Fronted Pages
+
+---
+
+NextJS
+
+- The React Framework for production
+- lots of built-in features(e.g. routing) that help you solve common problems & clear guidance on how to use those features
+- A fullstack framework for ReactJS
+
+1. server-side rendering(but React is client-side rendering) 따라서, search-engine으로 검색이 가능하게 된다.
+
+- Automatic page pre-rendering: Great for SEO and initial load
+- Blending client-side and server-side: Fetch data on the server and render finished pages
+
+2. File-based Routing
+
+- Define pages and routes with files and folders instead of code
+- Less code, less work, highly understandable
+
+3. Fullstack Capabilities
+
+- Easily add backend(server-side) code to your Next / React apps
+- Storing data, getting data, authentication etc. can be added to your React projects
+
+---
+
+NextJS
+
+1. npm run dev
+
+- Two form of Pre-Rendering
+
+1. Static Generation
+2. Server-side Rendering

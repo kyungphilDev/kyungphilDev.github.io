@@ -34,4 +34,10 @@ var store = [{
         "tags": ["control hazard","pipeline","Branch Prediction","2-bit global"],
         "url": "/computer-architecture/pipeline-5/",
         "teaser": null
+      },{
+        "title": "파이썬 정리 노트(1)",
+        "excerpt":"몇 가지 헷갈리거나 새롭게 알게된 문법이나 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요. 데이터: 타입, 값, 변수 리스트를 문자열로 변환하기: join() # join과 split을 서로 정반대의 개념으로 이해하면 편하다. friends = ['Harry', 'Hermione', 'Ron'] separator = '*' joined = separator.join(friends) &gt;&gt;&gt; joined 'Harry*Hermione*Ron' separated = joined.split(separator) &gt;&gt;&gt;...","categories": ["python"],
+        "tags": ["python","programming"],
+        "url": "/python/python/",
+        "teaser": null
       }]

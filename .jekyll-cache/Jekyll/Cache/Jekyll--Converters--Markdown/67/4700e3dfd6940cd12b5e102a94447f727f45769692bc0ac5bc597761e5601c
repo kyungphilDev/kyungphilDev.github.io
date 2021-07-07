@@ -1,0 +1,30 @@
+I"+<p>몇 가지 헷갈리거나 새롭게 알게된 문법이나 함수, 메소드들을 정리하려고 합니다.<br />
+제 기준으로 작성한 것이므로 참고만 해주세요.</p>
+
+<h3 id="데이터-타입-값-변수">데이터: 타입, 값, 변수</h3>
+
+<ul>
+  <li><strong>리스트를 문자열로 변환하기: join()</strong></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># join과 split을 서로 정반대의 개념으로 이해하면 편하다.
+</span><span class="n">friends</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Harry'</span><span class="p">,</span> <span class="s">'Hermione'</span><span class="p">,</span> <span class="s">'Ron'</span><span class="p">]</span>
+<span class="n">separator</span> <span class="o">=</span> <span class="s">'*'</span>
+<span class="n">joined</span> <span class="o">=</span> <span class="n">separator</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">friends</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">joined</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'Harry*Hermione*Ron'</span>
+<span class="n">separated</span> <span class="o">=</span> <span class="n">joined</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">separated</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="s">'Harry'</span><span class="p">,</span> <span class="s">'Hermione'</span><span class="p">,</span> <span class="s">'Ron'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p><strong>sort()와 sorted()</strong></p>
+
+    <p>sort()는 리스트 자체를 <strong>내부적으로</strong> 정렬한다. 하지만<br />
+sorted()는 리스트의 정렬된 새로운 <strong>복사본</strong>을 반환한다.
+(기본 정렬 방식은 오름차순)</p>
+  </li>
+</ul>
+:ET
