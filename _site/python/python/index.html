@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>파이썬 정리 노트(1) - KyungPhil Dev</title>
-<meta name="description" content="몇 가지 헷갈리거나 새롭게 알게된 문법이나 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요.">
+<!-- begin _includes/seo.html --><title>Introducing Python 파이썬 정리(1) - KyungPhil Dev</title>
+<meta name="description" content="Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서, 몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요.^^">
 
 
   <meta name="author" content="KyungPhil Park">
@@ -22,11 +22,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="KyungPhil Dev">
-<meta property="og:title" content="파이썬 정리 노트(1)">
+<meta property="og:title" content="Introducing Python 파이썬 정리(1)">
 <meta property="og:url" content="https://kyungphildev.github.io/python/python/">
 
 
-  <meta property="og:description" content="몇 가지 헷갈리거나 새롭게 알게된 문법이나 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요.">
+  <meta property="og:description" content="Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서, 몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요.^^">
 
 
 
@@ -226,12 +226,15 @@
 
   <div class="archive">
     
-      <h1 id="page-title" class="page__title">파이썬 정리 노트(1)</h1>
+      <h1 id="page-title" class="page__title">Introducing Python 파이썬 정리(1)</h1>
     
-    <p>몇 가지 헷갈리거나 새롭게 알게된 문법이나 함수, 메소드들을 정리하려고 합니다.<br />
-제 기준으로 작성한 것이므로 참고만 해주세요.</p>
+    <p><strong>Introducing Python 처음 시작하는 파이썬[2판]</strong> 을 읽으면서,<br />
+몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다.<br />
+제 기준으로 작성한 것이므로 참고만 해주세요.^^</p>
 
 <h3 id="데이터-타입-값-변수">데이터: 타입, 값, 변수</h3>
+
+<h2 id="튜플과-리스트">튜플과 리스트</h2>
 
 <ul>
   <li><strong>리스트를 문자열로 변환하기: join()</strong></li>
@@ -289,7 +292,8 @@ sorted()는 리스트의 정렬된 새로운 <strong>복사본</strong>을 반�
 <span class="n">b</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">c</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="n">d</span><span class="o">=</span><span class="n">a</span><span class="p">[:]</span>
-<span class="c1"># a[2]의 값은 리스트이며, shallow copy를 사용하였음을 확인가능ㅎ다.
+
+<span class="c1"># a[2]의 값은 리스트이며, shallow copy를 사용하였음을 확인가능하다.
 </span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="mi">5</span>
 <span class="o">&gt;&gt;&gt;</span><span class="n">a</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
@@ -299,6 +303,7 @@ sorted()는 리스트의 정렬된 새로운 <strong>복사본</strong>을 반�
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
 <span class="o">&gt;&gt;&gt;</span><span class="n">d</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
+
 <span class="c1"># 위의 shallow copy를 필요하지 않을 경우 deepcopy를 사용가능하다.
 </span><span class="n">b</span><span class="o">=</span><span class="n">copy</span><span class="p">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
@@ -308,13 +313,152 @@ sorted()는 리스트의 정렬된 새로운 <strong>복사본</strong>을 반�
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
 </code></pre></div></div>
 
+<ul>
+  <li><strong>여러 시퀀스 순회하기: zip()</strong></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">days</span><span class="o">=</span> <span class="p">[</span><span class="s">'Monday'</span><span class="p">,</span> <span class="s">'Tuesday'</span><span class="p">,</span> <span class="s">'Wednesday'</span><span class="p">]</span>
+<span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s">'banana'</span><span class="p">,</span> <span class="s">'oragne'</span><span class="p">,</span> <span class="s">'peach'</span><span class="p">]</span>
+<span class="n">drinks</span> <span class="o">=</span> <span class="p">[</span><span class="s">'coffee'</span><span class="p">,</span> <span class="s">'tea'</span><span class="p">,</span> <span class="s">'beer'</span> <span class="p">]</span>
+<span class="n">desserts</span> <span class="o">=</span> <span class="p">[</span><span class="s">'tiramisu'</span><span class="p">,</span> <span class="s">'ice cream'</span><span class="p">,</span> <span class="s">'pie'</span><span class="p">,</span> <span class="s">'pudding'</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">fruit</span><span class="p">,</span> <span class="n">drink</span><span class="p">,</span> <span class="n">dessert</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">datys</span><span class="p">,</span> <span class="n">fruits</span><span class="p">,</span> <span class="n">drinks</span><span class="p">,</span> <span class="n">desserts</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">daty</span><span class="p">,</span> <span class="s">": drink"</span><span class="p">,</span> <span class="n">drink</span><span class="p">,</span> <span class="s">"- eat"</span><span class="p">,</span> <span class="n">fruit</span><span class="p">,</span> <span class="s">"- enjoy"</span><span class="p">,</span> <span class="n">dessert</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="n">Monday</span> <span class="p">:</span> <span class="n">drink</span> <span class="n">coffee</span> <span class="o">-</span> <span class="n">eat</span> <span class="n">bannana</span> <span class="o">-</span> <span class="n">enjoy</span> <span class="n">tiramisu</span>
+<span class="p">...</span>
+<span class="c1">#단 zip은 여러 쉬퀀스 중 가장 짧은 시퀀스가 완료되면 멈추기에 desserts의 마지막 pudding은 출력되지 못한다.
+</span></code></pre></div></div>
+
+<p>zip()을 사용하여 tuple, dict를 만들 수가 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">english</span><span class="p">,</span> <span class="n">french</span><span class="p">))</span>
+<span class="p">[(</span><span class="s">'Monday'</span><span class="p">,</span> <span class="s">'Lundi'</span><span class="p">),</span> <span class="p">(</span><span class="s">'Tuesday'</span><span class="p">,</span> <span class="s">'Mardi'</span><span class="p">),</span> <span class="p">(</span><span class="s">'Wednesday'</span><span class="p">,</span> <span class="s">'Mercedi'</span><span class="p">)]</span>
+
+<span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">english</span><span class="p">,</span> <span class="n">french</span><span class="p">))</span>
+<span class="p">{</span><span class="s">'Monday'</span><span class="p">:</span> <span class="s">'Lundi'</span><span class="p">,</span> <span class="s">'tuesday'</span> <span class="p">:</span> <span class="s">'Mardi'</span><span class="p">,</span> <span class="s">'Wednesday'</span> <span class="p">:</span> <span class="s">'Mercredi'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>리스트 컴프리헨션 방식을 사용한 조금 더 파이써닉한 방법 익히기</strong></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#[표현식 for 항목 in 순회 가능한 객체]
+</span><span class="n">number_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="c1">#[표현식 for 항목 in 순회 가능한 객체 if 조건]
+</span><span class="n">a_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="c1">#컴프리헨션을 이용하여 , (row, col) 튜플 리스트 생성
+</span><span class="n">rows</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">cells</span> <span class="o">=</span> <span class="p">[(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="ow">in</span> <span class="n">rows</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c1">#튜플 언패킹
+</span><span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="mi">1</span> <span class="mi">1</span>
+<span class="mi">1</span> <span class="mi">2</span>
+<span class="mi">2</span> <span class="mi">1</span>
+<span class="mi">2</span> <span class="mi">2</span>
+<span class="p">...</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>튜플 vs 리스트</strong><br />
+튜플은 immutable한 특성 때문에 리스트에 비해 append(), insert() 등과 같은 함수가 없습니다. 하지만 튜플만의 장점은 다음과 같습니다.</li>
+</ul>
+
+<ol>
+  <li>튜플은 더 적은 공간을 사용한다.</li>
+  <li>실수로 튜플의 항목이 손상될 염려가 없다.</li>
+  <li>튜플을 딕셔너리 키로 사용 가능 하다.</li>
+  <li>네임드튜플은 객체의 단순한 대안이 될 수 있다.</li>
+</ol>
+
+<h2 id="딕셔너리">딕셔너리</h2>
+
+<ul>
+  <li><strong>항목 얻기: [key]와 get()</strong></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">some_dict</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'baby'</span><span class="p">:</span> <span class="s">'A'</span><span class="p">,</span>
+  <span class="s">'shark'</span><span class="p">:</span> <span class="s">'B'</span><span class="p">,</span>
+  <span class="s">'toodo'</span><span class="p">:</span> <span class="s">'C'</span>
+<span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">some_dict</span><span class="p">[</span><span class="s">'baby'</span><span class="p">]</span>
+<span class="s">'A'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">some_dict</span><span class="p">[</span><span class="s">'papa'</span><span class="p">]</span>
+<span class="n">ERROR</span><span class="err">!!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">'shark'</span> <span class="ow">in</span> <span class="n">some_dict</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">some_dict</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'shark'</span><span class="p">)</span>
+<span class="s">'B'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">some_dict</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'papa'</span><span class="p">,</span> <span class="s">'Oops'</span><span class="p">)</span>
+<span class="s">'Oops'</span>
+</code></pre></div></div>
+
+<ul>
+  <li>keys(), values(), items()</li>
+  <li>결합하기 {**a, **b}</li>
+  <li>update()</li>
+  <li>del(), pop() #키 값 중에서 리스트가 있을 때</li>
+  <li>copy() » 얕은 복사(shallow copy)</li>
+  <li>
+    <p>deepcopy() » 깊은 복사</p>
+  </li>
+  <li>딕셔너리 컴프리헨션</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#{키_표현식: 값_표현식 for 표현식 in 순회 가능 객체}
+</span><span class="n">letter_counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">letter</span><span class="p">:</span> <span class="n">word</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span> <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">word</span><span class="p">)}</span>
+</code></pre></div></div>
+
+<h2 id="set-셋">Set 셋</h2>
+
+<ul>
+  <li>&amp;, intersection()</li>
+  <li><code class="language-plaintext highlighter-rouge">|</code>, union()</li>
+  <li><code class="language-plaintext highlighter-rouge">-</code> , difference()</li>
+  <li>^, symmetric_difference()</li>
+  <li>&lt;=, issubset()</li>
+  <li>&lt;</li>
+  <li><code class="language-plaintext highlighter-rouge">&gt;=</code>, issuperset()</li>
+  <li>셋 컴프리헨션</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#{표현식 for 표현식 in 순회 가능 객체}
+</span><span class="n">letter_counts</span> <span class="o">=</span> <span class="p">{</span><span class="n">letter</span> <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">word</span><span class="p">)}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>frozenset()</li>
+  <li>mutable type: list, dict, set</li>
+</ul>
+
+<hr />
+
+<p><strong>Post의 참고자료와 이미지의 출처는 아래와 같습니다.</strong></p>
+
+<blockquote>
+  <p>처음 시작하는 파이썬[2판], 한빛미디어, 빌루바노빅</p>
+</blockquote>
+
+<hr />
+
 
 <!-- <ul class="taxonomy__index">
   
   
     <li>
       <a href="#2021">
-        <strong>2021</strong> <span class="taxonomy__count">7</span>
+        <strong>2021</strong> <span class="taxonomy__count">9</span>
       </a>
     </li>
   
@@ -341,7 +485,83 @@ sorted()는 리스트의 정렬된 새로운 <strong>복사본</strong>을 반�
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/python/python/" rel="permalink">파이썬 정리 노트(1)
+        <a href="/python/python3/" rel="permalink">Introducing Python 파이썬 정리(2)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-07-09T00:00:00+09:00">July 9, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서,
+몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다.
+제 기준으로 작성한 것이므로 참고만 해주세요.^^
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/python/python1-copy/" rel="permalink">파이썬 f-문자열
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-07-09T00:00:00+09:00">July 9, 2021</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">f-문자열
+</p>
+  </article>
+</div>
+
+      
+        
+
+
+
+<div class="list__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/python/python/" rel="permalink">Introducing Python 파이썬 정리(1)
 </a>
       
     </h2>
@@ -363,8 +583,9 @@ sorted()는 리스트의 정렬된 새로운 <strong>복사본</strong>을 반�
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">몇 가지 헷갈리거나 새롭게 알게된 문법이나 함수, 메소드들을 정리하려고 합니다.
-제 기준으로 작성한 것이므로 참고만 해주세요.
+    <p class="archive__item-excerpt" itemprop="description">Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서,
+몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다.
+제 기준으로 작성한 것이므로 참고만 해주세요.^^
 </p>
   </article>
 </div>

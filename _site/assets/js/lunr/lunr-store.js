@@ -35,9 +35,21 @@ var store = [{
         "url": "/computer-architecture/pipeline-5/",
         "teaser": null
       },{
-        "title": "파이썬 정리 노트(1)",
-        "excerpt":"몇 가지 헷갈리거나 새롭게 알게된 문법이나 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요. 데이터: 타입, 값, 변수 리스트를 문자열로 변환하기: join() # join과 split을 서로 정반대의 개념으로 이해하면 편하다. friends = ['Harry', 'Hermione', 'Ron'] separator = '*' joined = separator.join(friends) &gt;&gt;&gt; joined 'Harry*Hermione*Ron' separated = joined.split(separator) &gt;&gt;&gt;...","categories": ["python"],
+        "title": "Introducing Python 파이썬 정리(1)",
+        "excerpt":"Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서, 몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요.^^ 데이터: 타입, 값, 변수 튜플과 리스트 리스트를 문자열로 변환하기: join() # join과 split을 서로 정반대의 개념으로 이해하면 편하다. friends = ['Harry', 'Hermione', 'Ron'] separator = '*' joined...","categories": ["python"],
         "tags": ["python","programming"],
         "url": "/python/python/",
+        "teaser": null
+      },{
+        "title": "파이썬 f-문자열",
+        "excerpt":"f-문자열 파이썬 3.6 이상 버전에서부터는 f-문자열을 사용하여 여러 변수들을 문자열의 형태로 쉽고 편하게 출력이 가능합니다. 사용 방법은 간단합니다. 첫 인용 부호 앞에 문자 f를 입력합니다. 변수 명이나 식을 중괄호 안에 포함하여 문자열에 넣어줍니다. 예시: f’abcdefg. {변수명}’ day=27 print(f’오늘은 {day}일 입니다’) 출력 결과: 오늘은 27일 입니다 문제를 통해 직접 적용을 하는...","categories": ["python"],
+        "tags": ["python","programming"],
+        "url": "/python/python1-copy/",
+        "teaser": null
+      },{
+        "title": "Introducing Python 파이썬 정리(2)",
+        "excerpt":"Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서, 몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요.^^ 함수 익명 함수: lambda 단일 문장으로 표현되는 익명함수를 lambda 함수 라고 한다. def makeTitle(titles, func): for title in titles: print(fuc(title)) def makeCapital(word): return word.capitalize() titles = ['kingdom','her']...","categories": ["python"],
+        "tags": ["python","programming"],
+        "url": "/python/python3/",
         "teaser": null
       }]

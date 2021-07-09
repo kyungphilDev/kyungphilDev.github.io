@@ -1,0 +1,31 @@
+I"�<h3 id="f-문자열">f-문자열</h3>
+
+<p>파이썬 3.6 이상 버전에서부터는 f-문자열을 사용하여 여러 변수들을 문자열의 형태로 쉽고 편하게 출력이 가능합니다.</p>
+
+<p><a href="https://www.acmicpc.net/problem/9610">백준 9610번</a></p>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/125071561-679e4600-e0f4-11eb-9905-442bd3c969a9.png" width="800" /><br />9610번 문제
+</p>
+<p>문제는 정말 간단합니다. 입력받은 좌표들이 어떤 사분면에 해당하는지 각 사분면마다 해당하는 좌표의 개수를 알맞게 출력해주면 되는 간단한 문제입니다.<br />
+먼저 아래의 코드를 보면서 f-문자열 사용의 예시를 살펴봅시다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1">#sys.stdin.readline()은 input()과 같은 역할을 한다고 생각하시면됩니다.
+</span><span class="n">a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">())</span>
+<span class="n">q1</span><span class="p">,</span> <span class="n">q2</span><span class="p">,</span> <span class="n">q3</span><span class="p">,</span> <span class="n">q4</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">b</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">axis</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">b</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">q1</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">b</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">q2</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">b</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">q3</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">b</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">q4</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Q1: </span><span class="si">{</span><span class="n">q1</span><span class="si">}</span><span class="se">\n</span><span class="s">Q2: </span><span class="si">{</span><span class="n">q2</span><span class="si">}</span><span class="se">\n</span><span class="s">Q3: </span><span class="si">{</span><span class="n">q3</span><span class="si">}</span><span class="se">\n</span><span class="s">Q4: </span><span class="si">{</span><span class="n">q4</span><span class="si">}</span><span class="se">\n</span><span class="s">AXIS: </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
+:ET

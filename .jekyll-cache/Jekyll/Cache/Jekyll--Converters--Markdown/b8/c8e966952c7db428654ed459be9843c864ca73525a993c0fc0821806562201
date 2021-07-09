@@ -1,0 +1,196 @@
+I"�<h3 id="f-문자열">f-문자열</h3>
+
+<p>파이썬 3.6 이상 버전에서부터는 f-문자열을 사용하여 여러 변수들을 문자열의 형태로 쉽고 편하게 출력이 가능합니다.</p>
+
+<href>https://www.acmicpc.net/problem/9610<a />
+
+## 튜플과 리스트
+
+- **리스트를 문자열로 변환하기: join()**
+
+```python
+# join과 split을 서로 정반대의 개념으로 이해하면 편하다.
+friends = ['Harry', 'Hermione', 'Ron']
+separator = '*'
+joined = separator.join(friends)
+&gt;&gt;&gt; joined
+'Harry*Hermione*Ron'
+separated = joined.split(separator)
+&gt;&gt;&gt; separated
+['Harry', 'Hermione', 'Ron']
+```
+
+- **sort()와 sorted()**
+
+  sort()는 리스트 자체를 **내부적으로** 정렬한다. 하지만  
+  sorted()는 리스트의 정렬된 새로운 **복사본**을 반환한다.
+  (기본 정렬 방식은 오름차순)
+
+  &gt; 내림차순 &gt;&gt; some_list.sort(reverse=True)
+
+- **리스트 복사하기: copy(), list(), 슬라이스**
+
+```python
+a=[1,2,3]
+b=a.copy()
+c=list(a)
+d=a[:]
+# b c d 모두 a와 별개인 새로운 객체라는 사실을 확인가능하다.
+a[0]='edited'
+&gt;&gt;&gt;a
+['edited', 2, 3]
+&gt;&gt;&gt;b
+[1, 2, 3]
+&gt;&gt;&gt;c
+[1, 2, 3]
+&gt;&gt;&gt;d
+[1, 2, 3]
+```
+
+- **deepcopy()**
+
+```python
+a=[1,2,[3,4]]
+b=a.copy()
+c=list(a)
+d=a[:]
+
+# a[2]의 값은 리스트이며, shallow copy를 사용하였음을 확인가능하다.
+a[2][1]= 5
+&gt;&gt;&gt;a
+[1, 2, [3, 5]]
+&gt;&gt;&gt;b
+[1, 2, [3, 5]]
+&gt;&gt;&gt;c
+[1, 2, [3, 5]]
+&gt;&gt;&gt;d
+[1, 2, [3, 5]]
+
+# 위의 shallow copy를 필요하지 않을 경우 deepcopy를 사용가능하다.
+b=copy.deepcopy(a)
+a[2][1] = 10
+&gt;&gt;&gt;a
+[1, 2, [3, 10]]
+&gt;&gt;&gt;b
+[1, 2, [3, 5]]
+```
+
+- **여러 시퀀스 순회하기: zip()**
+
+```python
+days= ['Monday', 'Tuesday', 'Wednesday']
+fruits = ['banana', 'oragne', 'peach']
+drinks = ['coffee', 'tea', 'beer' ]
+desserts = ['tiramisu', 'ice cream', 'pie', 'pudding']
+
+for day, fruit, drink, dessert in zip(datys, fruits, drinks, desserts):
+  print(daty, ": drink", drink, "- eat", fruit, "- enjoy", dessert)
+&gt;&gt;&gt;
+Monday : drink coffee - eat bannana - enjoy tiramisu
+...
+#단 zip은 여러 쉬퀀스 중 가장 짧은 시퀀스가 완료되면 멈추기에 desserts의 마지막 pudding은 출력되지 못한다.
+```
+
+zip()을 사용하여 tuple, dict를 만들 수가 있다.
+
+```python
+list(zip(english, french))
+[('Monday', 'Lundi'), ('Tuesday', 'Mardi'), ('Wednesday', 'Mercedi')]
+
+dict(zip(english, french))
+{'Monday': 'Lundi', 'tuesday' : 'Mardi', 'Wednesday' : 'Mercredi'}
+```
+
+- **리스트 컴프리헨션 방식을 사용한 조금 더 파이써닉한 방법 익히기**
+
+```python
+#[표현식 for 항목 in 순회 가능한 객체]
+number_list = [number for number in range(1,6)]
+&gt;&gt;&gt;[1,2,3,4,5]
+
+#[표현식 for 항목 in 순회 가능한 객체 if 조건]
+a_list = [number for number in range(1,6) if number % 2 == 1]
+&gt;&gt;&gt;[1, 3, 5]
+
+#컴프리헨션을 이용하여 , (row, col) 튜플 리스트 생성
+rows = range(1,4)
+cols = range(1,3)
+cells = [(row, col) for in rows for col in cols]
+for cell in cells:
+  print(cell)
+&gt;&gt;&gt; (1, 1) (1,2) (2, 1) (2, 2) (3, 1) (3, 2)
+#튜플 언패킹
+for row, col in cells:
+  print(row, col)
+&gt;&gt;&gt;
+1 1
+1 2
+2 1
+2 2
+...
+```
+
+- **튜플 vs 리스트**  
+  튜플은 immutable한 특성 때문에 리스트에 비해 append(), insert() 등과 같은 함수가 없습니다. 하지만 튜플만의 장점은 다음과 같습니다.
+
+1. 튜플은 더 적은 공간을 사용한다.
+2. 실수로 튜플의 항목이 손상될 염려가 없다.
+3. 튜플을 딕셔너리 키로 사용 가능 하다.
+4. 네임드튜플은 객체의 단순한 대안이 될 수 있다.
+
+## 딕셔너리
+
+- **항목 얻기: [key]와 get()**
+
+```python
+some_dict = {
+  'baby': 'A',
+  'shark': 'B',
+  'toodo': 'C'
+}
+&gt;&gt;&gt; some_dict['baby']
+'A'
+&gt;&gt;&gt; some_dict['papa']
+ERROR!!
+&gt;&gt;&gt; 'shark' in some_dict
+True
+&gt;&gt;&gt; some_dict.get('shark')
+'B'
+&gt;&gt;&gt; some_dict.get('papa', 'Oops')
+'Oops'
+```
+
+- keys(), values(), items()
+- 결합하기 {**a, **b}
+- update()
+- del(), pop() #키 값 중에서 리스트가 있을 때
+- copy() &gt;&gt; 얕은 복사(shallow copy)
+- deepcopy() &gt;&gt; 깊은 복사
+
+- 딕셔너리 컴프리헨션
+
+```python
+#{키_표현식: 값_표현식 for 표현식 in 순회 가능 객체}
+letter_counts = {letter: word.count(letter) for letter in set(word)}
+```
+
+## Set 셋
+
+- &amp;, intersection()
+- `|`, union()
+- `-` , difference()
+- ^, symmetric_difference()
+- &lt;=, issubset()
+- &lt;
+- `&gt;=`, issuperset()
+- 셋 컴프리헨션
+
+```python
+#{표현식 for 표현식 in 순회 가능 객체}
+letter_counts = {letter for letter in set(word)}
+```
+
+- frozenset()
+- mutable type: list, dict, set
+</href>
+:ET
