@@ -52,4 +52,10 @@ var store = [{
         "tags": ["python","programming"],
         "url": "/python/python3/",
         "teaser": null
+      },{
+        "title": "2차원 배열 유형 문제",
+        "excerpt":"삼성역량테스트에서 출제되는 코테문제들의 경우 2차원 배열을 특정한 기준을 통해 회전시키는 문제가 자주 출제됩니다. 그래서 이번 포스트에서는 관련된 유사한 유형의 문제들로 코테에 자주 등장하는 2차원 배열을 능숙하게 다루는 유형을 대비하여 봅시다. 관련 문제) 삼성SW역량테스트 20년 하반기 오후 2번 문제 삼성SW역량테스트 21년 상반기 오후 2번 문제 백준) 배열 돌리기 3(16935번) 배열돌리기 3_백준...","categories": ["coding-test"],
+        "tags": ["algorithm","coding-test","python","programming"],
+        "url": "/coding-test/2d_list/",
+        "teaser": null
       }]
