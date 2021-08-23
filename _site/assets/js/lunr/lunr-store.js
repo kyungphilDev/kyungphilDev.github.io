@@ -36,7 +36,7 @@ var store = [{
         "teaser": null
       },{
         "title": "Introducing Python 파이썬 정리(1)",
-        "excerpt":"Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서, 몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요.^^ 데이터: 타입, 값, 변수 튜플과 리스트 리스트를 문자열로 변환하기: join() # join과 split을 서로 정반대의 개념으로 이해하면 편하다. friends = ['Harry', 'Hermione', 'Ron'] separator = '*' joined...","categories": ["python"],
+        "excerpt":"Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서, 몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다. 데이터: 타입, 값, 변수 튜플과 리스트 리스트를 문자열로 변환하기: join() # join과 split을 서로 정반대의 개념으로 이해하면 편하다. friends = ['Harry', 'Hermione', 'Ron'] separator = '*' joined = separator.join(friends) &gt;&gt;&gt; joined 'Harry*Hermione*Ron' separated...","categories": ["python"],
         "tags": ["python","programming"],
         "url": "/python/python/",
         "teaser": null
@@ -48,7 +48,7 @@ var store = [{
         "teaser": null
       },{
         "title": "Introducing Python 파이썬 정리(2)",
-        "excerpt":"Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서, 몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다. 제 기준으로 작성한 것이므로 참고만 해주세요.^^ 함수 익명 함수: lambda 단일 문장으로 표현되는 익명함수를 lambda 함수 라고 한다. def makeTitle(titles, func): for title in titles: print(fuc(title)) def makeCapital(word): return word.capitalize() titles = ['kingdom','her']...","categories": ["python"],
+        "excerpt":"Introducing Python 처음 시작하는 파이썬[2판] 을 읽으면서, 몇 가지 헷갈리거나 새롭게 알게된 문법, 함수, 메소드들을 정리하려고 합니다. 함수 익명 함수: lambda 단일 문장으로 표현되는 익명함수를 lambda 함수 라고 한다. def makeTitle(titles, func): for title in titles: print(fuc(title)) def makeCapital(word): return word.capitalize() titles = ['kingdom','her'] makeTitle(titles,makeCapital) &gt;&gt;&gt; Kingdom &gt;&gt;&gt; Her #lambda함수를...","categories": ["python"],
         "tags": ["python","programming"],
         "url": "/python/python3/",
         "teaser": null
