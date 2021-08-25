@@ -58,4 +58,16 @@ var store = [{
         "tags": ["algorithm","coding-test","python","programming"],
         "url": "/coding-test/2d_list/",
         "teaser": null
+      },{
+        "title": "10942번 펠린드롬(다이내믹 프로그래밍)",
+        "excerpt":"다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄보도록 합시다. 관련 문제) 11066번 파일합치기 12865번 평범한배낭 백준) 배열 돌리기 3(16935번) 팰린드롬_백준 문제 설명: 길이가 n인 수열이 주어졌을 때, 임의의 시작점과 끝점에 대해서 팰린드롬을 만족하는지 확인하는 문제입니다. 문제 설명 문제에서...","categories": ["coding-test"],
+        "tags": ["algorithm","coding-test","python","programming"],
+        "url": "/coding-test/palindrome-copy/",
+        "teaser": null
+      },{
+        "title": "15989번 1,2,3 더하기 4(다이내믹 프로그래밍)",
+        "excerpt":"다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄보도록 합시다. 관련 문제) 2293 동전1 2294 동전2 백준) 1,2,3 더하기 4(15989번) 1,2,3 더하기 4 문제 설명: 1,2,3 의 합으로 임의의 숫자를 표현하는 방법의 개수를 구하는 문제입니다. 단, 숫자의 순서만 바뀐...","categories": ["coding-test"],
+        "tags": ["algorithm","coding-test","python","programming"],
+        "url": "/coding-test/palindrome/",
+        "teaser": null
       }]
