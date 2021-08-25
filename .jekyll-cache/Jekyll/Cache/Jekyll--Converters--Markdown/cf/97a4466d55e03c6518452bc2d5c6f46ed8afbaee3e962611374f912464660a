@@ -1,0 +1,135 @@
+I"�F<p><strong>다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄 보도록 합시다.</strong></p>
+
+<hr />
+
+<h3 id="백준-평범한-배낭12865번">백준) 평범한 배낭(12865번)</h3>
+
+<p><a href="https://www.acmicpc.net/problem/12865">평범한 배낭</a></p>
+
+<ul>
+  <li>문제 설명: 최대 k 무게만큼 넣을 수 있는 배낭에 가치를 넣을 수 있는 최대값을 구하시오.</li>
+</ul>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/130789660-8ce5b9d8-4be8-4312-8fe5-37a945905cc9.png" width="1000" /><br />문제 설명
+</p>
+
+<p>문제에서 물품의 수(N)는 최대 100 입니다.<br />
+물건 각각에 대하여 <strong>물건을 배낭에 넣을지 말지</strong>, 모든 경우를 수행한다면, 이 방법의 <strong>시간복잡도</strong>는 다음과 같습니다.</p>
+
+<ul>
+  <li><strong>Brute-Force 방법 시간복잡도: O(2^100)</strong></li>
+</ul>
+
+<p>하지만 이 방법으로는 시간안에 문제를 풀 수 없으므로 <strong>다이내믹프로그래밍</strong> 방법으로 문제를 풀어봅시다.</p>
+
+<ul>
+  <li><strong>d[i][j]를 i번째 물건까지 고려하였을때, j 무게를 넣은 경우의 가치 최대값</strong>이라고 정의하여 봅시다.</li>
+</ul>
+
+<p><strong>d[i][j]</strong>를 다음과 같이 표현이 가능합니다.
+이 방법의 시간 복잡도는 물건의 수(N), 최대무게(K)에 대하여 다음과 같습니다.</p>
+
+<ul>
+  <li>
+    <p><strong>DP 시간복잡도: O(N*K)</strong></p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">d[i(물건)][j(무게)]=(최대 가치)</code></li>
+  <li>i번째 물건을 넣지 않을 때, <code class="language-plaintext highlighter-rouge">d[i][j]=d[i-1][j]</code></li>
+  <li>i번째 물건을 넣을 때, <code class="language-plaintext highlighter-rouge">d[i][j]=d[i-1][j-w[i]]+v[i]</code></li>
+  <li>따라서, <code class="language-plaintext highlighter-rouge">d[i][j]=max(d[i-1][j],d[i-1][j-w[i]]+v[i])</code></li>
+</ul>
+
+<p>위의 점화식의 정의에 따라 Bottom-Up 방식으로 코드를 구현하여 보겠습니다.</p>
+
+<blockquote>
+  <p><strong>구현 과정</strong></p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">j</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+      <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">+</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">k</span><span class="p">])</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><strong>구현 과정: 두 번째</strong>
+Bottom-UP 방식</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+<span class="c1"># 길이가 1 일 때
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+  <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+<span class="c1"># 길이가 2 일 때
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+  <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># 길이가 3~k 일 때
+</span><span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span>
+    <span class="n">tmp</span><span class="o">=-</span><span class="mi">1</span> <span class="c1"># d[i][j]의 여러 후보들 중에서 최소값을 저장하는데 필요한 변수
+</span>    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">tmp</span><span class="o">==-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">tmp</span> <span class="o">&gt;</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">t</span><span class="p">]</span><span class="o">+</span><span class="n">d</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">t</span><span class="p">]</span><span class="o">+</span><span class="n">d</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+    <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">tmp</span><span class="o">+</span><span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="문제의-설명이-잘-이해가-되지-않는다면-비슷한-구조의-코드를-가진-팰린드롬-문제를-먼저-한-번-풀어보세요">문제의 설명이 잘 이해가 되지 않는다면 비슷한 구조의 코드를 가진 팰린드롬 문제를 먼저 한 번 풀어보세요.</h3>
+
+<p>관련 문제 및 포스트)</p>
+
+<ul>
+  <li><a href="https://www.acmicpc.net/problem/10942">10942 팰린드롬_백준</a></li>
+  <li><a href="https://kyungphildev.github.io/coding-test/palindrome-copy/"> 이전 포스트) 10942번 펠린드롬(다이내믹 프로그래밍)</a></li>
+</ul>
+
+<hr />
+
+<h3 id="top-down-과-bottom-up-어떤-방식으로-구현하는-것이-좋은가요">Top-Down 과 Bottom-Up 어떤 방식으로 구현하는 것이 좋은가요?</h3>
+
+<p>제가 생각하기에 <strong>자신이 가장 구현하기 편하며 실수를 줄일 수 있는 접근 방식</strong>이 가장 좋은 풀이라고 생각합니다.</p>
+
+<h3 id="단-문제의-시간복잡도-안에-구현이-가능한-방법이어야만-합니다">단 문제의 시간복잡도 안에 구현이 가능한 방법이어야만 합니다.</h3>
+
+<p>아무리 가독성이 좋고 구현하기 쉬운 코드라 하더라도 <strong>시간복잡도</strong>가 너무나 초과하는 코드라면 <strong>효율적인 알고리즘</strong>을 적용하는 것에 대해 더욱 고민하여야 합니다.</p>
+
+<p>이 문제와 같은 경우는 <strong>Top-Down 방식</strong>의 코드로 백준에 제출을 하면 Python의 경우 <strong>시간초과 오류</strong>가 발생합니다.<br />
+그 이유는, 이 문제는 <strong>Top-Down 의 메모이제이션</strong>이 크게 효과를 내지 못하며, <strong>너무 깊게 재귀함수</strong>가 반복되며 테스트 데이터 T의 값이 커질 수록 시간이 많이 소요하는 것이라 생각합니다. 따라서, <strong>메모이제이션</strong>이 잘 되지 않는 문제의 경우에는 <strong>Bottom-Up</strong> 방식을 사용하는 것이 좋습니다. 종결 조건에서부터 시작하여 최종 답을 찾을 때까지 하나씩 진행되는 방식이기 때문에 시간복잡도가 줄기 때문입니다.</p>
+
+<blockquote>
+  <p>전체 구현 코드</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">def</span> <span class="nf">input</span><span class="p">():</span> <span class="k">return</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">()</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+    <span class="c1"># 길이가 1 일 때
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># 길이가 2 일 때
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># 길이가 3~k 일 때
+</span>    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># d[i][j]의 여러 후보들 중에서 최소값을 저장하는데 필요한 변수
+</span>            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tmp</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">tmp</span> <span class="o">&gt;</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">t</span><span class="p">]</span><span class="o">+</span><span class="n">d</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]:</span>
+                    <span class="n">tmp</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">t</span><span class="p">]</span><span class="o">+</span><span class="n">d</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">+</span><span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+:ET

@@ -65,6 +65,12 @@ var store = [{
         "url": "/coding-test/file-merge/",
         "teaser": null
       },{
+        "title": "12865번 평범한 배낭(다이내믹 프로그래밍)",
+        "excerpt":"다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄 보도록 합시다. 백준) 평범한 배낭(12865번) 평범한 배낭 문제 설명: 최대 k 무게만큼 넣을 수 있는 배낭에 가치를 넣을 수 있는 최대값을 구하시오. 문제 설명 문제에서 물품의 수(N)는 최대 100 입니다....","categories": ["coding-test"],
+        "tags": ["algorithm","coding-test","python","programming"],
+        "url": "/coding-test/kanp-sack/",
+        "teaser": null
+      },{
         "title": "10942번 펠린드롬(다이내믹 프로그래밍)",
         "excerpt":"다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄보도록 합시다. 관련 문제) 11066번 파일합치기 12865번 평범한배낭 백준) 배열 돌리기 3(16935번) 팰린드롬_백준 문제 설명: 길이가 n인 수열이 주어졌을 때, 임의의 시작점과 끝점에 대해서 팰린드롬을 만족하는지 확인하는 문제입니다. 문제 설명 문제에서...","categories": ["coding-test"],
         "tags": ["algorithm","coding-test","python","programming"],
