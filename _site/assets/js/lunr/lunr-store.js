@@ -82,4 +82,10 @@ var store = [{
         "tags": ["algorithm","coding-test","python","programming"],
         "url": "/coding-test/sum123/",
         "teaser": null
+      },{
+        "title": "5557번 1학년(다이내믹 프로그래밍, Knacksack 응용)",
+        "excerpt":"다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄 보도록 합시다. 관련 문제) 12865번 평범한 배낭 백준) 1학년(5557번) 1학년 문제 설명: 0~20 까지의 숫자 연산만 가능할 때, + 와 - 만을 사용하여 등식을 완성할 수 있는 총 경우의 수를...","categories": ["coding-test"],
+        "tags": ["algorithm","coding-test","python","programming"],
+        "url": "/coding-test/junior/",
+        "teaser": null
       }]

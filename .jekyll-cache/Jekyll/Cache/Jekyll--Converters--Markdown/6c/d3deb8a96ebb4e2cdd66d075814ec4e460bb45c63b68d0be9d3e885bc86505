@@ -1,0 +1,91 @@
+I"�)<p><strong>다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄 보도록 합시다.</strong></p>
+
+<hr />
+
+<p>관련 문제)</p>
+
+<ul>
+  <li><a href="https://www.acmicpc.net/problem/12865">12865번 평범한 배낭</a></li>
+</ul>
+
+<h3 id="백준-1학년5557번">백준) 1학년(5557번)</h3>
+
+<p><a href="https://www.acmicpc.net/problem/12865">1학년</a></p>
+
+<ul>
+  <li>문제 설명: 0~20 까지의 숫자 연산만 가능할 때, + 와 - 만을 사용하여 등식을 완성할 수 있는 총 경우의 수를 구하시오.</li>
+</ul>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/80669616/130939627-6c061946-ccce-4491-a090-33efe0541dfe.png" width="1000" /><br />문제 설명
+</p>
+
+<p>문제에서 숫자의 개수(N)는 최대 100 입니다.</p>
+
+<p>쉽게 떠오르는 풀이는 <strong>각 연산의 자리에 + 혹은 - 를 넣을지 결정</strong>하여 2^(n-2) 번의 연산을 모두 하는 것입니다. <strong>연산의 결과가 마지막 숫자의 값과 같은 경우의 수</strong>를 모두 Count 하면 됩니다.
+하지만 이 방법의 <strong>시간 복잡도는 O(2^(n-2))</strong> 이므로 시간 안에 모두 풀 수가 없는 풀이 방법입니다.</p>
+
+<p>물건 각각에 대하여 <strong>물건을 배낭에 넣을지 말지</strong>, 모든 경우를 수행한다면, 이 방법의 <strong>시간복잡도</strong>는 다음과 같습니다.</p>
+
+<ul>
+  <li><strong>Brute-Force 방법 시간복잡도: O(2^100)</strong></li>
+</ul>
+
+<p>하지만 이 방법으로는 시간안에 문제를 풀 수 없으므로 <strong>다이내믹프로그래밍</strong> 방법으로 문제를 풀어봅시다.</p>
+
+<ul>
+  <li><strong>d[i][j]를 i번째 물건까지 고려하였을때, j 무게를 넣은 경우의 가치 최대값</strong>이라고 정의하여 봅시다.</li>
+</ul>
+
+<p><strong>d[i][j]</strong>를 다음과 같이 표현이 가능합니다.
+이 방법의 시간 복잡도는 물건의 수(N), 최대무게(K)에 대하여 다음과 같습니다.</p>
+
+<ul>
+  <li>
+    <p><strong>DP 시간복잡도: O(N*K)</strong></p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">d[i(물건)][j(무게)]=(최대 가치)</code></li>
+  <li>i번째 물건을 넣지 않을 때, <code class="language-plaintext highlighter-rouge">d[i][j]=d[i-1][j]</code></li>
+  <li>i번째 물건을 넣을 때, <code class="language-plaintext highlighter-rouge">d[i][j]=d[i-1][j-w[i]]+v[i]</code></li>
+  <li>따라서, <code class="language-plaintext highlighter-rouge">d[i][j]=max(d[i-1][j],d[i-1][j-w[i]]+v[i])</code></li>
+</ul>
+
+<p>위의 점화식의 정의에 따라 Bottom-Up 방식으로 코드를 구현하여 보겠습니다.</p>
+
+<blockquote>
+  <p><strong>구현 과정</strong></p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">j</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+      <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">+</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">k</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p><strong>Kanpsack algorithm</strong>으로 널리알려진 문제입니다.<br />
+DP를 배울때 교과서적인 예시로 나오는 문제이므로 익혀두도록 합시다.</p>
+
+<blockquote>
+  <p>전체 구현 코드</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">def</span> <span class="nf">input</span><span class="p">():</span> <span class="k">return</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">.</span><span class="n">readline</span><span class="p">().</span><span class="n">rstrip</span><span class="p">()</span>
+
+<span class="n">n</span><span class="p">,</span><span class="n">k</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">())</span>
+<span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="nb">input</span><span class="p">().</span><span class="n">split</span><span class="p">()))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="n">w</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">temp</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">j</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">+</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">k</span><span class="p">])</span>
+</code></pre></div></div>
+:ET
