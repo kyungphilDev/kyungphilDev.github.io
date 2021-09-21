@@ -84,8 +84,26 @@ var store = [{
         "teaser": null
       },{
         "title": "5557번 1학년(다이내믹 프로그래밍, Knacksack 응용)",
-        "excerpt":"다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄 보도록 합시다. 관련 문제) 12865번 평범한 배낭 백준) 1학년(5557번) 1학년 문제 설명: 0~20 까지의 숫자 연산만 가능할 때, + 와 - 만을 사용하여 등식을 완성할 수 있는 총 경우의 수를...","categories": ["coding-test"],
+        "excerpt":"다이내믹 프로그래밍 방법이 필요한 문제들은 처음엔 접근 방법이 막막하게 느껴지곤 합니다. DP 접근 풀이가 필요한 관련 유형의 문제들을 많이 다뤄 보도록 합시다. 관련 문제) 12865번 평범한 배낭 1495번 기타리스트 백준) 1학년(5557번) 1학년 문제 설명: 0~20 까지의 숫자 연산만 가능할 때, + 와 - 만을 사용하여 등식을 완성할 수 있는 총...","categories": ["coding-test"],
         "tags": ["algorithm","coding-test","python","programming"],
         "url": "/coding-test/junior/",
+        "teaser": null
+      },{
+        "title": "recommender system 관련 주제 탐색",
+        "excerpt":"주요 주제) Contents based approach(콘텐츠기반 접근방식) (1) 독립적인 정보활용 자신의 데이터를 토대로 유사성 측정을 통한 추천(과거 이력 등 충분한 자신의 데이터가 필요) (2) 새로운 아이템 Collaborative Filtering 은 first ratre(새로운 아이템에 대한 소비자의 평가 데이터) 문제가 발생한다. 하지만 콘텐츠 기반 방법은 새로운 아이템에 대한 평가점수 없이도 추천이 가능하다. (3) 과도한...","categories": ["project"],
+        "tags": ["ML","DL","recommendation system"],
+        "url": "/project/project_1/",
+        "teaser": null
+      },{
+        "title": "PCA, EVD",
+        "excerpt":"PCA 주성분 분석(차원 축소) Principal Component Analysis 참고) Auto Encoder 고차원의 데이터들을 정사영 시켜 차원을 낮춘다면, 어떤 벡터에 데이터들을 정사영시키는 것이 원래 데이터의 정보손실을 가장 최소화 할 수 있을까에 대한 방법론 Covariance Matrix 공분산 행렬 공분산 행렬의 계산 공분산 행렬을 통해 각 feture들의 변동이 얼마나 닮아있는지 를 알 수 있다....","categories": ["project"],
+        "tags": ["ML","DL","recommendation system"],
+        "url": "/project/project_2/",
+        "teaser": null
+      },{
+        "title": "NMF",
+        "excerpt":"NMF 음수미포함 행렬분해 Non-negative Matrix Factorization SVD와 같은 Matrix Factorization 과 PCA와 같은 차원 축소(dimension reduction)을 이용한 방법들은 nonnegativity를 보장할 수가 없기 때문에 non-negative features를 다루는 데이터에서는 사용하기에 적합하지 않다. 따라서 Non-negative 데이터는 non-negative feature로 설명하는 것이 좋다. SVD는 여러 장점들이 있지만, factor들은 Interpretability(input이나 parameter에 변화를 주었을 때 어떤 결과가...","categories": ["project"],
+        "tags": ["ML","DL","recommendation system"],
+        "url": "/project/project_3/",
         "teaser": null
       }]

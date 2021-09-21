@@ -1,0 +1,52 @@
+I"W	<h3 id="pca-주성분-분석차원-축소">PCA 주성분 분석(차원 축소)</h3>
+
+<p>Principal Component Analysis</p>
+
+<blockquote>
+  <p>참고) Auto Encoder</p>
+</blockquote>
+
+<p>고차원의 데이터들을 정사영 시켜 차원을 낮춘다면,
+어떤 벡터에 데이터들을 정사영시키는 것이 원래 데이터의 정보손실을 가장 최소화 할 수 있을까에 대한 방법론</p>
+
+<ul>
+  <li><strong>Covariance Matrix 공분산 행렬</strong></li>
+</ul>
+<p align="center">
+      <img src="https://user-images.githubusercontent.com/80669616/133917339-33ff64bc-1619-4fce-b807-d59da8c21a9d.png" width="300" /><br />공분산 행렬의 계산
+</p>
+<ul>
+  <li>공분산 행렬을 통해 <strong>각 feture들의 변동이 얼마나 닮아있는지</strong> 를 알 수 있다.</li>
+  <li>기하학적 의미으로는 데이터를 어떻게 선형 변환하는가 이다.</li>
+  <li>공분산 행렬의 고유 벡터에 내적을 하는 것이 PCA 이다.</li>
+  <li>공분산 행렬의 고유벡터에 내적을 하면 <strong>최대 Variance</strong>로 나타난다.</li>
+</ul>
+
+<h3 id="evd-고윳값-분해">EVD 고윳값 분해</h3>
+
+<p>Eigen Value Decomposition</p>
+
+<p>EVD는 기존의 선형변환을 세 가지 과정으로 분해하여 생각할 수 있게 도와줍니다.</p>
+
+<p align="center">
+      <img src="https://user-images.githubusercontent.com/80669616/133918248-21086887-65f8-43f1-a5dc-ee210f1aac7d.png" width="900" /><br />고윳값 분해 과정
+</p>
+
+<p>흥미로운 점은 대칭행렬의 경우에는 다음과 같은 새로운 특징이 나타납니다.</p>
+
+<p align="center">
+      <img src="https://user-images.githubusercontent.com/80669616/133918324-495e3637-4927-418a-a257-1546039221d0.png" width="130" /><br />대칭행렬의 고윳값 분해
+</p>
+<p>대칭 행렬은 고유벡터가 서로 직교하는 성질을 보이기 때문에 고유벡터들을 모아둔 행렬 V는 직교행렬이므로 V 대신에 Q로 나타냅니다.</p>
+
+<ul>
+  <li>대칭행렬의 기하학적 의미</li>
+</ul>
+
+<p>대칭행렬은 행렬 Q를 통해 선형변환을 하게 되면, 기저 벡터의 길이는 1 이면서 직교하기 때문에 벡터 공간을 회전시키는 것과 같은 결과를 보여줍니다.</p>
+
+<blockquote>
+  <p>참고자료)<br />
+주성분 분석(PCA) : https://angeloyeo.github.io/2019/07/27/PCA.html</p>
+</blockquote>
+:ET

@@ -1,0 +1,39 @@
+I"�<h3 id="nmf-음수미포함-행렬분해">NMF 음수미포함 행렬분해</h3>
+
+<p>Non-negative Matrix Factorization</p>
+
+<p>SVD와 같은 <strong>Matrix Factorization</strong> 과 PCA와 같은 <strong>차원 축소</strong>(dimension reduction)을 이용한 방법들은 <strong>nonnegativity를</strong> 보장할 수가 없기 때문에 non-negative features를 다루는 데이터에서는 사용하기에 적합하지 않다.</p>
+
+<p>따라서 Non-negative 데이터는 non-negative feature로 설명하는 것이 좋다.</p>
+
+<ul>
+  <li>필요한 개념: trace(대각합 연산자), norm, Frobenius norm(행렬의 크기 계산), element-wise product OR Hadamard product(원소별 곱)</li>
+</ul>
+
+<h3 id="matrix-factorization">Matrix Factorization</h3>
+
+<p>Latent Factor Model</p>
+
+<blockquote>
+  <p>참고) 다른 대표적 알고리즘: Neighborhood Method</p>
+</blockquote>
+
+<p>유저와 아이템들 정보를 토대로 latent feature를 찾아낼 수 있는 방법.</p>
+
+<p>the goal of matrix factorization method is to predict missing entries.</p>
+
+<ul>
+  <li>user-based collaborative filtering</li>
+  <li>item-based collaborative filtering</li>
+</ul>
+
+<h3 id="svd-특이점-분해">SVD 특이점 분해</h3>
+
+<p>Singual Vector Decomposition</p>
+
+<blockquote>
+  <p>참고자료)<br />
+NMF : https://angeloyeo.github.io/2020/10/15/NMF.html<br />
+고윳값 분해(EVD) : https://angeloyeo.github.io/2020/11/19/eigen_decomposition.html</p>
+</blockquote>
+:ET

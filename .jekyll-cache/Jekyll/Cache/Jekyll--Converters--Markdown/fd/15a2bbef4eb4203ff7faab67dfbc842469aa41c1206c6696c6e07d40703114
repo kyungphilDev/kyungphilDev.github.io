@@ -1,0 +1,62 @@
+I"�<h3 id="nmf-음수미포함-행렬분해">NMF 음수미포함 행렬분해</h3>
+
+<p>Non-negative Matrix Factorization</p>
+
+<p>SVD와 같은 <strong>Matrix Factorization</strong> 과 PCA와 같은 <strong>차원 축소</strong>(dimension reduction)을 이용한 방법들은 <strong>nonnegativity를</strong> 보장할 수가 없기 때문에 non-negative features를 다루는 데이터에서는 사용하기에 적합하지 않다.</p>
+
+<p>따라서 Non-negative 데이터는 non-negative feature로 설명하는 것이 좋다.</p>
+
+<p>SVD는 여러 장점들이 있지만, factor들은 Interpretability(input이나 parameter에 변화를 주었을 때 어떤 결과가 나올 것인지 예측할 수가 없다.)를 갖추고 있지 않기 때문에 data collection에 어떠한 것도 알아낼 수가 없다.</p>
+
+<p>NMF를 통해서 row-rank approximation이 가능하다. 이는 noise filtering, feautre selection, compression, visualization등에 응용이 된다. NMF를 통해서 basis element의 set을 만들어 낼 수가 있는데, 이는 identification과 classification 을 통해서 unsupervised learning 기술에서 주요한 역할을 한다.</p>
+
+<h3 id="ill-posed-problem">ill-posed problem</h3>
+
+<p>NMF(Lee and Seung)를 제안할 때,</p>
+
+<ul>
+  <li>필요한 개념: trace(대각합 연산자), norm, Frobenius norm(행렬의 크기 계산), element-wise product OR Hadamard product(원소별 곱)</li>
+</ul>
+
+<blockquote>
+  <p>참고 키워드) k-means</p>
+</blockquote>
+
+<h3 id="matrix-factorization">Matrix Factorization</h3>
+
+<p>Latent Factor Model</p>
+
+<blockquote>
+  <p>참고) 다른 대표적 알고리즘: Neighborhood Method</p>
+</blockquote>
+
+<p>유저와 아이템들 정보를 토대로 latent feature를 찾아낼 수 있는 방법.</p>
+
+<p>the goal of matrix factorization method is to predict missing entries.</p>
+
+<ul>
+  <li>user-based collaborative filtering</li>
+  <li>item-based collaborative filtering</li>
+</ul>
+
+<h3 id="svd-특이점-분해">SVD 특이점 분해</h3>
+
+<p>Singual Vector Decomposition</p>
+
+<h3 id="gradient-descent-경사하강법">Gradient Descent 경사하강법</h3>
+
+<p>함수의 최솟값을 찾는 문제에서 경사하강법이 사용이 된다. 그렇다면, 이때 미분 계수가 0인 지점을 찾지 않고 왜 경사하강법을 사용하는지에 대한 의문점이 생길 수가 있다. 경사하강법은 다음의 세가지 경우에 유용하다.</p>
+
+<ul>
+  <li>함수가 닫힌 형태가 아닌 경우</li>
+  <li>함수가 너무 복잡해서 미분 계수를 구하기 어려운 경우</li>
+  <li>gradient descent를 구현하는게 미분 계수를 구하는 것보다 더 쉬운 경우</li>
+  <li>데이터 양이 너무 많아 효율적인 계산을 하기 위해</li>
+</ul>
+
+<blockquote>
+  <p>참고자료)<br />
+NMF : https://angeloyeo.github.io/2020/10/15/NMF.html<br />
+kaggle_Nonnegative Matrix Factorization and Image Compression: https://www.kaggle.com/elenageminiani/nmf-and-image-compression</p>
+</blockquote>
+:ET
